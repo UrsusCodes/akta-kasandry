@@ -11,6 +11,27 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-19 — E1: BostonMap placeholder
+
+**Files touched:**
+
+- `public/maps/boston-placeholder.svg` — 1000×1500 inline SVG: dark teal background, ribbed grid, double gold frame, Cinzel "BOSTON / A.D. 1924" title. Deliberately *not* the 13 MB real map — the placeholder communicates "this is where the map will live".
+- `src/mocks/pins.ts` — 3 mock pins (Beacon Hill, North End, Whitcomb's antique shop) with image-local coords + `title`/`label`/`description`.
+- `src/components/BostonMap.tsx` — `MapContainer` w/ `CRS.Simple`, `ImageOverlay`, `Marker` x3, popover formatted with the Cthulhu skin. Custom `divIcon` (gold dot) avoids the default Leaflet PNG which Vite won't ship correctly from `node_modules`.
+- `src/routes/MapView.tsx` — wraps `<BostonMap />` with a heading + explanatory blurb.
+
+**Decisions:**
+
+- y-axis mirroring (`IMG_HEIGHT - pin.y`) so pin coordinates use top-left origin like image software, while Leaflet's `CRS.Simple` measures from the bottom.
+- No edit mode yet — that needs auth + Supabase pin storage (stage D + E proper). Popover already shows the data the editor will write back.
+- Map JS bundle is ~220 KB. Dynamic import / route-level code split is a stage-G optimization, noted but not implemented here.
+
+**Verification:** `npm run build` → 2.0 s; chunk warning on map JS (expected — leaflet is heavy).
+
+**Open questions / next steps:** D1 — pick + integrate markdown editor for `/draft`.
+
+---
+
 ## 2026-05-19 — C2: Pull-vault script (dry-run only)
 
 **Files touched:**
