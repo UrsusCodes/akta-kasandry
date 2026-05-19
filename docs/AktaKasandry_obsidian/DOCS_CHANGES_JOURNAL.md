@@ -11,6 +11,27 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-19 — D1: Markdown editor (`/draft`)
+
+**Files touched:**
+
+- `docs/AktaKasandry_obsidian/work/2026-05-19-editor-choice.md` — comparison of `@uiw/react-md-editor` vs `react-markdown-editor-lite` vs `milkdown`. Decision: uiw.
+- `src/stores/draft.ts` — zustand store; in-memory only (no persistence) with a polish-flavoured initial sample.
+- `src/routes/DraftView.tsx` — `MDEditor` with `preview="live"`. Preview pane wired with the same `remarkGfm` + `remarkWikilinks` plugins and the same react-router-aware `<a>` override as `src/components/Markdown.tsx`.
+- `docs/AktaKasandry_obsidian/work/Index.md` — editor question marked resolved.
+
+**Decisions:**
+
+- Editor pick: `@uiw/react-md-editor` — full rationale in the work note. Key driver: preview accepts our existing remark plugins, so no second rendering pipeline.
+- In-memory only. Stage D proper will replace with auth-gated write to `wiki.pages` + `wiki.revisions`.
+- Editor uses `data-color-mode="light"` on its parent — the package's dark-mode CSS would clash with the parchment background.
+
+**Verification:** `npm run build` → 3.3 s; JS 1.53 MB (gzip 509 KB). Code-split deferred to stage G per the work note's accepted trade-off.
+
+**Open questions / next steps:** Final — update `memories/project.md` with what shipped + what waits for user; final journal entry.
+
+---
+
 ## 2026-05-19 — E1: BostonMap placeholder
 
 **Files touched:**

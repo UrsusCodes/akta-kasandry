@@ -46,12 +46,12 @@ Framework scaffolding session — stages A (partial), B (full), C (dry-run only)
 
 ### Stage D — Auth + edit `#stage/d`
 
-- [ ] Supabase Auth setup (email/pass + Google OAuth) — coordinate with coc-creator SSO
-- [ ] `wiki.profiles` table + role field, plus first-login trigger
-- [ ] RLS policies for read/edit
-- [ ] Inline markdown editor — pick one (`[[work/Index]]`)
-- [ ] `wiki.revisions` write hook on page UPDATE
-- [ ] Diff view + rollback button
+- [ ] Supabase Auth setup (email/pass + Google OAuth) — coordinate with coc-creator SSO — pending user
+- [ ] `wiki.profiles` table + role field, plus first-login trigger — pending Supabase
+- [ ] RLS policies for read/edit — pending Supabase
+- [x] Inline markdown editor — `@uiw/react-md-editor` ([[work/2026-05-19-editor-choice]]); integrated on `/draft` with in-memory zustand store + live preview — D1
+- [ ] `wiki.revisions` write hook on page UPDATE — pending Supabase
+- [ ] Diff view + rollback button — pending Supabase
 
 ### Stage E — Boston map with pins `#stage/e`
 

@@ -12,7 +12,7 @@ Map of decision notes, explorations, and dated working memos. Each entry links t
 
 ## Open questions (decisions pending)
 
-- **Markdown editor choice** — `react-markdown-editor-lite` vs `milkdown` vs `@uiw/react-md-editor`. Criteria: Polish character support, wikilink rendering inside editor, mobile rendering, bundle size, extensibility for `![[embeds]]`. Resolve in stage **d**.
+- ~~**Markdown editor choice**~~ — resolved 2026-05-19: `@uiw/react-md-editor`. See [[work/2026-05-19-editor-choice]].
 - **Slugify strategy for Polish characters** — keep diacritics in URLs (percent-encoded), transliterate (`ą` → `a`), or hash. Affects deep-linking + readability + sync key stability. Resolve before stage **c** (push script needs deterministic keys).
 - **Realtime channel granularity for pins** — single channel for all pins vs per-shelf vs per-book. Affects free-tier egress. Resolve in stage **e**.
 - **Image storage** — Supabase `wiki-attachments` bucket vs commit images into repo. Trade-off: bucket = egress cost + dynamic; repo = bandwidth-free + needs rebuild on image change. Resolve in stage **c**.
@@ -21,6 +21,7 @@ Map of decision notes, explorations, and dated working memos. Each entry links t
 ## Decisions made
 
 - 2026-05-19 — [[work/2026-05-19-wikilink-plugin|Wikilink resolution]] — hybrid: remark plugin for render (AST-safe), string preprocess for sync (C1/C2). Shared parser+resolver in `src/lib/wikilinks.ts`.
+- 2026-05-19 — [[work/2026-05-19-editor-choice|Markdown editor]] — `@uiw/react-md-editor`. Preview reuses our react-markdown + remarkWikilinks pipeline; plain textarea = no IME pitfalls with Polish diacritics.
 
 ## Active explorations
 
