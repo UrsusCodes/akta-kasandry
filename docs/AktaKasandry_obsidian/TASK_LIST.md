@@ -11,20 +11,20 @@ Staged plan mirrors the project spec (a-g). Active stage at top of "In progress"
 
 ## In progress
 
-_(none yet — implementation has not started)_
+Framework scaffolding session — stages A (partial), B (full), C (dry-run only), D1 (editor pick), E1 (placeholder map).
 
 ## Backlog (staged)
 
 ### Stage A — Setup + Supabase connection + schema migration `#stage/a`
 
-- [ ] `git init`, scaffold Vite + React 19 + TS project
-- [ ] Copy package.json conventions from `coc-creator` (`gh` CLI to inspect)
-- [ ] Add Tailwind v4, wire palette tokens (see `[[DESIGN_SYSTEM]]`)
-- [ ] Install: `@supabase/supabase-js`, `zustand`, `react-router-dom@7`, `react-hook-form`, `zod`, `react-markdown`, `remark-gfm`, `react-leaflet`
-- [ ] Read `coc-creator/docs/CoCCreator_obsidian/TECHNOLOGY_MASTERMIND.md` section **"Shared Supabase with akta-kasandry"** before touching schema
-- [ ] Design `wiki.*` schema DDL + RLS policies (see `[[SUPABASE_AND_SYNC]]`)
-- [ ] Run migration against shared Supabase project
-- [ ] `.env.example` committed; `.env` gitignored
+- [x] Scaffold Vite + React 19 + TS project (manual scaffold, repo wasn't empty) — A1
+- [x] Add Tailwind v4, wire palette tokens (see `[[DESIGN_SYSTEM]]`) — A2
+- [x] Install: `@supabase/supabase-js`, `zustand`, `react-router-dom@7`, `react-hook-form`, `zod`, `react-markdown`, `remark-gfm`, `react-leaflet@5` (bumped from 4 for React 19 peer) — A1
+- [x] `.env.example` committed; `.env` gitignored — A1
+- [ ] Copy package.json conventions from `coc-creator` (`gh` CLI to inspect) — deferred, current setup mirrors stack
+- [ ] Read `coc-creator/docs/CoCCreator_obsidian/TECHNOLOGY_MASTERMIND.md` section **"Shared Supabase with akta-kasandry"** before touching schema — pending user
+- [ ] Design `wiki.*` schema DDL + RLS policies (see `[[SUPABASE_AND_SYNC]]`) — pending user
+- [ ] Run migration against shared Supabase project — pending user (shared with coc-creator)
 
 ### Stage B — Public reader `#stage/b`
 

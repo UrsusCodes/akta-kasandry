@@ -11,6 +11,31 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-19 — A1: Vite scaffold + deps
+
+**Files touched:**
+
+- `package.json` — created with locked stack deps (React 19 + TS + Vite 6 + Tailwind v4 + Supabase + zustand + react-router 7 + react-hook-form + zod + react-markdown + remark-gfm + react-leaflet 5 + leaflet + @uiw/react-md-editor)
+- `tsconfig.json`, `tsconfig.app.json`, `tsconfig.node.json` — strict TS config, `@/*` path alias
+- `vite.config.ts` — React + Tailwind v4 plugin (`@tailwindcss/vite`), `@` alias
+- `index.html` — Google Fonts (Cinzel, Cormorant Garamond, Special Elite), `lang="pl"`
+- `.env.example` — placeholders for `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VAULT_PUBLIC`
+- `src/main.tsx`, `src/router.tsx`, `src/App.tsx`, `src/index.css`, `src/vite-env.d.ts` — minimal bootable shell
+
+**Decisions:**
+
+- Manual scaffold (not `npm create vite`) — repo not empty, would clobber `CLAUDE.md` / `docs/`
+- `react-leaflet` bumped 4→5 — v4 peer-deps React 18, we're on React 19
+- Build script uses `npx tsc -b && npx vite build` — Bash PATH on Windows doesn't see `node_modules/.bin`
+- `npm install --legacy-peer-deps` — some transitive peers still on React 18; no runtime breakage observed
+- `@uiw/react-md-editor` chosen for D1 (justified in stage-D work note when written)
+
+**Verification:** `npm run build` → 711 ms, 286 kB JS, 7 kB CSS.
+
+**Open questions / next steps:** A2 — port Cthulhu skin tokens to Tailwind v4 `@theme`.
+
+---
+
 ## 2026-05-19 — Vault scaffolded
 
 **Files touched:**

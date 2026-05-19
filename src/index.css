@@ -1,0 +1,149 @@
+@import 'tailwindcss';
+
+/* ============================================================
+   Akta Kasandry — Cthulhu skin tokens, ported from
+   C:\temp\bookstack-test\cthulhu-skin-minimal.html
+   See docs/AktaKasandry_obsidian/DESIGN_SYSTEM.md for rationale.
+   ============================================================ */
+
+@theme {
+  /* Palette */
+  --color-teal-deep: #0d2828;
+  --color-teal-dark: #0a1f1f;
+  --color-parchment: #f5e6c8;
+  --color-parchment-warm: #fff8e7;
+  --color-gold: #c89b3c;
+  --color-gold-muted: #a78840;
+  --color-gold-dark: #8b6914;
+  --color-ink: #2d1b14;
+  --color-rule: #d4b896;
+
+  /* Typography */
+  --font-display: 'Cinzel', Georgia, serif;
+  --font-body: 'Cormorant Garamond', Georgia, serif;
+  --font-mono: 'Special Elite', ui-monospace, monospace;
+}
+
+html,
+body {
+  background: var(--color-teal-deep);
+  color: var(--color-parchment);
+  font-family: var(--font-body);
+  font-size: 18px;
+  margin: 0;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Markdown body — applied to PageView article. */
+.prose-cthulhu {
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+.prose-cthulhu h1,
+.prose-cthulhu h2,
+.prose-cthulhu h3,
+.prose-cthulhu h4,
+.prose-cthulhu h5,
+.prose-cthulhu h6 {
+  font-family: var(--font-display);
+  color: var(--color-ink);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-top: 1.4em;
+  margin-bottom: 0.5em;
+}
+.prose-cthulhu h1 {
+  font-size: 2.2em;
+  border-bottom: 1px solid var(--color-gold-muted);
+  padding-bottom: 0.3em;
+}
+.prose-cthulhu h2 {
+  font-size: 1.5em;
+  border-bottom: 1px solid var(--color-gold-muted);
+  padding-bottom: 0.3em;
+}
+.prose-cthulhu h3 {
+  font-size: 1.2em;
+}
+.prose-cthulhu p {
+  margin: 0.8em 0;
+  line-height: 1.6;
+}
+.prose-cthulhu a {
+  color: var(--color-gold-dark);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--color-gold);
+  transition: color 120ms ease;
+}
+.prose-cthulhu a:hover {
+  color: var(--color-gold);
+  border-bottom-style: solid;
+}
+.prose-cthulhu code {
+  background: var(--color-ink);
+  color: var(--color-parchment);
+  font-family: var(--font-mono);
+  border-radius: 2px;
+  padding: 2px 6px;
+  font-size: 0.92em;
+}
+.prose-cthulhu pre {
+  background: var(--color-ink);
+  color: var(--color-parchment);
+  font-family: var(--font-mono);
+  border-left: 3px solid var(--color-gold);
+  border-radius: 2px;
+  padding: 12px 16px;
+  overflow-x: auto;
+}
+.prose-cthulhu pre code {
+  background: transparent;
+  padding: 0;
+}
+.prose-cthulhu blockquote {
+  border-left: 4px solid var(--color-gold);
+  background: rgba(200, 155, 60, 0.08);
+  font-style: italic;
+  padding: 12px 18px;
+  margin: 1em 0;
+}
+.prose-cthulhu table {
+  border-collapse: collapse;
+  border: 1px solid var(--color-gold-muted);
+  background: var(--color-parchment-warm);
+  margin: 1em 0;
+  width: 100%;
+}
+.prose-cthulhu table th {
+  background: var(--color-ink);
+  color: var(--color-parchment);
+  font-family: var(--font-display);
+  padding: 8px 12px;
+  text-align: left;
+}
+.prose-cthulhu table td {
+  border: 1px solid var(--color-rule);
+  padding: 8px 12px;
+}
+.prose-cthulhu img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--color-gold-muted);
+}
+.prose-cthulhu ul,
+.prose-cthulhu ol {
+  margin: 0.8em 0;
+  padding-left: 1.8em;
+}
+.prose-cthulhu li {
+  margin: 0.3em 0;
+}
+.prose-cthulhu hr {
+  border: none;
+  border-top: 1px solid var(--color-gold-muted);
+  margin: 2em 0;
+}
