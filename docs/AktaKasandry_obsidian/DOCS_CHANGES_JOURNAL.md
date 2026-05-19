@@ -11,6 +11,25 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-19 — B2: Mock content tree
+
+**Files touched:**
+
+- `src/types.ts` — type defs: `Shelf > Book > Chapter > Page`, plus `Crumb`, `Pin`
+- `src/mocks/content.ts` — 3 shelves (Kampania, Mechanika, Okult i mity), 5 books, mix of chapter/no-chapter books. Pages contain Polish diacritics, GFM tables, fenced code, blockquotes (incl. callout-style `> [!note]`), images (placehold.co), wikilinks `[[Page]]` and `[[Page|alias]]`. Includes typed `findShelf` / `findBook` / `findChapter` / `findPage` helpers.
+
+**Decisions:**
+
+- Wikilinks reference page **titles** (not slugs) — matches how Obsidian-native vault content will arrive. Resolver in B3 will walk the tree by title.
+- Books may have `chapters?` *or* `pages?` directly — mirrors the spec's optional-chapter routing (`/s/:shelf/b/:book/p/:page`).
+- Mock helpers live next to mock data; in stage C the same module becomes the Supabase-backed lookup layer (swap the source, keep the API).
+
+**Verification:** TS strict-mode clean.
+
+**Open questions / next steps:** B1 — AppShell + routing.
+
+---
+
 ## 2026-05-19 — A2: Cthulhu skin → Tailwind v4 theme
 
 **Files touched:**

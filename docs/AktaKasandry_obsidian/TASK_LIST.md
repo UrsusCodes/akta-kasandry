@@ -32,7 +32,7 @@ Framework scaffolding session — stages A (partial), B (full), C (dry-run only)
 - [x] Cthulhu skin: port palette + fonts from `C:\temp\bookstack-test\cthulhu-skin-minimal.html` into Tailwind v4 theme — A2 (moved up)
 - [ ] Left-sidebar Shelf list (always visible, large titles) — B1
 - [ ] Breadcrumbs component — B1
-- [ ] Mock content data (B2) — 3 shelves, books, chapters, pages with Polish content + wikilinks
+- [x] Mock content data (B2) — 3 shelves, books, chapters, pages with Polish content + wikilinks
 - [ ] Markdown render: Polish characters, wikilinks `[[X]]` / `[[X|alias]]` → internal links, images, tables, code, blockquotes — B3
 
 ### Stage C — Vault → Supabase sync (push) `#stage/c`
