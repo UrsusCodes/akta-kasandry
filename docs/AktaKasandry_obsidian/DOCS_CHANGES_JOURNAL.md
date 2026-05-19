@@ -11,6 +11,29 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-19 — B3: Markdown render + wikilinks
+
+**Files touched:**
+
+- `src/lib/wikilinks.ts` — shared parser/resolver: `parseWikilink`, `findWikilinks`, `resolveWikilink`, `vaultToApp`, `appToVault`. Single source of truth for both renderer and sync.
+- `src/lib/remarkWikilinks.ts` — remark plugin walking the AST, replacing `[[…]]` text matches with `link` nodes (or `emphasis` for broken targets). Skips `code`/`inlineCode` subtrees so wikilink syntax inside code stays literal.
+- `src/components/Markdown.tsx` — react-markdown wrapper: `remark-gfm` + `remarkWikilinks`, custom `a` component routes internal `/…` URLs through react-router `<Link>`, external links open in new tab.
+- `src/routes/PageView.tsx` — swaps the `<pre>` placeholder for `<Markdown>`.
+- `docs/AktaKasandry_obsidian/work/2026-05-19-wikilink-plugin.md` — new work note explaining hybrid AST-plugin + string-preprocess approach.
+- `docs/AktaKasandry_obsidian/work/Index.md` — wikilink-resolution-timing question marked resolved.
+
+**Decisions:**
+
+- Hybrid approach: remark plugin for render (AST-safe), string preprocess for C1/C2 sync. Detailed rationale in the work note.
+- Resolver walks the tree by **page title**, not slug — matches Obsidian's convention. Cheap on mock data; precompute a title→url map if it bites at Supabase scale.
+- Broken wikilinks render as italic plain text (`<em>` carrying a `data.wikilinkBroken` flag). No render crash on missing targets.
+
+**Verification:** `npm run build` → 1.5 s; JS 462 kB (react-markdown is heavy, gzip 147 kB — fine for the planned audience).
+
+**Open questions / next steps:** C1 — push-vault dry-run, reusing `vaultToApp`.
+
+---
+
 ## 2026-05-19 — B1: AppShell + routing
 
 **Files touched:**

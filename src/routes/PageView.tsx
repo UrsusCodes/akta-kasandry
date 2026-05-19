@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom'
 import { findPage } from '@/mocks/content'
+import { Markdown } from '@/components/Markdown'
 
 export function PageView() {
   const { shelf, book, chapter, page } = useParams<{
@@ -19,10 +20,5 @@ export function PageView() {
     return <p className="font-body text-parchment">Strona nie istnieje.</p>
   }
 
-  // B3 will swap this <pre> for the markdown renderer.
-  return (
-    <article className="prose-cthulhu bg-parchment p-8">
-      <pre className="font-mono whitespace-pre-wrap text-sm">{resolved.body}</pre>
-    </article>
-  )
+  return <Markdown>{resolved.body}</Markdown>
 }

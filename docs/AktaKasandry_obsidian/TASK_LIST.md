@@ -33,7 +33,7 @@ Framework scaffolding session — stages A (partial), B (full), C (dry-run only)
 - [x] Left-sidebar Shelf list (always visible, large titles) — B1
 - [x] Breadcrumbs component — B1
 - [x] Mock content data (B2) — 3 shelves, books, chapters, pages with Polish content + wikilinks
-- [ ] Markdown render: Polish characters, wikilinks `[[X]]` / `[[X|alias]]` → internal links, images, tables, code, blockquotes — B3
+- [x] Markdown render: Polish characters, wikilinks `[[X]]` / `[[X|alias]]` → internal links, images, tables, code, blockquotes — B3
 
 ### Stage C — Vault → Supabase sync (push) `#stage/c`
 
