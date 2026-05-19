@@ -28,7 +28,7 @@ Map these into Tailwind v4 theme tokens. Source HTML reference: `C:\temp\booksta
 | Cormorant Garamond | Body text, paragraphs |
 | Special Elite | Code, monospace, typewriter affect |
 
-Loading strategy (`@fontsource` vs Google Fonts CDN) — decide in stage B. **All three must support Polish diacritics** — verify before locking.
+Loading strategy: **Google Fonts CDN via `<link>` in `index.html`**. Loaded fonts: Cinzel 500/700, Cormorant Garamond 400/500/700 (italic 400/700), Special Elite. All three confirmed to render Polish diacritics correctly (verified on `App.tsx` sample, A2).
 
 ## Layout
 
@@ -36,6 +36,25 @@ Loading strategy (`@fontsource` vs Google Fonts CDN) — decide in stage B. **Al
 - **Left column always visible** — Shelf list, large titles, click navigates
 - **Breadcrumbs** below header on every content page
 - **Cthulhu mood** — restrained, parchment-on-teal, gold accents only on affordances (no cosmetic gold)
+
+## Tailwind v4 tokens (live in `src/index.css` under `@theme`)
+
+| Token | CSS var | Utility classes |
+|---|---|---|
+| Deep teal | `--color-teal-deep` | `bg-teal-deep`, `text-teal-deep`, `border-teal-deep` |
+| Teal dark (gradient end) | `--color-teal-dark` | `bg-teal-dark`, … |
+| Parchment | `--color-parchment` | `bg-parchment`, `text-parchment` |
+| Parchment warm (table bg) | `--color-parchment-warm` | `bg-parchment-warm` |
+| Gold (accent) | `--color-gold` | `bg-gold`, `text-gold`, `border-gold` |
+| Gold muted (rules) | `--color-gold-muted` | `border-gold-muted`, … |
+| Gold dark (link rest) | `--color-gold-dark` | `text-gold-dark`, … |
+| Ink (body on parchment) | `--color-ink` | `text-ink`, `bg-ink` |
+| Rule (table border) | `--color-rule` | `border-rule` |
+| `--font-display` | Cinzel | `font-display` |
+| `--font-body` | Cormorant Garamond | `font-body` |
+| `--font-mono` | Special Elite | `font-mono` |
+
+`.prose-cthulhu` class on the markdown article applies the full skin (headers, links, code, blockquote, table, image) without per-element utility classes — keep it for rendered markdown only.
 
 ## Component patterns
 

@@ -11,6 +11,27 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-19 — A2: Cthulhu skin → Tailwind v4 theme
+
+**Files touched:**
+
+- `src/index.css` — `@theme` block with palette (`teal-deep`, `parchment`, `gold`, `ink`, etc.) and font tokens; `.prose-cthulhu` class for markdown bodies (headers, links, code, blockquote, table, image)
+- `src/App.tsx` — Polish-diacritic verification sample using Tailwind utility classes generated from theme tokens
+- `docs/AktaKasandry_obsidian/DESIGN_SYSTEM.md` — token reference table + font-loading decision
+
+**Decisions:**
+
+- Skin port: 1:1 from `C:\temp\bookstack-test\cthulhu-skin-minimal.html` — colours, fonts, header/code/blockquote/table semantics
+- Tailwind v4 theme syntax (`@theme { --color-* }`) auto-generates `bg-*` / `text-*` / `border-*` utility classes
+- Fonts via Google Fonts `<link>` (already in `index.html`) — Cinzel + Cormorant Garamond + Special Elite all render Polish diacritics (verified on sample text)
+- `.prose-cthulhu` class encapsulates the markdown body styles — no per-element utility classes inside rendered pages
+
+**Verification:** `npm run build` → 655 ms, CSS 8.28 kB. Sample renders ąćęłńóśźż / ĄĆĘŁŃÓŚŹŻ correctly.
+
+**Open questions / next steps:** B1 — layout shell with left sidebar, breadcrumbs, route outlet.
+
+---
+
 ## 2026-05-19 — A1: Vite scaffold + deps
 
 **Files touched:**
