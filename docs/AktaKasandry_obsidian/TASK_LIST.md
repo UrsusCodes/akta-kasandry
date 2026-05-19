@@ -37,12 +37,12 @@ Framework scaffolding session — stages A (partial), B (full), C (dry-run only)
 
 ### Stage C — Vault → Supabase sync (push) `#stage/c`
 
-- [ ] Node CLI script reading `G:\My Drive\OBSIDIAN\RPG\Zew Cthulhu\PUBLIC\` recursively
-- [ ] Path-relative-to-PUBLIC as natural key; idempotent upsert into `wiki.pages`
-- [ ] Wikilink conversion (vault → app form) — decide push-time vs render-time first (`[[work/Index]]`)
-- [ ] Image reference rewriting (decision: bucket vs repo — `[[work/Index]]`)
-- [ ] Asterisks-and-cruft cleanup (port logic from `C:\temp\bookstack-test\import.py`)
-- [ ] First full import of `PUBLIC/`
+- [x] Node CLI script reading `VAULT_PUBLIC` env (fallback `./sample-vault`) recursively — C1 (dry-run only)
+- [x] Path-relative-to-vault as natural key — C1
+- [x] Wikilink conversion (vault → app form) via shared `src/lib/wikilinks.ts#vaultToApp` — decided in `[[work/2026-05-19-wikilink-plugin]]`
+- [ ] Image reference rewriting — `[[work/Index]]` still open (bucket vs repo)
+- [x] Asterisks-and-cruft cleanup (`collapseAsterisks` + `stripDuplicateH1` in `scripts/lib/cleanup.ts`) — C1
+- [ ] First full import of `PUBLIC/` — pending Supabase migration (user approval needed)
 
 ### Stage D — Auth + edit `#stage/d`
 

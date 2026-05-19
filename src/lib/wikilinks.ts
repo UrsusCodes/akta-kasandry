@@ -1,5 +1,5 @@
-import { shelves } from '@/mocks/content'
-import type { Shelf } from '@/types'
+import { shelves } from '../mocks/content'
+import type { Shelf } from '../types'
 
 /**
  * Wikilink parser + resolver.

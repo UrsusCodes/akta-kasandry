@@ -11,6 +11,34 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-19 — C1: Push-vault script (dry-run only)
+
+**Files touched:**
+
+- `scripts/push-vault.ts` — CLI entry. Reads `VAULT_PUBLIC` (falls back to `./sample-vault`), discovers pages by Shelf > Book > [Chapter] > `.md` layout, runs the cleanup pipeline and prints what would be upserted. `--execute` writes a clear "schema migration needs user approval" error and exits 1.
+- `scripts/lib/walk.ts` — `walkVault()` + `VaultPage` shape; honours exclude dirs (`memory/`, `.obsidian/`, etc.) and `_`/`.`/`.excalidraw.md` filters from `import.py`.
+- `scripts/lib/cleanup.ts` — `collapseAsterisks`, `stripDuplicateH1`, `slugify`, `contentHash` (FNV-1a 32-bit). Pure functions, ported from `import.py`.
+- `src/lib/wikilinks.ts` — switched `@/mocks/content` and `@/types` imports to relative paths so `tsx` (script runtime) can resolve them without the Vite alias.
+- `tsconfig.node.json` — added `@/*` path + included `src/**/*.ts` so the build understands transitive imports from scripts into src.
+- `sample-vault/Kampania/Tlo historyczne/Miasto/Beacon Hill.md`, `…/Ludzie/Alistair Whitcomb.md`, `…/Sesje/Sesja 1 - List.md` — fixture (3 pages, exercises wikilinks + collapseAsterisks).
+
+**Decisions:**
+
+- `--execute` gating is enforced **in code**, not just docs — the script exits 1 before any I/O if the flag is passed (sync with coc-creator on shared Supabase first).
+- Natural key is `path-from-vault` (`Kampania/Tlo historyczne/Miasto/Beacon Hill.md`), not slug — stable across title renames, breaks only on file moves (acceptable, matches Obsidian usage).
+- Shared cleanup vs renderer lives in two places by design: `scripts/lib/cleanup.ts` for push-side mutation; `src/lib/remarkWikilinks.ts` for render-side AST traversal. Both call the same `parseWikilink`/`resolveWikilink`.
+- Image rewriting (bucket vs repo) deferred — still open in `work/Index.md`.
+
+**Verification:**
+
+- `npx tsx scripts/push-vault.ts` on the 3-page fixture → all 3 listed, hashes stable, cleanup pipeline visible.
+- `npx tsx scripts/push-vault.ts --execute` → exit 1 with the migration-approval error.
+- `npm run build` → 1.4 s, clean.
+
+**Open questions / next steps:** C2 — pull script (same shape, app→vault direction).
+
+---
+
 ## 2026-05-19 — B3: Markdown render + wikilinks
 
 **Files touched:**
