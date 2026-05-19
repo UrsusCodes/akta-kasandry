@@ -130,7 +130,27 @@ e. Boston map with pins
 f. Supabase → vault back-sync (pull script with `ready_to_sync` filter)
 g. Deploy to GH Pages
 
-See `[[TASK_LIST]]` for current stage and per-stage breakdown.
+### Current status — 2026-05-19 framework session
+
+| Stage | Status |
+|---|---|
+| a — Setup | Vite + React 19 + TS + Tailwind v4 + locked stack deps installed. Cthulhu skin ported to `@theme`. **`wiki.*` schema migration NOT executed** — needs user approval (shared Supabase with coc-creator). `.env` not populated. |
+| b — Public reader | **Complete on mock data.** Routing, AppShell, sidebar, breadcrumbs, markdown render with wikilink remark plugin (AST-safe) all live. Polish diacritics verified everywhere. |
+| c — Push | Dry-run only (`scripts/push-vault.ts`). `--execute` exits 1. Cleanup pipeline (`collapseAsterisks`, `stripDuplicateH1`) and shared wikilink resolver wired. Image-rewrite still TBD (bucket vs repo open). |
+| d — Auth + edit | D1 only: editor `@uiw/react-md-editor` integrated on `/draft` with in-memory state, preview reuses the same renderer as read-mode. Auth, persistence, revisions still pending. |
+| e — Map | E1 only: `react-leaflet` + `ImageOverlay` over a 1000×1500 SVG placeholder, 3 mock pins with popovers. Real map (13 MB JPG) and DB-backed pins not done. |
+| f — Pull | Dry-run only (`scripts/pull-vault.ts`). `--execute` exits 1. Uses mock content as a stand-in source. |
+| g — Deploy | Not started. |
+
+See `[[TASK_LIST]]` for the live checkbox state, `[[DOCS_CHANGES_JOURNAL]]` for what landed when, and `[[work/Index]]` for resolved/open decisions.
+
+### What needs the user before more code can land
+
+1. **Approve and run the `wiki.*` schema migration on Supabase** (coordinate with coc-creator first — see [[INTEGRATIONS]]).
+2. **Populate `.env`** (copy `.env.example`, paste shared Supabase URL + anon key).
+3. **Copy the real Boston map** from `G:\…\boston-map-1924.jpg` to `public/maps/boston-map-1924.jpg` and update `IMG_URL` in `src/components/BostonMap.tsx`. (Or accept the placeholder for now.)
+4. **Confirm SSO with coc-creator** so the Auth flow can be designed without surprises.
+5. Decide on the **image rewriting strategy** (`work/Index.md` open question — bucket vs repo).
 
 ## Out of scope (deliberate exclusions)
 

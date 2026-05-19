@@ -11,6 +11,39 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-19 — Framework session TL;DR
+
+**What shipped today (10 commits on `main`):**
+
+- A1+A2 — Vite + React 19 + TS + Tailwind v4 scaffold; locked stack deps; Cthulhu skin ported to `@theme` tokens (palette, Cinzel/Cormorant/Special Elite, `.prose-cthulhu` for rendered markdown). Polish diacritics verified.
+- B1 — `AppShell` with always-visible Shelf sidebar, breadcrumbs, full routing tree (`/`, `/s/:shelf`, `/s/:shelf/b/:book`, `/c/:chapter`, `/p/:page`, `/map`, `/draft`).
+- B2 — Mock content tree: 3 shelves × 5 books × ~10 pages, Polish text + wikilinks + GFM tables + code + blockquotes + images.
+- B3 — Markdown render via `react-markdown` + `remark-gfm` + custom `remarkWikilinks` (AST-level, code-safe). Shared parser/resolver in `src/lib/wikilinks.ts`. Decision documented in `work/2026-05-19-wikilink-plugin`.
+- C1 — `scripts/push-vault.ts` dry-run; cleanup ported from `import.py`; `--execute` gated in code with a clear approval-needed error.
+- C2 — `scripts/pull-vault.ts` dry-run; symmetric `--execute` gating; mock content used as stand-in source until Supabase wires up.
+- E1 — `BostonMap` component with `react-leaflet` `ImageOverlay` over a 1000×1500 SVG placeholder; 3 mock pins with popovers in Cthulhu skin. Real 13 MB JPG deliberately not committed.
+- D1 — `@uiw/react-md-editor` integrated on `/draft` with in-memory zustand store; preview uses the same remark pipeline as read mode. Decision documented in `work/2026-05-19-editor-choice`.
+
+**Final build:** clean — see next entry's verification.
+
+**Where to start next session (Paweł):**
+
+1. Open the dev server (`npm run dev`) and click through `/`, a shelf, a book, a page (verify wikilink links work), `/map`, `/draft` (type Polish, watch preview).
+2. Read `memories/project.md` "Current status" + "What needs the user" — three concrete unblockers waiting.
+3. Easiest next step that doesn't need Supabase: copy the real `boston-map-1924.jpg` and swap `IMG_URL` in `BostonMap.tsx`.
+4. When ready for Supabase: coordinate with coc-creator (see `INTEGRATIONS.md`), then port `SUPABASE_AND_SYNC.md`'s draft DDL into a migration and run it. Once schema exists, both `--execute` paths can be unlocked one at a time.
+
+**What is *not* done and *not* faked:**
+
+- No Supabase migration was run.
+- No `.env` was populated (only `.env.example`).
+- No auth provider was configured.
+- No GH Pages deploy.
+- No real Boston map JPG was copied into the repo.
+- Push/pull scripts run dry-run only — `--execute` exits 1 on both.
+
+---
+
 ## 2026-05-19 — D1: Markdown editor (`/draft`)
 
 **Files touched:**
