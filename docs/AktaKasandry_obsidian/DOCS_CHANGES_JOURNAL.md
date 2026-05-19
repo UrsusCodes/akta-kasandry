@@ -11,6 +11,24 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-19 — C2: Pull-vault script (dry-run only)
+
+**Files touched:**
+
+- `scripts/pull-vault.ts` — symmetric to push: enumerates rows that would be written back to the vault, runs them through `appToVault` (app-form internal links → `[[wikilink]]`), prints `vault-path`/`title`/`hash`/`bytes`. `--execute` exits 1 with a three-pronged approval reminder (schema, `ready_to_sync` from stage F, manual confirm).
+- `docs/AktaKasandry_obsidian/TASK_LIST.md` — stage F partials marked done.
+
+**Decisions:**
+
+- Until Supabase is wired, the pull script uses `mocks/content` as a stand-in source — gives a visible, hash-stable output without faking network calls.
+- Writeback gating message names all three blockers (schema, flag, manual confirm) so the user has a checklist when they unblock.
+
+**Verification:** dry-run prints 8 mock rows; `--execute` exits 1.
+
+**Open questions / next steps:** E1 — Boston map placeholder + pins.
+
+---
+
 ## 2026-05-19 — C1: Push-vault script (dry-run only)
 
 **Files touched:**

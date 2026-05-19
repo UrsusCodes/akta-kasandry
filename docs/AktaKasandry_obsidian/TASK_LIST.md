@@ -63,11 +63,11 @@ Framework scaffolding session — stages A (partial), B (full), C (dry-run only)
 
 ### Stage F — Supabase → vault back-sync (pull) `#stage/f`
 
-- [ ] Add `ready_to_sync` column on `wiki.pages` (probably done in stage A)
-- [ ] Node CLI pull script
-- [ ] Wikilink conversion (app → vault form)
-- [ ] Diff / preview before writing to filesystem (manual confirm step)
-- [ ] After successful write: flip `ready_to_sync = false`
+- [ ] Add `ready_to_sync` column on `wiki.pages` (probably done in stage A) — pending user
+- [x] Node CLI pull script (dry-run only) — C2
+- [x] Wikilink conversion (app → vault form) via shared `src/lib/wikilinks.ts#appToVault` — C2
+- [ ] Diff / preview before writing to filesystem (manual confirm step) — pending Supabase
+- [ ] After successful write: flip `ready_to_sync = false` — pending Supabase
 
 ### Stage G — Deploy `#stage/g`
 
