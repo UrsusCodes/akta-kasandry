@@ -11,6 +11,29 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-19 — B1: AppShell + routing
+
+**Files touched:**
+
+- `src/components/AppShell.tsx` — header (logo + top nav Półki/Mapa/Draft) + left aside (Shelf list) + main `<Outlet />` + footer; sidebar always visible, active route highlighted
+- `src/components/Breadcrumbs.tsx` — derives crumb chain from URL params via mock helpers
+- `src/routes/Landing.tsx`, `ShelfView.tsx`, `BookView.tsx`, `ChapterView.tsx`, `PageView.tsx`, `MapView.tsx`, `DraftView.tsx` — route components
+- `src/router.tsx` — full route tree per `TECHNOLOGY_MASTERMIND.md` (8 routes: `/`, `/s/:shelf`, `/s/:shelf/b/:book`, `/s/:shelf/b/:book/c/:chapter`, `/s/:shelf/b/:book/c/:chapter/p/:page`, `/s/:shelf/b/:book/p/:page`, `/map`, `/draft`)
+- `src/App.tsx` — removed (replaced by AppShell)
+- `docs/AktaKasandry_obsidian/TECHNOLOGY_MASTERMIND.md` — component tree section updated to reflect what landed
+
+**Decisions:**
+
+- `BookView` handles both branches: book-with-chapters and book-with-flat-pages. Routing covers both shapes.
+- `PageView` currently renders raw markdown in `<pre>` — B3 swaps for `react-markdown` + wikilink plugin.
+- Sidebar lists shelves only (per spec — "Shelf list, always visible, large titles"). Drilldown happens in main column.
+
+**Verification:** `npm run build` → 703 ms; CSS 13.7 kB, JS 303 kB. Visual nav check pending in dev server.
+
+**Open questions / next steps:** B3 — wire `react-markdown` + remark-gfm + wikilink plugin into `PageView`.
+
+---
+
 ## 2026-05-19 — B2: Mock content tree
 
 **Files touched:**

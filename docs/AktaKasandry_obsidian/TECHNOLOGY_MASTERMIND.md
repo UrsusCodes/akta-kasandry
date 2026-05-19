@@ -45,15 +45,19 @@ Open question: Polish characters in URL slugs — see `[[work/Index]]`.
 
 ## Component tree
 
-_(to be designed)_
+Landed in B1 — single `AppShell` with `<Outlet />`, sidebar always visible, breadcrumbs above outlet:
 
-High-level intent:
-
-- `AppShell` (left Shelf nav, breadcrumbs, route outlet)
-  - `ShelfList`, `BookList`, `ChapterList`, `PageView`
-  - `MapView`, `MapEditTools`
-  - `Editor`, `RevisionList`, `DiffView`
-  - `AuthGate`, `LoginForm`
+- `src/components/AppShell.tsx` — header (logo, top nav: Półki/Mapa/Draft) + left aside (Shelf list) + main outlet + footer
+- `src/components/Breadcrumbs.tsx` — derives crumbs from route params via `findShelf` / `findBook` / `findChapter` / `findPage`
+- Routes under `src/routes/`:
+  - `Landing.tsx` (`/`) — shelf grid
+  - `ShelfView.tsx` (`/s/:shelf`) — book list
+  - `BookView.tsx` (`/s/:shelf/b/:book`) — chapter or page list (handles either shape)
+  - `ChapterView.tsx` (`/s/:shelf/b/:book/c/:chapter`) — page list within chapter
+  - `PageView.tsx` (`/s/:shelf/b/:book/c/:chapter/p/:page` and `/s/:shelf/b/:book/p/:page`) — markdown article
+  - `MapView.tsx` (`/map`) — Leaflet `ImageOverlay` with pins (E1)
+  - `DraftView.tsx` (`/draft`) — editor + live preview (D1)
+- Not yet built: `Editor`, `RevisionList`, `DiffView`, `AuthGate`, `LoginForm` — wait for stage D
 
 ## Build / Deploy
 

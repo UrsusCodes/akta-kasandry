@@ -28,10 +28,10 @@ Framework scaffolding session — stages A (partial), B (full), C (dry-run only)
 
 ### Stage B — Public reader `#stage/b`
 
-- [ ] Routing skeleton (react-router v7) with public routes — B1
+- [x] Routing skeleton (react-router v7) with public routes — B1
 - [x] Cthulhu skin: port palette + fonts from `C:\temp\bookstack-test\cthulhu-skin-minimal.html` into Tailwind v4 theme — A2 (moved up)
-- [ ] Left-sidebar Shelf list (always visible, large titles) — B1
-- [ ] Breadcrumbs component — B1
+- [x] Left-sidebar Shelf list (always visible, large titles) — B1
+- [x] Breadcrumbs component — B1
 - [x] Mock content data (B2) — 3 shelves, books, chapters, pages with Polish content + wikilinks
 - [ ] Markdown render: Polish characters, wikilinks `[[X]]` / `[[X|alias]]` → internal links, images, tables, code, blockquotes — B3
 
