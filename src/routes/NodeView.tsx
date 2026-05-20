@@ -39,6 +39,10 @@ export function NodeView() {
     return <Markdown>{node.body ?? ''}</Markdown>
   }
 
+  // A folder whose children are imported characters → render a portrait hub.
+  const characterChildren = (node.children ?? []).filter((c) => c.character)
+  const isPlayerHub = characterChildren.length > 0
+
   return (
     <article>
       <header className="mb-6">
@@ -46,7 +50,9 @@ export function NodeView() {
           {node.name}
         </h1>
         <p className="font-mono mt-2 text-xs text-parchment/60">
-          {(node.children?.length ?? 0)} element(ów)
+          {isPlayerHub
+            ? `${characterChildren.length} ${characterChildren.length === 1 ? 'postać' : 'postaci'}`
+            : `${node.children?.length ?? 0} element(ów)`}
         </p>
       </header>
 
@@ -56,8 +62,54 @@ export function NodeView() {
         </div>
       )}
 
-      <ChildList nodes={node.children ?? []} />
+      {isPlayerHub ? (
+        <CharacterHub nodes={characterChildren} />
+      ) : (
+        <ChildList nodes={node.children ?? []} />
+      )}
     </article>
+  )
+}
+
+/** Portrait grid for a player folder: each card links to a character sheet. */
+function CharacterHub({ nodes }: { nodes: ContentNode[] }) {
+  return (
+    <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+      {nodes.map((n) => {
+        const portrait = n.character?.portrait_url
+        const occupation = n.character?.occupation_id
+        return (
+          <li key={n.path}>
+            <Link
+              to={`/p/${n.path}`}
+              className="group block border border-gold-muted bg-teal-dark/40 transition hover:border-gold hover:bg-teal-dark"
+            >
+              <div className="aspect-square w-full overflow-hidden bg-ink">
+                {portrait ? (
+                  <img
+                    src={portrait}
+                    alt={n.name}
+                    className="h-full w-full object-cover transition group-hover:opacity-90"
+                  />
+                ) : (
+                  <div className="font-display flex h-full w-full items-center justify-center text-4xl uppercase text-gold-muted">
+                    {n.name.slice(0, 1)}
+                  </div>
+                )}
+              </div>
+              <div className="p-3">
+                <div className="font-display text-sm uppercase tracking-wider text-gold group-hover:text-parchment">
+                  {n.name}
+                </div>
+                {occupation && (
+                  <div className="font-mono mt-0.5 text-xs text-parchment/50">{occupation}</div>
+                )}
+              </div>
+            </Link>
+          </li>
+        )
+      })}
+    </ul>
   )
 }
 
