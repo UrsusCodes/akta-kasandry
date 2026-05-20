@@ -35,6 +35,11 @@ export const CHARACTER_COLUMNS = [
   'max_luck',
   'residence',
   'birthplace',
+  // Portraits: coc-creator's canonical field is `portrait_url` (a public
+  // Storage URL), with `art_gallery` holding colour/sepia/bw/faded variants.
+  // profile_/card_ are legacy/unused (often null) — kept for completeness.
+  'portrait_url',
+  'art_gallery',
   'profile_portrait_url',
   'card_portrait_url',
   'card_portrait_crop_data',

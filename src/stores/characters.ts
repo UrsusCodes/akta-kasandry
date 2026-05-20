@@ -11,6 +11,7 @@ export type SourceCharacter = {
   name: string
   occupation_id: string | null
   era: string | null
+  portrait_url: string | null
   profile_portrait_url: string | null
   card_portrait_url: string | null
   updated_at: string
@@ -105,7 +106,8 @@ export const useCharactersStore = create<CharactersState>((set, get) => ({
       status: source.status ?? null,
       source_player_id: source.player_id ?? null,
       player_name: playerName.trim() || null,
-      portrait_url: source.card_portrait_url ?? source.profile_portrait_url ?? null,
+      portrait_url:
+        source.portrait_url ?? source.card_portrait_url ?? source.profile_portrait_url ?? null,
       data: source, // full allowlisted snapshot
       source_updated_at: source.updated_at,
     }
