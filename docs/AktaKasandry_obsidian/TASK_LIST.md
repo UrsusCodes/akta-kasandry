@@ -67,8 +67,12 @@ Framework scaffolding session — stages A (partial), B (full), C (dry-run only)
 - [x] Pin markers + popovers (mock data only, no DB yet) — E1
 - [x] ✅ Read pins from `wiki.pins` — E1 (2026-05-20), mock fallback when no creds
 - [x] ✅ Edit mode (role `mg`): click-add, drag-move, delete — E2/E3 (2026-05-20). Gated `isMG && source==='supabase'` + RLS.
-- [ ] Edit existing pin's text (title/label/desc) — small follow-up (currently delete+re-add)
+- [x] ✅ Edit existing pin (title/label/desc/color) — 2026-05-20. "Edytuj" in popover opens the overlay form pre-filled; saves via updatePin.
+- [x] ✅ Pin colors (10-option palette) + colored markers + color picker — 2026-05-20
+- [x] ✅ Pin list below map (grouped by color, alpha, click-to-focus) — 2026-05-20
 - [ ] Realtime subscription on `wiki.pins` — deferred (free-tier egress; single-MG doesn't need it yet)
+
+**STAGE E feature-complete for v1.** View + full CRUD (add/move/edit/delete) + colors + grouped list, all MG-gated (UI + RLS). Realtime is the only deferred item.
 - [ ] Pre-tiled (`gdal2tiles`) version of the 1924 JPG for faster first-paint on slow links — follow-up
 
 ### Stage F — Supabase → vault back-sync (pull) `#stage/f`

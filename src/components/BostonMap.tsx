@@ -78,6 +78,7 @@ export function BostonMap() {
 
   const [editMode, setEditMode] = useState(false)
   const [pending, setPending] = useState<PendingPin | null>(null)
+  const [editing, setEditing] = useState<Pin | null>(null)
   const [form, setForm] = useState({ title: '', label: '', description: '', color: DEFAULT_PIN_COLOR })
   const [busy, setBusy] = useState(false)
   const [err, setErr] = useState<string | null>(null)
@@ -106,25 +107,47 @@ export function BostonMap() {
 
   const resetForm = () => setForm({ title: '', label: '', description: '', color: DEFAULT_PIN_COLOR })
 
-  const submitNewPin = async () => {
-    if (!pending || !form.title.trim()) return
+  const closeForm = () => {
+    setPending(null)
+    setEditing(null)
+    setErr(null)
+    resetForm()
+  }
+
+  // Open the form pre-filled for an existing pin. Clears any in-progress add.
+  const startEdit = (pin: Pin) => {
+    setPending(null)
+    setEditing(pin)
+    setForm({
+      title: pin.title,
+      label: pin.label,
+      description: pin.description,
+      color: pin.color || DEFAULT_PIN_COLOR,
+    })
+    setErr(null)
+  }
+
+  const submitForm = async () => {
+    if (!form.title.trim()) return
     setBusy(true)
     setErr(null)
-    const { error } = await addPin({
-      x: pending.x,
-      y: pending.y,
+    const fields = {
       title: form.title.trim(),
       label: form.label.trim(),
       description: form.description.trim(),
       color: form.color,
-    })
+    }
+    const { error } = editing
+      ? await updatePin(editing.id, fields)
+      : pending
+        ? await addPin({ x: pending.x, y: pending.y, ...fields })
+        : { error: 'Brak kontekstu pinu.' }
     setBusy(false)
     if (error) {
       setErr(error)
       return
     }
-    setPending(null)
-    resetForm()
+    closeForm()
   }
 
   const markers = useMemo(
@@ -155,13 +178,22 @@ export function BostonMap() {
               {pin.label && <em className="font-mono block text-xs text-ink/70">{pin.label}</em>}
               {pin.description && <p className="mt-1">{pin.description}</p>}
               {editMode && (
-                <button
-                  type="button"
-                  onClick={() => void deletePin(pin.id)}
-                  className="font-mono mt-2 border border-gold-dark px-2 py-0.5 text-xs text-gold-dark hover:bg-gold-dark hover:text-parchment"
-                >
-                  Usuń pin
-                </button>
+                <div className="mt-2 flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => startEdit(pin)}
+                    className="font-mono border border-gold px-2 py-0.5 text-xs text-gold-dark hover:bg-gold hover:text-teal-deep"
+                  >
+                    Edytuj
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => void deletePin(pin.id)}
+                    className="font-mono border border-gold-dark px-2 py-0.5 text-xs text-gold-dark hover:bg-gold-dark hover:text-parchment"
+                  >
+                    Usuń
+                  </button>
+                </div>
               )}
             </div>
           </Popup>
@@ -211,14 +243,22 @@ export function BostonMap() {
           doubleClickZoom={!editMode}
         >
           <ImageOverlay url={IMG_URL} bounds={BOUNDS} />
-          {editMode && <MapClickHandler onPick={(xy) => setPending(xy)} />}
+          {editMode && (
+            <MapClickHandler
+              onPick={(xy) => {
+                // While editing an existing pin, ignore map clicks so we don't
+                // pop up a competing "new pin" form.
+                if (!editing) setPending(xy)
+              }}
+            />
+          )}
           {markers}
         </MapContainer>
 
-        {editMode && pending && (
+        {editMode && (pending || editing) && (
           <div className="absolute right-4 top-4 z-[1000] w-72 border border-gold bg-teal-dark/95 p-4 shadow-lg">
             <h3 className="font-display text-sm uppercase tracking-wider text-gold">
-              Nowy pin ({pending.x}, {pending.y})
+              {editing ? 'Edytuj pin' : `Nowy pin (${pending!.x}, ${pending!.y})`}
             </h3>
             <div className="mt-2 space-y-2">
               <input
@@ -268,17 +308,14 @@ export function BostonMap() {
               <button
                 type="button"
                 disabled={busy || !form.title.trim()}
-                onClick={() => void submitNewPin()}
+                onClick={() => void submitForm()}
                 className="font-display border border-gold bg-teal-deep px-3 py-1 text-sm uppercase tracking-wider text-gold transition hover:bg-gold hover:text-teal-deep disabled:opacity-50"
               >
-                {busy ? 'Dodawanie…' : 'Dodaj'}
+                {busy ? 'Zapisywanie…' : editing ? 'Zapisz' : 'Dodaj'}
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  setPending(null)
-                  setErr(null)
-                }}
+                onClick={closeForm}
                 className="font-display border border-gold-muted px-3 py-1 text-sm uppercase tracking-wider text-parchment hover:text-gold"
               >
                 Anuluj

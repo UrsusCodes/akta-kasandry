@@ -11,6 +11,24 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-20 — Edit existing pins (Stage E feature-complete)
+
+Added in-place editing of existing pins — the last CRUD gap.
+
+**Files touched:**
+
+- `src/components/BostonMap.tsx` — popover (edit mode) now has **Edytuj** + **Usuń** buttons. "Edytuj" opens the same overlay form pre-filled with the pin's title/label/description/color; save calls `updatePin`. The form is shared between add and edit (`pending` vs `editing` state drives header, button label "Dodaj"/"Zapisz", and which store method runs). Map clicks are ignored while editing so they don't pop a competing "new pin" form.
+
+**Decisions:**
+
+- One shared overlay form for both add + edit — `editing: Pin | null` and `pending: {x,y} | null` are mutually exclusive; `submitForm` branches on which is set.
+
+**Verification:** `npm run build` clean.
+
+Stage E is now feature-complete for v1: view + add + move + edit + delete + colors + grouped list, all MG-gated (UI `isMG && source==='supabase'` + `wiki.pins` RLS). Only realtime sync remains deferred.
+
+---
+
 ## 2026-05-20 — Map pin polish: dbl-click fix, colors, pin list
 
 Three user-requested improvements to pin editing.
