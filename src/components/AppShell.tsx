@@ -1,5 +1,5 @@
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
-import { shelves } from '@/mocks/content'
+import { TreeNav } from './TreeNav'
 import { Breadcrumbs } from './Breadcrumbs'
 
 export function AppShell() {
@@ -25,7 +25,7 @@ export function AppShell() {
                 isActive && !onMap && !onDraft ? 'text-gold' : 'text-parchment hover:text-gold'
               }
             >
-              Półki
+              Wiki
             </NavLink>
             <NavLink
               to="/map"
@@ -49,27 +49,7 @@ export function AppShell() {
 
       <div className="mx-auto flex max-w-7xl gap-6 px-6 py-6">
         <aside className="w-72 shrink-0">
-          <h2 className="font-display mb-3 text-xs uppercase tracking-widest text-gold-muted">
-            Półki
-          </h2>
-          <ul className="space-y-2">
-            {shelves.map((shelf) => (
-              <li key={shelf.slug}>
-                <NavLink
-                  to={`/s/${shelf.slug}`}
-                  className={({ isActive }) =>
-                    `font-display block border-l-2 px-3 py-2 text-lg uppercase tracking-wider transition-colors ${
-                      isActive
-                        ? 'border-gold bg-teal-dark/60 text-gold'
-                        : 'border-transparent text-parchment hover:border-gold-muted hover:text-gold'
-                    }`
-                  }
-                >
-                  {shelf.title}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
+          <TreeNav />
         </aside>
 
         <main className="min-w-0 flex-1">

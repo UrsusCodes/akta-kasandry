@@ -1,16 +1,11 @@
-import { Link, useParams } from 'react-router-dom'
-import { findShelf, findBook, findChapter, findPage } from '@/mocks/content'
-import type { Crumb } from '@/types'
+import { Link, useLocation } from 'react-router-dom'
+import { contentTree } from '@/mocks/content'
+import { findByPath } from '@/lib/tree'
+import type { Crumb, ContentNode } from '@/types'
 
 export function Breadcrumbs() {
-  const params = useParams<{
-    shelf?: string
-    book?: string
-    chapter?: string
-    page?: string
-  }>()
-
-  const crumbs = buildCrumbs(params)
+  const { pathname } = useLocation()
+  const crumbs = buildCrumbs(pathname)
   if (crumbs.length === 0) return null
 
   return (
@@ -34,52 +29,35 @@ export function Breadcrumbs() {
   )
 }
 
-function buildCrumbs(params: {
-  shelf?: string
-  book?: string
-  chapter?: string
-  page?: string
-}): Crumb[] {
-  const crumbs: Crumb[] = [{ label: 'Strona główna', to: '/' }]
-  const { shelf: shelfSlug, book: bookSlug, chapter: chapterSlug, page: pageSlug } = params
+function buildCrumbs(pathname: string): Crumb[] {
+  const out: Crumb[] = [{ label: 'Strona główna', to: '/' }]
 
-  if (!shelfSlug) return crumbs
+  if (pathname === '/' || pathname === '') return out
 
-  const shelf = findShelf(shelfSlug)
-  if (!shelf) return [...crumbs, { label: shelfSlug }]
-
-  crumbs.push({ label: shelf.title, to: bookSlug ? `/s/${shelf.slug}` : undefined })
-  if (!bookSlug) return crumbs
-
-  const book = findBook(shelfSlug, bookSlug)
-  if (!book) return [...crumbs, { label: bookSlug }]
-
-  const hasMore = !!chapterSlug || !!pageSlug
-  crumbs.push({ label: book.title, to: hasMore ? `/s/${shelf.slug}/b/${book.slug}` : undefined })
-
-  if (chapterSlug && pageSlug) {
-    const chapter = findChapter(shelfSlug, bookSlug, chapterSlug)
-    if (chapter) {
-      crumbs.push({
-        label: chapter.title,
-        to: `/s/${shelf.slug}/b/${book.slug}/c/${chapter.slug}`,
-      })
-    }
-    const page = findPage(shelfSlug, bookSlug, chapterSlug, pageSlug)
-    crumbs.push({ label: page?.title ?? pageSlug })
-    return crumbs
+  if (pathname.startsWith('/map')) {
+    out.push({ label: 'Mapa' })
+    return out
+  }
+  if (pathname.startsWith('/draft')) {
+    out.push({ label: 'Draft' })
+    return out
   }
 
-  if (chapterSlug) {
-    const chapter = findChapter(shelfSlug, bookSlug, chapterSlug)
-    crumbs.push({ label: chapter?.title ?? chapterSlug })
-    return crumbs
-  }
+  if (!pathname.startsWith('/p/')) return out
 
-  if (pageSlug) {
-    const page = findPage(shelfSlug, bookSlug, pageSlug)
-    crumbs.push({ label: page?.title ?? pageSlug })
+  const rest = decodeURIComponent(pathname.slice(3))
+  const segments = rest.split('/').filter(Boolean)
+  let accumulated = ''
+  let level: ContentNode[] | undefined = contentTree
+  for (let i = 0; i < segments.length; i++) {
+    const seg = segments[i]
+    accumulated = accumulated ? `${accumulated}/${seg}` : seg
+    const node: ContentNode | undefined = level?.find((n) => n.slug === seg)
+    const label = node ? node.name : seg
+    const isLast = i === segments.length - 1
+    out.push({ label, to: isLast ? undefined : `/p/${accumulated}` })
+    // Fallback if node-lookup fails partway — use findByPath for safety.
+    level = node?.children ?? findByPath(contentTree, accumulated)?.children
   }
-
-  return crumbs
+  return out
 }

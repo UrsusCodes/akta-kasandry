@@ -130,12 +130,16 @@ e. Boston map with pins
 f. Supabase → vault back-sync (pull script with `ready_to_sync` filter)
 g. Deploy to GH Pages
 
-### Current status — 2026-05-19 framework session
+### 2026-05-20 — refactored to recursive content tree
+
+Dropped the Shelf/Book/Chapter/Page hierarchy (BookStack artifact). Content is now a single recursive `ContentNode` with `kind: 'folder' | 'page'` and arbitrary nesting — matches Obsidian. Routing collapsed to `/p/*` catch-all; sidebar is `<TreeNav>` (collapsible). `wiki.pages` schema sketch in `SUPABASE_AND_SYNC.md` is now flagged as needing update before migration. Details: [[work/2026-05-20-recursive-content-tree]].
+
+### Current status — 2026-05-19 framework session (model refactored 2026-05-20)
 
 | Stage | Status |
 |---|---|
 | a — Setup | Vite + React 19 + TS + Tailwind v4 + locked stack deps installed. Cthulhu skin ported to `@theme`. **`wiki.*` schema migration NOT executed** — needs user approval (shared Supabase with coc-creator). `.env` not populated. |
-| b — Public reader | **Complete on mock data.** Routing, AppShell, sidebar, breadcrumbs, markdown render with wikilink remark plugin (AST-safe) all live. Polish diacritics verified everywhere. |
+| b — Public reader | **Complete on mock data.** Recursive tree (Obsidian-style, no fixed levels), `/p/*` catch-all routing, collapsible `<TreeNav>` sidebar, breadcrumbs, markdown render with wikilink remark plugin (AST-safe) all live. Polish diacritics verified everywhere. |
 | c — Push | Dry-run only (`scripts/push-vault.ts`). `--execute` exits 1. Cleanup pipeline (`collapseAsterisks`, `stripDuplicateH1`) and shared wikilink resolver wired. Image-rewrite still TBD (bucket vs repo open). |
 | d — Auth + edit | D1 only: editor `@uiw/react-md-editor` integrated on `/draft` with in-memory state, preview reuses the same renderer as read-mode. Auth, persistence, revisions still pending. |
 | e — Map | E1 only: `react-leaflet` + `ImageOverlay` over a 1000×1500 SVG placeholder, 3 mock pins with popovers. Real map (13 MB JPG) and DB-backed pins not done. |

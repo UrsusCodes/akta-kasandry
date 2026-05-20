@@ -14,6 +14,9 @@ Schema, RLS, sync scripts, and content model live here — they're tightly coupl
 > [!warning] Shared Supabase project
 > Everything we own lives under namespace `wiki` (`wiki.*` tables, `wiki-attachments` bucket). Never touch `public.*` or any other schema — that belongs to coc-creator. See `[[INTEGRATIONS]]`.
 
+> [!warning] Schema sketch needs update (2026-05-20)
+> The DDL below predates the refactor to a recursive content tree ([[work/2026-05-20-recursive-content-tree]]). The fixed `shelf` / `book` / `chapter` columns are gone — `wiki.pages` should use `path TEXT PRIMARY KEY` + `name` + `body` + `ready_to_sync`, with `parent_path` derivable from `path`. Treat any column lists below as historical until this file is rewritten.
+
 ## Content model
 
 Mirrors the content vault's `PUBLIC/` folder:

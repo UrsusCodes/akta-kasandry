@@ -1,23 +1,19 @@
 /**
- * pull-vault.ts — wiki.pages (Supabase) → Obsidian PUBLIC/ writeback.
+ * pull-vault.ts — wiki.pages (Supabase) → Obsidian vault writeback.
  *
  * Symmetric to push-vault.ts. Currently dry-run only — `--execute` is gated
  * because (a) the Supabase schema isn't migrated yet, and (b) writeback to
  * the GM's content vault must not race with the GM editing locally. A real
  * pull will need the `ready_to_sync` flag (stage F) and a manual confirm.
  *
- * Run:
- *   npx tsx scripts/pull-vault.ts            # dry-run (default)
- *   npx tsx scripts/pull-vault.ts --execute  # disabled — see message
- *
- * Dry-run plan: list every row that *would* land in the vault and what its
- * vault-form contents would look like (post `appToVault` conversion). Until
- * Supabase is wired up, we have nothing to pull, so the script prints a clear
- * placeholder + the mock content tree it *would* walk if it were live.
+ * Until Supabase wires up, the script enumerates the mock content tree as a
+ * stand-in source. Walks arbitrary depth (no fixed Shelf/Book/Chapter).
  */
 import { appToVault } from '../src/lib/wikilinks'
-import { shelves } from '../src/mocks/content'
+import { contentTree } from '../src/mocks/content'
+import { walkTree } from '../src/lib/tree'
 import { contentHash } from './lib/cleanup'
+import type { ContentNode } from '../src/types'
 
 const FLAG_EXECUTE = process.argv.includes('--execute')
 
@@ -30,62 +26,53 @@ function blockExecute(): never {
 
 type PullRow = {
   vaultPath: string
-  title: string
-  bodyAppForm: string
+  name: string
   bodyVaultForm: string
 }
 
-/**
- * Build a list of rows that *would* be pulled. With no Supabase wired yet,
- * this enumerates the mock content tree as a stand-in. When --execute lands
- * (stage F), swap this for a Supabase select * from wiki.pages where ready_to_sync.
- */
 function collectMockRows(): PullRow[] {
   const rows: PullRow[] = []
-  for (const shelf of shelves) {
-    for (const book of shelf.books) {
-      for (const page of book.pages ?? []) {
-        rows.push(makeRow(shelf.title, book.title, undefined, page.title, page.body))
-      }
-      for (const chapter of book.chapters ?? []) {
-        for (const page of chapter.pages) {
-          rows.push(makeRow(shelf.title, book.title, chapter.title, page.title, page.body))
-        }
-      }
-    }
+  for (const node of walkTree(contentTree)) {
+    if (node.kind !== 'page' || !node.body) continue
+    rows.push(rowFor(node))
   }
   return rows
 }
 
-function makeRow(
-  shelf: string,
-  book: string,
-  chapter: string | undefined,
-  title: string,
-  appBody: string,
-): PullRow {
-  const parts = [shelf, book, chapter, `${title}.md`].filter(Boolean) as string[]
-  // appToVault expects standard markdown links to internal URLs. The mock
-  // content uses [[wikilink]] form already, so the round-trip here is a
-  // no-op — that's the point of the dry-run: show the data flowing through.
+function rowFor(node: ContentNode): PullRow {
+  // node.path is slug-form; for vault writeback we want the *name* path
+  // (display names with diacritics + spaces), since that's what Obsidian
+  // round-trips. The slug→name mapping comes from walking the tree.
+  const segments = nameSegments(node)
+  const vaultPath = [...segments.slice(0, -1), `${node.name}.md`].join('/')
   return {
-    vaultPath: parts.join('/'),
-    title,
-    bodyAppForm: appBody,
-    bodyVaultForm: appToVault(appBody),
+    vaultPath,
+    name: node.name,
+    bodyVaultForm: appToVault(node.body ?? ''),
   }
+}
+
+function nameSegments(node: ContentNode): string[] {
+  // Walk path slugs and resolve each one back to its node name. Linear in
+  // depth; tree is small.
+  const slugs = node.path.split('/')
+  const names: string[] = []
+  let level: ContentNode[] | undefined = contentTree
+  for (const slug of slugs) {
+    const found: ContentNode | undefined = level?.find((n) => n.slug === slug)
+    if (!found) break
+    names.push(found.name)
+    level = found.children
+  }
+  return names
 }
 
 function main() {
   if (FLAG_EXECUTE) blockExecute()
 
   console.log(`[pull-vault] dry-run`)
-  console.log(
-    `[pull-vault] Supabase not wired yet — enumerating mock content tree as a stand-in.`,
-  )
-  console.log(
-    `             Stage F will swap this for: select * from wiki.pages where ready_to_sync;`,
-  )
+  console.log(`[pull-vault] Supabase not wired yet — enumerating mock content tree as a stand-in.`)
+  console.log(`             Stage F will swap this for: select * from wiki.pages where ready_to_sync;`)
 
   const rows = collectMockRows()
   if (rows.length === 0) {
@@ -94,12 +81,10 @@ function main() {
   }
 
   console.log(`[pull-vault] ${rows.length} row(s) would be written:`)
-  console.log(
-    `  ${'vault-path'.padEnd(70)} ${'title'.padEnd(28)} hash      bytes`,
-  )
+  console.log(`  ${'vault-path'.padEnd(70)} ${'name'.padEnd(28)} hash      bytes`)
   for (const row of rows) {
     console.log(
-      `  ${row.vaultPath.padEnd(70)} ${row.title.padEnd(28)} ${contentHash(row.bodyVaultForm)}  ${row.bodyVaultForm.length}`,
+      `  ${row.vaultPath.padEnd(70)} ${row.name.padEnd(28)} ${contentHash(row.bodyVaultForm)}  ${row.bodyVaultForm.length}`,
     )
   }
   console.log(`[pull-vault] dry-run complete — no files written.`)

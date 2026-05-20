@@ -27,37 +27,32 @@ tags:
 > [!warning] Stack discipline
 > Mirrors coc-creator. No new top-level dependencies without explicit user approval. See `[[INTEGRATIONS]]` for shared-Supabase details.
 
-## Routing (to be finalised in stage A)
+## Routing
 
-Sketch:
+Final shape (refactored 2026-05-20 — see [[work/2026-05-20-recursive-content-tree]]):
 
-- `/` — landing / shelf list
-- `/s/:shelf` — shelf page
-- `/s/:shelf/b/:book` — book page
-- `/s/:shelf/b/:book/c/:chapter` — chapter page
-- `/s/:shelf/b/:book/c/:chapter/p/:page` — page render
-- `/s/:shelf/b/:book/p/:page` — page when chapter is absent
+- `/` — landing (top-level folder/page cards)
+- `/p/*` — catch-all; `*` is the slug path (e.g. `/p/tlo-historyczne/miasto/beacon-hill`). Resolves to a `ContentNode` (folder or page) at arbitrary depth.
 - `/map` — Boston map
-- `/auth/*` — auth routes (Supabase-driven)
-- `/edit/:page` — gated editor
+- `/draft` — markdown editor (in-memory, stage D1)
+- `/auth/*` — auth routes (Supabase-driven, stage D)
+- `/edit/*` — gated editor on a real page (stage D)
 
-Open question: Polish characters in URL slugs — see `[[work/Index]]`.
+URL slugs are slugified (lowercase ASCII + dashes). Display names with Polish diacritics resolved by walking the tree.
 
 ## Component tree
 
-Landed in B1 — single `AppShell` with `<Outlet />`, sidebar always visible, breadcrumbs above outlet:
+Landed in B1, refactored 2026-05-20 to drop fixed-depth views:
 
-- `src/components/AppShell.tsx` — header (logo, top nav: Półki/Mapa/Draft) + left aside (Shelf list) + main outlet + footer
-- `src/components/Breadcrumbs.tsx` — derives crumbs from route params via `findShelf` / `findBook` / `findChapter` / `findPage`
+- `src/components/AppShell.tsx` — header (logo, top nav: Wiki/Mapa/Draft) + left aside (recursive `<TreeNav>`) + main outlet + footer
+- `src/components/TreeNav.tsx` — collapsible Obsidian-style sidebar; folders expand/collapse, page on current route auto-expands ancestor chain
+- `src/components/Breadcrumbs.tsx` — derives crumbs from URL segments + tree lookup
 - Routes under `src/routes/`:
-  - `Landing.tsx` (`/`) — shelf grid
-  - `ShelfView.tsx` (`/s/:shelf`) — book list
-  - `BookView.tsx` (`/s/:shelf/b/:book`) — chapter or page list (handles either shape)
-  - `ChapterView.tsx` (`/s/:shelf/b/:book/c/:chapter`) — page list within chapter
-  - `PageView.tsx` (`/s/:shelf/b/:book/c/:chapter/p/:page` and `/s/:shelf/b/:book/p/:page`) — markdown article
+  - `Landing.tsx` (`/`) — top-level cards
+  - `NodeView.tsx` (`/p/*`) — catch-all: renders page body, or folder index + optional folder-body
   - `MapView.tsx` (`/map`) — Leaflet `ImageOverlay` with pins (E1)
   - `DraftView.tsx` (`/draft`) — editor + live preview (D1)
-- Not yet built: `Editor`, `RevisionList`, `DiffView`, `AuthGate`, `LoginForm` — wait for stage D
+- Not yet built: `RevisionList`, `DiffView`, `AuthGate`, `LoginForm` — wait for stage D
 
 ## Build / Deploy
 

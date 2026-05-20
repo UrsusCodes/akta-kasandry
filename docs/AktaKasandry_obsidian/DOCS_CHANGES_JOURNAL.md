@@ -11,6 +11,49 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-20 — Refactor: drop Shelf/Book/Chapter, use recursive Obsidian-style tree
+
+User flagged the fixed Shelf > Book > Chapter > Page hierarchy as a BookStack artifact. The real vault is just folders nested freely. Replaced the data model and most of the UI in a single commit.
+
+**Files touched:**
+
+- `src/types.ts` — `Shelf`/`Book`/`Chapter`/`Page` deleted; single `ContentNode` with `kind: 'folder' | 'page'` + arbitrary nesting.
+- `src/lib/tree.ts` — new: `slugify`, `walkTree`, `findByPath`, `findByWikilinkTarget`, `buildTree`. Wikilinks support `[[Page]]` (whole-tree first-match) and `[[Folder/Sub/Page]]` (path-form by name) — Obsidian convention.
+- `src/mocks/content.ts` — rewritten as `buildTree({…})` over a nested object. 12 mock pages, depth 2–3, all top-level folders shown in the screenshot's style.
+- `src/lib/wikilinks.ts` — resolver swapped to `findByWikilinkTarget`; relative imports so tsx scripts can pick it up.
+- `src/router.tsx` — collapsed to 4 routes: `/`, `/p/*` (catch-all), `/map`, `/draft`.
+- `src/components/TreeNav.tsx` — new: recursive collapsible sidebar (▸/▾ indicator, auto-expand ancestor chain on route change).
+- `src/components/AppShell.tsx` — swapped sidebar to `<TreeNav>`.
+- `src/components/Breadcrumbs.tsx` — derives crumbs from URL segments + tree lookup.
+- `src/routes/NodeView.tsx` — new: catch-all view, handles page bodies and folder-with-children equally.
+- `src/routes/Landing.tsx` — top-level node cards.
+- `src/routes/ShelfView.tsx`, `BookView.tsx`, `ChapterView.tsx`, `PageView.tsx` — deleted.
+- `scripts/lib/walk.ts` — recursive walker; honours `attachments/`, `memory/` exclusions seen in the real vault.
+- `scripts/push-vault.ts`, `scripts/pull-vault.ts` — adjusted to flat-path model.
+- `docs/AktaKasandry_obsidian/work/2026-05-20-recursive-content-tree.md` — new work note with rationale + trade-offs.
+- `docs/AktaKasandry_obsidian/work/Index.md` — decision logged.
+- `docs/AktaKasandry_obsidian/TECHNOLOGY_MASTERMIND.md` — routing + component-tree sections updated.
+- `docs/AktaKasandry_obsidian/SUPABASE_AND_SYNC.md` — added "schema sketch needs update" banner at top.
+
+**Decisions:**
+
+- Single `ContentNode { kind: 'folder' \| 'page' }`. No artificial hierarchy levels.
+- URL slugs are slug-form (lowercase ASCII + dashes). Display names with diacritics resolved by walking the tree.
+- Wikilinks still by **name**. Two forms supported: leaf (`[[Page]]`) and path (`[[Folder/Page]]`).
+- `walkVault` now recursive; excludes `attachments/` and `memory/` siblings as seen in the screenshot.
+- `wiki.pages` schema needs update (banner added to SUPABASE_AND_SYNC.md) — should become `path TEXT PRIMARY KEY` + `name` + `body` + `ready_to_sync`, no shelf/book/chapter columns.
+
+**Verification:**
+
+- `npm run build` → clean (3.5 s, same bundle ±1 KB).
+- `npx tsx scripts/push-vault.ts` → walks 3 fixture pages at depth 3 inside `sample-vault/`.
+- `npx tsx scripts/pull-vault.ts` → enumerates all 12 mock pages.
+- Dev server (HMR) reloads cleanly. `curl http://localhost:5173/p/tlo-historyczne/miasto/beacon-hill` returns 200.
+
+**Open questions / next steps:** Refresh the `wiki.pages` DDL sketch in `SUPABASE_AND_SYNC.md` so it matches the recursive model before the migration runs.
+
+---
+
 ## 2026-05-19 — Framework session TL;DR
 
 **What shipped today (10 commits on `main`):**
