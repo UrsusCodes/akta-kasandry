@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { MapContainer, ImageOverlay, Marker, Popup, useMapEvents } from 'react-leaflet'
 import L, { CRS, type LatLngBoundsExpression, type LeafletMouseEvent } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import type { Pin } from '@/types'
 import { usePinsStore } from '@/stores/pins'
 import { useIsMG } from '@/stores/auth'
-import { PIN_COLORS, DEFAULT_PIN_COLOR } from '@/lib/pinColors'
+import { PIN_COLORS, DEFAULT_PIN_COLOR, colorName, colorOrder } from '@/lib/pinColors'
 
 /**
  * Interactive Boston 1924 map. The map graphic (Rand McNally, 7803×11702,
@@ -81,6 +82,18 @@ export function BostonMap() {
   const [busy, setBusy] = useState(false)
   const [err, setErr] = useState<string | null>(null)
 
+  // Map instance + per-pin marker refs, so the list below can fly-to + open a popup.
+  const [map, setMap] = useState<L.Map | null>(null)
+  const markerRefs = useRef<Map<string, L.Marker>>(new Map())
+
+  const focusPin = (id: string) => {
+    const marker = markerRefs.current.get(id)
+    if (!marker || !map) return
+    const target = Math.max(map.getZoom(), -1)
+    map.flyTo(marker.getLatLng(), target, { duration: 0.5 })
+    marker.openPopup()
+  }
+
   useEffect(() => {
     void load()
   }, [load])
@@ -122,6 +135,10 @@ export function BostonMap() {
           position={[IMG_HEIGHT - pin.y, pin.x]}
           icon={pinIconFor(pin.color)}
           draggable={editMode}
+          ref={(m) => {
+            if (m) markerRefs.current.set(pin.id, m)
+            else markerRefs.current.delete(pin.id)
+          }}
           eventHandlers={{
             dragend: (e) => {
               const m = e.target as L.Marker
@@ -184,6 +201,7 @@ export function BostonMap() {
           instead of reflowing the layout (which used to shift the click point). */}
       <div className="relative border border-gold-muted bg-ink">
         <MapContainer
+          ref={setMap}
           crs={CRS.Simple}
           bounds={BOUNDS}
           style={{ height: '75vh', background: '#0a1f1f' }}
@@ -269,6 +287,68 @@ export function BostonMap() {
           </div>
         )}
       </div>
+
+      <PinList pins={pins} onSelect={focusPin} />
     </div>
+  )
+}
+
+/** Pins below the map, grouped by colour (palette order) then alphabetical. */
+function PinList({ pins, onSelect }: { pins: Pin[]; onSelect: (id: string) => void }) {
+  const groups = useMemo(() => {
+    const sorted = [...pins].sort((a, b) => {
+      const co = colorOrder(a.color) - colorOrder(b.color)
+      return co !== 0 ? co : a.title.localeCompare(b.title, 'pl')
+    })
+    const out: { color: string; pins: Pin[] }[] = []
+    for (const p of sorted) {
+      const last = out[out.length - 1]
+      if (last && last.color === p.color) last.pins.push(p)
+      else out.push({ color: p.color, pins: [p] })
+    }
+    return out
+  }, [pins])
+
+  if (pins.length === 0) {
+    return <p className="font-body mt-4 italic text-parchment/60">Brak pinów na mapie.</p>
+  }
+
+  return (
+    <section className="mt-6">
+      <h2 className="font-display mb-3 text-xs uppercase tracking-widest text-gold-muted">
+        Elementy na mapie ({pins.length})
+      </h2>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {groups.map((g) => (
+          <div key={g.color} className="border border-gold-muted/40 bg-teal-dark/30 p-3">
+            <div className="mb-2 flex items-center gap-2">
+              <span
+                className="inline-block h-3 w-3 rounded-full border border-ink/50"
+                style={{ background: g.color }}
+              />
+              <span className="font-display text-xs uppercase tracking-wider text-gold">
+                {colorName(g.color)}
+              </span>
+              <span className="font-mono text-xs text-parchment/40">{g.pins.length}</span>
+            </div>
+            <ul className="space-y-0.5">
+              {g.pins.map((p) => (
+                <li key={p.id}>
+                  <button
+                    type="button"
+                    onClick={() => onSelect(p.id)}
+                    className="font-body block w-full truncate text-left text-sm text-parchment transition hover:text-gold"
+                    title={p.label ? `${p.title} — ${p.label}` : p.title}
+                  >
+                    {p.title}
+                    {p.label && <span className="font-mono text-xs text-parchment/40"> · {p.label}</span>}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
   )
 }

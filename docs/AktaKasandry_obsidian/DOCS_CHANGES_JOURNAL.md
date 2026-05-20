@@ -11,6 +11,36 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-20 — Map pin polish: dbl-click fix, colors, pin list
+
+Three user-requested improvements to pin editing.
+
+**1. Double-click placement bug.** In edit mode a double-click panned/zoomed the map (Leaflet's `doubleClickZoom`), and the form appearing as a block above the map reflowed the layout — together they shifted where the pin landed. Fixed: `doubleClickZoom={!editMode}` + the new-pin form is now an `absolute` overlay (top-right of the map), so it no longer reflows.
+
+**2. Pin colors.** 10-option palette in `src/lib/pinColors.ts` (muted, period-appropriate: Złoto/Miedź/Rdza/Krew/Śliwka/Atrament/Patyna/Mech/Cyna/Kość). Migration `008_pins_color.sql` adds `wiki.pins.color` (nullable, defaults gold). Color picker (swatches) in the add-pin form; markers render in their color via a cached `divIcon` factory. `Pin` type + mock pins + store all carry `color`.
+
+**3. Pin list below the map.** New `PinList` component: all pins grouped by color (palette order) then alphabetical (Polish collation) within each group. Each group shows a swatch + color name + count. Clicking a pin flies the map to it and opens its popup — done via per-marker refs (`markerRefs`) + the map instance captured from `MapContainer ref={setMap}`.
+
+**Files touched:**
+
+- `supabase/migrations/008_pins_color.sql` — new (adds color column)
+- `src/lib/pinColors.ts` — new (palette + `colorName`/`colorOrder` helpers)
+- `src/types.ts`, `src/mocks/pins.ts`, `src/stores/pins.ts` — color field threaded through
+- `src/components/BostonMap.tsx` — doubleClickZoom fix, overlay form, color picker, colored icons, marker refs, fly-to-on-list-click, `PinList`
+
+**Decisions:**
+
+- Marker refs + `MapContainer ref={setMap}` (react-leaflet v5 returns the Leaflet map from the ref) — clean way to drive imperative `flyTo` + `openPopup` from the list.
+- divIcon cache keyed by hex — avoids rebuilding identical icons every render.
+
+**Verification:** `npm run build` clean.
+
+**Reminder for user:** run migration `008_pins_color.sql` in SQL Editor before the color field works against the live table (existing pins backfilled to gold).
+
+**Open questions / next steps:** edit-existing-pin text/color still pending (delete+re-add for now). Otherwise Stage E is feature-complete for v1. Next: C+reader-swap → D (page editing), or H (character import).
+
+---
+
 ## 2026-05-20 — Map pin editing (Stage E proper)
 
 MG can now manage pins on the Boston map through the app. Backed by `wiki.pins`.
