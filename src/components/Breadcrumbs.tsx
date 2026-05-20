@@ -1,11 +1,12 @@
 import { Link, useLocation } from 'react-router-dom'
-import { contentTree } from '@/content'
+import { useContentStore } from '@/stores/content'
 import { findByPath } from '@/lib/tree'
 import type { Crumb, ContentNode } from '@/types'
 
 export function Breadcrumbs() {
   const { pathname } = useLocation()
-  const crumbs = buildCrumbs(pathname)
+  const tree = useContentStore((s) => s.tree)
+  const crumbs = buildCrumbs(pathname, tree)
   if (crumbs.length === 0) return null
 
   return (
@@ -29,15 +30,11 @@ export function Breadcrumbs() {
   )
 }
 
-function buildCrumbs(pathname: string): Crumb[] {
+function buildCrumbs(pathname: string, tree: ContentNode[]): Crumb[] {
   const out: Crumb[] = [{ label: 'Strona główna', to: '/' }]
 
   if (pathname === '/' || pathname === '') return out
 
-  if (pathname.startsWith('/map')) {
-    out.push({ label: 'Mapa' })
-    return out
-  }
   if (pathname.startsWith('/draft')) {
     out.push({ label: 'Draft' })
     return out
@@ -48,7 +45,7 @@ function buildCrumbs(pathname: string): Crumb[] {
   const rest = decodeURIComponent(pathname.slice(3))
   const segments = rest.split('/').filter(Boolean)
   let accumulated = ''
-  let level: ContentNode[] | undefined = contentTree
+  let level: ContentNode[] | undefined = tree
   for (let i = 0; i < segments.length; i++) {
     const seg = segments[i]
     accumulated = accumulated ? `${accumulated}/${seg}` : seg
@@ -57,7 +54,7 @@ function buildCrumbs(pathname: string): Crumb[] {
     const isLast = i === segments.length - 1
     out.push({ label, to: isLast ? undefined : `/p/${accumulated}` })
     // Fallback if node-lookup fails partway — use findByPath for safety.
-    level = node?.children ?? findByPath(contentTree, accumulated)?.children
+    level = node?.children ?? findByPath(tree, accumulated)?.children
   }
   return out
 }

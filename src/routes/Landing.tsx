@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom'
-import { contentTree } from '@/content'
+import { useContentStore } from '@/stores/content'
 import type { ContentNode } from '@/types'
 
 export function Landing() {
+  const tree = useContentStore((s) => s.tree)
   return (
     <article>
       <h1 className="font-display text-4xl uppercase tracking-widest text-parchment">
@@ -13,7 +14,7 @@ export function Landing() {
       </p>
 
       <div className="mt-8 grid gap-4 md:grid-cols-2">
-        {contentTree.map((node) => (
+        {tree.map((node) => (
           <Card key={node.path} node={node} />
         ))}
       </div>

@@ -11,6 +11,32 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-20 — Imported characters in the tree (H2)
+
+Imported characters now appear as pages under `BADACZE/<player>/<character>` and render as character sheets. Required moving the reader from a static content tree to a dynamic (merged) one.
+
+**Files touched:**
+
+- `src/types.ts` — `ContentNode.character?` field + `ImportedCharacterData` type.
+- `src/stores/content.ts` — new. Holds the merged tree (static PUBLIC snapshot + imported characters grafted under `BADACZE/`). `load()` fetches `wiki.imported_characters`, groups by player (`player_name` or `Gracz #<shortid>`), builds `BADACZE/<player-slug>/<char-slug>` subtree. Static tree is the synchronous default.
+- `src/routes/CharacterPage.tsx` — new. Renders a sheet from the JSONB snapshot (portrait, occupation/era/status, player, details, characteristics grid, derived, appearance, backstory, equipment). Defensive against unknown/missing field shapes.
+- `src/routes/NodeView.tsx` — reads tree from content store; renders `<CharacterPage>` when `node.character` is set.
+- `src/components/TreeNav.tsx`, `src/components/Breadcrumbs.tsx`, `src/routes/Landing.tsx` — switched from importing the static tree to reading the content store.
+- `src/components/AppShell.tsx` — calls content `load()` on mount.
+- `src/routes/AdminImport.tsx` — reloads the content tree after import/remove so new pages appear immediately in the sidebar.
+
+**Decisions:**
+
+- **Player folder grouping**: `player_name` (admin-typed) if present, else `Gracz #<source_player_id[0:8]>`. Matches the requested `BADACZE / <gracz> / <postać>` structure.
+- **Content store, not static import**: components subscribe to a zustand store so imported characters merge in at runtime. The static `src/generated/content.ts` remains the synchronous seed.
+- **Wikilink resolver still static**: `[[Character]]` won't resolve yet (resolver reads the static tree). Acceptable v1 — characters aren't wikilink targets in existing content. Revisit if needed.
+
+**Verification:** `npm run build` clean.
+
+**Open questions / next steps:** test the full loop — import a character, see it appear under BADACZE/<player>/ in the sidebar + a rendered sheet. Then: tune the CharacterPage layout once we see real coc-creator JSONB shapes; consider re-import "refresh stale" bulk action.
+
+---
+
 ## 2026-05-20 — Edit existing pins (Stage E feature-complete)
 
 Added in-place editing of existing pins — the last CRUD gap.

@@ -1,8 +1,9 @@
 import { Link, useLocation } from 'react-router-dom'
-import { contentTree } from '@/content'
+import { useContentStore } from '@/stores/content'
 import { findByPath } from '@/lib/tree'
 import { Markdown } from '@/components/Markdown'
 import { BostonMap } from '@/components/BostonMap'
+import { CharacterPage } from './CharacterPage'
 import { MAP_PAGE_PATH, stripLegacyMapEmbed } from '@/lib/specialPages'
 import type { ContentNode } from '@/types'
 
@@ -16,7 +17,8 @@ import type { ContentNode } from '@/types'
 export function NodeView() {
   const { pathname } = useLocation()
   const rest = decodeURIComponent(pathname.replace(/^\/p\//, ''))
-  const node = findByPath(contentTree, rest)
+  const tree = useContentStore((s) => s.tree)
+  const node = findByPath(tree, rest)
 
   if (!node) {
     return (
@@ -32,6 +34,7 @@ export function NodeView() {
   }
 
   if (node.kind === 'page') {
+    if (node.character) return <CharacterPage character={node.character} />
     if (node.path === MAP_PAGE_PATH) return <MapArticle node={node} />
     return <Markdown>{node.body ?? ''}</Markdown>
   }

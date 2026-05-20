@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useIsMG, useAuthStore } from '@/stores/auth'
 import { useCharactersStore, type SourceCharacter } from '@/stores/characters'
+import { useContentStore } from '@/stores/content'
 
 const PLAYER_NAMES_KEY = 'akta-player-names'
 
@@ -120,6 +121,13 @@ export function AdminImport() {
         ? `Zaimportowano ${ok} postaci.`
         : `Zaimportowano ${ok}, błędy: ${errors.join('; ')}`,
     )
+    // Refresh the content tree so the new pages appear under BADACZE/.
+    void useContentStore.getState().load()
+  }
+
+  const removeAndRefresh = async (id: string) => {
+    await remove(id)
+    void useContentStore.getState().load()
   }
 
   return (
@@ -212,7 +220,7 @@ export function AdminImport() {
                         {st !== 'not-imported' && (
                           <button
                             type="button"
-                            onClick={() => void remove(c.id)}
+                            onClick={() => void removeAndRefresh(c.id)}
                             className="font-mono text-xs text-gold-dark hover:text-gold"
                           >
                             usuń z wiki

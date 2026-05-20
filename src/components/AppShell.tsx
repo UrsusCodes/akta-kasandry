@@ -3,6 +3,7 @@ import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { TreeNav } from './TreeNav'
 import { Breadcrumbs } from './Breadcrumbs'
 import { useAuthStore } from '@/stores/auth'
+import { useContentStore } from '@/stores/content'
 
 export function AppShell() {
   const location = useLocation()
@@ -14,10 +15,12 @@ export function AppShell() {
   const role = useAuthStore((s) => s.role)
   const displayName = useAuthStore((s) => s.displayName)
   const signOut = useAuthStore((s) => s.signOut)
+  const loadContent = useContentStore((s) => s.load)
 
   useEffect(() => {
     init()
-  }, [init])
+    void loadContent()
+  }, [init, loadContent])
 
   return (
     <div className="min-h-screen bg-teal-deep text-parchment">

@@ -15,6 +15,23 @@ export type ContentNode = {
   kind: 'folder' | 'page'
   children?: ContentNode[]
   body?: string           // page content, or folder index-page body
+  character?: ImportedCharacterData // when set, NodeView renders a character sheet, not markdown
+}
+
+/** A row from wiki.imported_characters (snapshot of coc-creator's public.characters). */
+export type ImportedCharacterData = {
+  source_id: string
+  slug: string
+  name: string
+  player_name: string | null
+  source_player_id: string | null
+  occupation_id: string | null
+  era: string | null
+  status: string | null
+  portrait_url: string | null
+  data: Record<string, unknown>   // full allowlisted snapshot
+  source_updated_at: string
+  imported_at: string
 }
 
 export type Crumb = {

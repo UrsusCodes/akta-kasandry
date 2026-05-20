@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import type { ContentNode } from '@/types'
-import { contentTree } from '@/content'
+import { useContentStore } from '@/stores/content'
 
 /**
  * Recursive Obsidian-style sidebar. Folders are collapsible; pages are links.
@@ -9,9 +9,10 @@ import { contentTree } from '@/content'
  * on route change.
  */
 export function TreeNav() {
+  const tree = useContentStore((s) => s.tree)
   return (
     <nav aria-label="content tree" className="space-y-0.5">
-      {contentTree.map((node) => (
+      {tree.map((node) => (
         <TreeItem key={node.path} node={node} depth={0} />
       ))}
     </nav>
