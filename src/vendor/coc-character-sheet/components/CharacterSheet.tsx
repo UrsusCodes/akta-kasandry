@@ -80,26 +80,37 @@ export function CharacterSheet({ character: char }: CharacterSheetProps) {
     return base
   }
 
+  // akta-kasandry campaign fields — static defaults for now, kept here so they
+  // can be wired to a real data source later (e.g. extra wiki.imported_characters
+  // columns). Birthplace / residence already arrive from the import in
+  // char.birthplace / char.residence — swap the empty strings for those when ready.
+  const birthplace = ''
+  const residence = ''
+  const caseCount = 0
+  const survivalStatus = 'Żywy i poczytalny'
+
   return (
     <div className="space-y-4">
       {/* Portrait + Basic info — AKTA-KASANDRY LOCAL MODIFICATION (diverges from
-          coc-creator source): large 3:4 portrait on the left, identity (age /
-          gender / occupation) on the right at the same height. Era + method
-          dropped per akta-kasandry UX. Re-vendoring overwrites this block —
-          reapply it. */}
-      <div className="flex items-start gap-4">
-        {char.portrait_url && (
-          <img
-            src={char.portrait_url}
-            alt="Portret"
-            className="w-48 aspect-[3/4] shrink-0 rounded-lg border border-coc-border object-cover"
-          />
-        )}
-        <div className="grid grid-cols-1 gap-1.5 pt-1 text-sm">
-          <div><span className="text-coc-text-muted">Wiek:</span> {char.age}</div>
-          <div><span className="text-coc-text-muted">Płeć:</span> {char.gender}</div>
-          <div><span className="text-coc-text-muted">Zawód:</span> {occupation?.name ?? char.occupation_id}</div>
-        </div>
+          coc-creator source): large 3:4 portrait on the left, identity stacked
+          below it. Era + method dropped; birthplace / residence / case count /
+          survival status added (akta-kasandry campaign fields). Re-vendoring
+          overwrites this block — reapply it. */}
+      {char.portrait_url && (
+        <img
+          src={char.portrait_url}
+          alt="Portret"
+          className="w-48 aspect-[3/4] rounded-lg border border-coc-border object-cover"
+        />
+      )}
+      <div className="grid grid-cols-1 gap-1.5 text-sm">
+        <div><span className="text-coc-text-muted">Wiek:</span> {char.age}</div>
+        <div><span className="text-coc-text-muted">Płeć:</span> {char.gender}</div>
+        <div><span className="text-coc-text-muted">Zawód:</span> {occupation?.name ?? char.occupation_id}</div>
+        <div><span className="text-coc-text-muted">Miejsce urodzenia:</span> {birthplace || '—'}</div>
+        <div><span className="text-coc-text-muted">Miejsce zamieszkania:</span> {residence || '—'}</div>
+        <div><span className="text-coc-text-muted">Liczba Spraw:</span> {caseCount}</div>
+        <div><span className="text-coc-text-muted">Status:</span> {survivalStatus}</div>
       </div>
       {char.appearance && (
         <div className="text-sm">
