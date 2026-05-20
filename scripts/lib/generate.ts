@@ -102,12 +102,9 @@ function walk(
   } catch {
     return []
   }
-  entries.sort((a, b) => {
-    const aDir = isDir(join(dir, a))
-    const bDir = isDir(join(dir, b))
-    if (aDir !== bDir) return aDir ? -1 : 1
-    return a.localeCompare(b, 'pl')
-  })
+  // Pure alphabetical (Polish collation) — folders and files interleave so
+  // numeric-prefix conventions like "01. Wstęp" / "02. Akcje" sort naturally.
+  entries.sort((a, b) => a.localeCompare(b, 'pl'))
 
   const out: ContentNodeLite[] = []
   for (const entry of entries) {

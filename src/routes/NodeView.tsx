@@ -86,54 +86,30 @@ function ChildList({ nodes }: { nodes: ContentNode[] }) {
   if (nodes.length === 0) {
     return <p className="font-body italic text-parchment/60">Pusty folder.</p>
   }
-  const folders = nodes.filter((n) => n.kind === 'folder')
-  const pages = nodes.filter((n) => n.kind === 'page')
+  // One list, original (alphabetical) order. Folder vs page is signalled by
+  // styling, not by grouping into separate sections.
   return (
-    <div className="space-y-6">
-      {folders.length > 0 && (
-        <section>
-          <h2 className="font-display mb-3 text-xs uppercase tracking-widest text-gold-muted">
-            Foldery
-          </h2>
-          <ul className="grid gap-3 sm:grid-cols-2">
-            {folders.map((n) => (
-              <li key={n.path}>
-                <Link
-                  to={`/p/${n.path}`}
-                  className="block border border-gold-muted bg-teal-dark/40 p-4 transition hover:border-gold hover:bg-teal-dark"
-                >
-                  <div className="font-display text-lg uppercase tracking-wider text-gold">
-                    {n.name}
-                  </div>
-                  <div className="font-mono mt-1 text-xs text-parchment/50">
-                    {(n.children?.length ?? 0)} element(ów)
-                  </div>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      {pages.length > 0 && (
-        <section>
-          <h2 className="font-display mb-3 text-xs uppercase tracking-widest text-gold-muted">
-            Strony
-          </h2>
-          <ul className="space-y-1">
-            {pages.map((n) => (
-              <li key={n.path}>
-                <Link
-                  to={`/p/${n.path}`}
-                  className="font-body block border-l-2 border-transparent px-3 py-1 text-parchment transition hover:border-gold hover:text-gold"
-                >
-                  {n.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-    </div>
+    <ul className="space-y-1">
+      {nodes.map((n) => (
+        <li key={n.path}>
+          <Link
+            to={`/p/${n.path}`}
+            className={
+              n.kind === 'folder'
+                ? 'font-display flex items-baseline gap-2 border-l-2 border-transparent px-3 py-2 text-lg uppercase tracking-wider text-gold transition hover:border-gold hover:bg-teal-dark/40'
+                : 'font-body flex items-baseline gap-2 border-l-2 border-transparent px-3 py-1 text-parchment transition hover:border-gold hover:text-gold'
+            }
+          >
+            <span className="w-4 text-gold-muted">{n.kind === 'folder' ? '▸' : '·'}</span>
+            <span>{n.name}</span>
+            {n.kind === 'folder' && (
+              <span className="font-mono ml-2 text-xs text-parchment/40">
+                {(n.children?.length ?? 0)}
+              </span>
+            )}
+          </Link>
+        </li>
+      ))}
+    </ul>
   )
 }
