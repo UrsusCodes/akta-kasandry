@@ -42,6 +42,7 @@ body {
 .prose-cthulhu {
   color: var(--color-ink);
   font-family: var(--font-body);
+  overflow-wrap: anywhere;
 }
 .prose-cthulhu h1,
 .prose-cthulhu h2,
@@ -111,12 +112,18 @@ body {
   padding: 12px 18px;
   margin: 1em 0;
 }
+.prose-cthulhu .table-wrap {
+  overflow-x: auto;
+  margin: 1em 0;
+}
 .prose-cthulhu table {
   border-collapse: collapse;
   border: 1px solid var(--color-gold-muted);
   background: var(--color-parchment-warm);
   margin: 1em 0;
   width: 100%;
+  display: block;
+  overflow-x: auto;
 }
 .prose-cthulhu table th {
   background: var(--color-ink);

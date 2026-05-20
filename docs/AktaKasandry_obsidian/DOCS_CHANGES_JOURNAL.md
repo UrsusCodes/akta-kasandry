@@ -11,6 +11,30 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-20 — Fix: markdown rendering bugs (code-block trap + HTML imgs)
+
+User screenshot showed all page bodies rendered as raw monospace text with wikilinks shown as literal `[[Name]]`. Two root causes:
+
+1. **The content generator was indenting every line of body strings** when serializing them into `src/generated/content.ts` (for pretty-print). Each line in the generated string had 14+ leading spaces, which CommonMark interprets as an indented code block → react-markdown rendered the entire body as `<pre><code>…</code></pre>`, so no plugins fired (no `remark-gfm`, no `remarkWikilinks`, no `<p>` wrapping). Fix: `serializeTree` now uses `JSON.stringify(tree, null, 2)` — strings are properly escaped, no per-line whitespace damage.
+2. **Raw `<img>` HTML tags rendered as literal text** because react-markdown ignores raw HTML by default and we don't have `rehype-raw`. Fix: `rewriteImages` in the generator now converts `<img src="…" alt="…" width="…" align="…">` to markdown `![alt](src)`. Side effect: GM's `width`/`align`/`style` attributes are lost — images render full-width in document flow rather than right-aligned thumbnails with text wrap.
+
+**Files touched:**
+
+- `scripts/build-content.ts` — `serializeTree` swapped to `JSON.stringify`; `rewriteImages` final `<img>` pass now emits markdown img form.
+- `src/index.css` — added `overflow-wrap: anywhere` to `.prose-cthulhu` and `display: block; overflow-x: auto` on tables — safety nets for long URLs and wide tables.
+- `src/generated/content.ts` — regenerated; bodies are now clean JSON strings.
+
+**Decisions:**
+
+- **No rehype-raw in this commit.** Adding it would let us keep the GM's `<img width="220" align="right">` semantics (thumbnails with text wrap) but it's a new top-level dep — gated on explicit user approval per `memories/project.md`. Convert-to-markdown was the safer default.
+- If the user later wants to preserve `width`/`align`, the work would be: install `rehype-raw`, pass it as a `rehypePlugin` in `src/components/Markdown.tsx` + `src/routes/DraftView.tsx`, and skip the HTML→markdown conversion in `rewriteImages`.
+
+**Verification:** `npm run build` clean; HMR live in dev; regenerated content has 0 leading-whitespace traps and 0 raw `<img>` tags (only one remains, in the map article — stripped at render time by `stripLegacyMapEmbed`).
+
+**Open questions / next steps:** Ask user whether to add `rehype-raw` to preserve GM's right-aligned image formatting (separate work-note + commit).
+
+---
+
 ## 2026-05-20 — Boston map: switch from OSM tiles back to real 1924 JPG
 
 User flagged that I'd misread the spec — they wanted the 1924 Rand McNally graphic *as the base layer*, with Google-Maps-style UX on top (pan/zoom/pins). Earlier in the same session I'd built it as OSM tiles. Corrected.

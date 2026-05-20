@@ -190,14 +190,24 @@ function rewriteImages(
     return `![${alt}](${replaced})`
   })
 
-  // <img src="path" ...>
+  // <img src="path" ...> → ![alt](url). React-markdown ignores raw HTML by
+  // default; rather than pulling in rehype-raw, we convert to markdown form so
+  // the image renders. Side effect: GM's width/align/style attributes are lost
+  // (images render full-width in the document flow). If we later want to
+  // preserve right-aligned thumbnails with text wrap, add rehype-raw and skip
+  // this conversion.
   markdown = markdown.replace(
-    /<img\s+([^>]*?)src=["']([^"']+)["']([^>]*)>/g,
-    (full, before: string, src: string, after: string) => {
-      if (/^(https?:|data:|\/)/.test(src)) return full
-      const replaced = stageByBasename(src)
+    /<img\s+([^>]*)>/g,
+    (full, attrs: string) => {
+      const srcMatch = attrs.match(/\bsrc=["']([^"']+)["']/i)
+      if (!srcMatch) return full
+      const src = srcMatch[1]
+      if (/^(https?:|data:)/.test(src)) return full // external — leave alone
+      const altMatch = attrs.match(/\balt=["']([^"']*)["']/i)
+      const alt = altMatch ? altMatch[1] : ''
+      const replaced = /^\//.test(src) ? src : stageByBasename(src)
       if (!replaced) return full
-      return `<img ${before}src="${replaced}"${after}>`
+      return `![${alt}](${replaced})`
     },
   )
 
@@ -205,40 +215,14 @@ function rewriteImages(
 }
 
 function serializeTree(tree: ContentNodeLite[], indent = 2): string {
-  const pad = (n: number) => ' '.repeat(n)
-  const lines: string[] = ['[']
-  const recurse = (nodes: ContentNodeLite[], depth: number) => {
-    for (const node of nodes) {
-      lines.push(`${pad(depth)}{`)
-      lines.push(`${pad(depth + 2)}name: ${JSON.stringify(node.name)},`)
-      lines.push(`${pad(depth + 2)}slug: ${JSON.stringify(node.slug)},`)
-      lines.push(`${pad(depth + 2)}path: ${JSON.stringify(node.path)},`)
-      lines.push(`${pad(depth + 2)}kind: ${JSON.stringify(node.kind)},`)
-      if (node.kind === 'page') {
-        lines.push(`${pad(depth + 2)}body: ${serializeBody(node.body ?? '', depth + 2)},`)
-      } else if (node.children && node.children.length > 0) {
-        lines.push(`${pad(depth + 2)}children: [`)
-        recurse(node.children, depth + 4)
-        lines.push(`${pad(depth + 2)}],`)
-      } else {
-        lines.push(`${pad(depth + 2)}children: [],`)
-      }
-      lines.push(`${pad(depth)}},`)
-    }
-  }
-  recurse(tree, indent)
-  lines.push(']')
-  return lines.join('\n')
-}
-
-function serializeBody(body: string, baseIndent: number): string {
-  // Use a template literal escaping ` and ${
-  const escaped = body.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$\{/g, '\\${')
-  // Single-line if short; multi-line otherwise.
-  if (escaped.length < 80 && !escaped.includes('\n')) {
-    return '`' + escaped + '`'
-  }
-  return '`' + escaped.replace(/\n/g, '\n' + ' '.repeat(baseIndent + 2)) + '`'
+  // JSON.stringify with 2-space indent gives clean output that is also a valid
+  // TypeScript literal. The earlier hand-rolled formatter prefixed every line
+  // of body strings with whitespace, which Markdown then interpreted as code
+  // blocks (4+ leading spaces = indented code) — that was the "everything is
+  // monospace" bug. Plain JSON-encoded string literals avoid the trap.
+  const json = JSON.stringify(tree, null, indent)
+  // Indent the whole thing one level so the `export const ... =` looks tidy.
+  return json
 }
 
 function main() {
