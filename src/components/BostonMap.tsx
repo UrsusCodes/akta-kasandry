@@ -24,7 +24,8 @@ import { PIN_COLORS, DEFAULT_PIN_COLOR, colorName, colorOrder } from '@/lib/pinC
 
 const IMG_WIDTH = 7803
 const IMG_HEIGHT = 11702
-const IMG_URL = '/vault-attachments/by-name/boston-map-1924.jpg'
+// Carries the Vite base so it loads under the GitHub Pages subpath in prod.
+const IMG_URL = `${import.meta.env.BASE_URL}vault-attachments/by-name/boston-map-1924.jpg`
 
 const BOUNDS: LatLngBoundsExpression = [
   [0, 0],

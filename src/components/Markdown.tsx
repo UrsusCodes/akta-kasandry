@@ -3,6 +3,7 @@ import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
 import { Link } from 'react-router-dom'
 import { remarkWikilinks } from '@/lib/remarkWikilinks'
+import { withBase } from '@/lib/withBase'
 
 type Props = {
   children: string
@@ -38,6 +39,12 @@ export function Markdown({ children }: Props) {
                 {linkChildren}
               </a>
             )
+          },
+          // Root-absolute image paths (e.g. /vault-attachments/…) must carry the
+          // Vite base in production (/akta-kasandry/…). Covers both markdown
+          // ![](…) and rehype-raw <img> nodes. External (http) srcs untouched.
+          img({ src, ...rest }) {
+            return <img src={withBase(src)} {...rest} />
           },
         }}
       >
