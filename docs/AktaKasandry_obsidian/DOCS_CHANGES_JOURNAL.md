@@ -11,6 +11,20 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-21 — Content refresh from PUBLIC (added SPRAWY + renames)
+
+Re-ran `npm run build-content` after the GM added content + renamed folders in the vault.
+
+- **Added:** `SPRAWY/` now populated — 3 cases (`01 ZNAK ŻYCIA` with sub-pages 00 HUB / 01 Wstęp / 02 Streszczenie / 03 Cytaty… / 04 Transkrypt… / 05 Fan content, `02 URODZAJ GROZY`, `03 ROZDARTE SUMIENIE`). Page count 28 → 34.
+- **Renames applied:** e.g. `ZASADY/Zasady walki` index renamed to `01. HUB` (was `01. Wstęp i spis treści`).
+- **Preserved:** Mapa Bostonu 1924 + all existing articles (Bijatyka, Terminy, full combat tutorial) intact — nothing deleted.
+- **No code fix needed:** top-level slugs + `MAP_PAGE_PATH` (`swiat-npc/boston/mapa-bostonu-1924`) unchanged, so the interactive-map special-case still resolves.
+- No new attachments (added content is text; 54 images unchanged).
+
+Only `src/generated/content.ts` changed. Build clean. Pushed → auto-deploy.
+
+---
+
 ## 2026-05-20 — Live deploy on GitHub Pages (Stage G)
 
 Repo public + first production deploy. **Live: https://ursuscodes.github.io/akta-kasandry/**
