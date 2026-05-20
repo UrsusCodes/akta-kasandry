@@ -85,10 +85,16 @@ Framework scaffolding session — stages A (partial), B (full), C (dry-run only)
 
 ### Stage G — Deploy `#stage/g`
 
-- [ ] GH Pages config (`gh-pages` branch or Actions workflow)
-- [ ] Build script + `.env` injection
-- [ ] First production deploy
+- [x] ✅ GH Pages via Actions workflow (`.github/workflows/deploy.yml`) — 2026-05-20
+- [x] ✅ Build + `.env` injection via repo secrets (VITE_SUPABASE_URL/ANON_KEY)
+- [x] ✅ First production deploy — **live at https://ursuscodes.github.io/akta-kasandry/**
+- [x] ✅ SPA fallback (index.html→404.html), base path `/akta-kasandry/`, image base prefix via `withBase`
+- [x] ✅ Repo public (`UrsusCodes/akta-kasandry`), auto-deploy on push to main
 - [ ] (Optional) custom domain
+- [ ] (Maintenance) bump Actions to Node 24 before June 2026 deprecation
+- [ ] (Cosmetic) deep links return HTTP 404 status (SPA still works) — only fixable by a host with real SPA fallback; accepted GH Pages tradeoff
+
+**STAGE G COMPLETE.** Site is live, auto-deploys on push.
 
 ### Stage H — Character import from coc-creator `#stage/h` `#dep/coc-creator`
 

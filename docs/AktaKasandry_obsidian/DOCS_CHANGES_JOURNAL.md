@@ -11,6 +11,39 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-20 — Live deploy on GitHub Pages (Stage G)
+
+Repo public + first production deploy. **Live: https://ursuscodes.github.io/akta-kasandry/**
+
+**Repo:** `UrsusCodes/akta-kasandry` (public, same org as coc-creator). `.env*` gitignored; `public/vault-attachments/` (41 MB incl. Boston map) committed so CI builds have images without vault access.
+
+**Deploy setup (commit "feat: GitHub Pages deploy"):**
+
+- `vite.config.ts` — base `/akta-kasandry/` in build, `/` in dev (project-site subpath).
+- `src/router.tsx` — basename from `import.meta.env.BASE_URL`.
+- `src/lib/withBase.ts` + Markdown `img` override + BostonMap `IMG_URL` — prefix root-absolute `/vault-attachments/…` with the base so images load under the subpath.
+- `.github/workflows/deploy.yml` — `npm ci` → build with `VITE_SUPABASE_*` repo secrets → `cp index.html 404.html` (SPA fallback) → `actions/deploy-pages`.
+- `.npmrc` — `legacy-peer-deps=true` for CI `npm ci`.
+
+**Go-live steps done (some by user, some via gh/api):**
+
+- Repo flipped public (user-confirmed; safety layer required explicit go).
+- Pages enabled with `build_type=workflow` via API.
+- Secrets `VITE_SUPABASE_URL` + `VITE_SUPABASE_ANON_KEY` set from `.env.local` (piped, not echoed).
+- First push-triggered run failed only at the deploy step (Pages not yet enabled); after enabling + secrets, a dispatched run succeeded (build ✓ / deploy ✓).
+
+**Verification (curl against live):** root 200; deep link serves the full SPA (404.html fallback — HTTP 404 status is cosmetic, app loads + routes); assets at `/akta-kasandry/assets/…`; `boston-map-1924.jpg` 200.
+
+**Decisions / caveats:**
+
+- GH Pages deep-link returns HTTP 404 status (body is the SPA, works in browser). Only a host with real SPA fallback (Cloudflare Pages/Vercel) eliminates it — accepted tradeoff.
+- Node 20 action deprecation warnings (deadline June 2026) — bump later.
+- Auto-deploy: every push to `main` rebuilds + redeploys.
+
+**Open questions / next steps:** custom domain (optional); migrate Actions to Node 24 before June 2026.
+
+---
+
 ## 2026-05-20 — Imported characters in the tree (H2)
 
 Imported characters now appear as pages under `BADACZE/<player>/<character>` and render as character sheets. Required moving the reader from a static content tree to a dynamic (merged) one.
