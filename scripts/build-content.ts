@@ -47,6 +47,14 @@ const VAULT = process.env.VAULT_PUBLIC || 'G:/My Drive/OBSIDIAN/RPG/Zew Cthulhu/
 const OUT_TS = join(PROJECT_ROOT, 'src/generated/content.ts')
 const ATTACHMENTS_OUT = join(PROJECT_ROOT, 'public/vault-attachments/by-name')
 
+/**
+ * Files that live *next to* the PUBLIC folder rather than inside it but are
+ * still needed for the rendered site. The interactive Boston map needs the
+ * 13 MB 1924 JPG, which the GM keeps one directory up so it isn't published
+ * as a wiki article. Resolved relative to dirname(VAULT).
+ */
+const EXTRA_ASSETS = ['boston-map-1924.jpg']
+
 function shouldInclude(name: string): boolean {
   if (name.startsWith('_') || name.startsWith('.')) return false
   for (const s of EXCLUDE_SUFFIXES) if (name.endsWith(s)) return false
@@ -278,6 +286,19 @@ function main() {
   console.log(`[build-content] wrote ${relative(PROJECT_ROOT, OUT_TS)}`)
   console.log(`[build-content] copied ${copied.size} attachment(s) to public/vault-attachments/by-name/`)
   console.log(`[build-content] ${pageCount} page(s) total`)
+
+  // Copy out-of-band assets (e.g. the 1924 Boston map JPG that lives next to PUBLIC).
+  const vaultParent = dirname(VAULT)
+  for (const name of EXTRA_ASSETS) {
+    const src = join(vaultParent, name)
+    if (!existsSync(src)) {
+      console.warn(`[build-content] extra asset missing: ${src} — skipping`)
+      continue
+    }
+    const dest = join(ATTACHMENTS_OUT, name)
+    copyFileSync(src, dest)
+    console.log(`[build-content] copied extra asset: ${name}`)
+  }
 }
 
 main()

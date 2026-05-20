@@ -22,10 +22,15 @@ export type Crumb = {
   to?: string
 }
 
+/**
+ * Pin coordinates are in image-local pixels on the Boston 1924 JPG
+ * (7803×11702, top-left origin). The map component flips Y for Leaflet's
+ * CRS.Simple under the hood.
+ */
 export type Pin = {
   id: string
-  lat: number
-  lng: number
+  x: number
+  y: number
   title: string
   description: string
   label: string

@@ -55,12 +55,12 @@ Framework scaffolding session — stages A (partial), B (full), C (dry-run only)
 
 ### Stage E — Boston map with pins `#stage/e`
 
-- [x] Boston map — OpenStreetMap `TileLayer` (lat/lng), inside the existing PUBLIC article. Replaces the SVG placeholder + dedicated `/map` route ([[work/2026-05-20-public-snapshot-and-osm-map]]). Real 13 MB JPG no longer needed.
+- [x] Boston map — Leaflet `ImageOverlay` over real `boston-map-1924.jpg` (Rand McNally, 7803×11702, staged by `npm run build-content` from one level above PUBLIC). Inside the existing PUBLIC article ([[work/2026-05-20-public-snapshot-and-osm-map]]).
 - [x] Pin markers + popovers (mock data only, no DB yet) — E1
 - [ ] Read pins from `wiki.pins` — pending Supabase
 - [ ] Edit mode (role `mg`): click-add, drag-move, right-click-edit/delete — pending auth
 - [ ] Realtime subscription on `wiki.pins` — pending Supabase
-- [ ] Period-accurate (1924) tile layer — research follow-up (BPL / Lyrasis)
+- [ ] Pre-tiled (`gdal2tiles`) version of the 1924 JPG for faster first-paint on slow links — follow-up
 
 ### Stage F — Supabase → vault back-sync (pull) `#stage/f`
 

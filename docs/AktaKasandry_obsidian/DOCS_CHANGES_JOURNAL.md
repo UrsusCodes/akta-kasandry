@@ -11,6 +11,30 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-20 — Boston map: switch from OSM tiles back to real 1924 JPG
+
+User flagged that I'd misread the spec — they wanted the 1924 Rand McNally graphic *as the base layer*, with Google-Maps-style UX on top (pan/zoom/pins). Earlier in the same session I'd built it as OSM tiles. Corrected.
+
+**Files touched:**
+
+- `scripts/build-content.ts` — added `EXTRA_ASSETS` list, copies `boston-map-1924.jpg` from one level above the vault into `public/vault-attachments/by-name/`.
+- `src/components/BostonMap.tsx` — back to `ImageOverlay` + `CRS.Simple`, points at the staged 13 MB JPG. Scroll-wheel zoom, pan, popups preserved.
+- `src/mocks/pins.ts` — pin coords back to image-local x/y on the 7803×11702 source. Rough positions guessed from a cold read of the JPG; GM should nudge.
+- `src/types.ts` — `Pin` back to `{ x, y }`.
+- `docs/AktaKasandry_obsidian/work/2026-05-20-public-snapshot-and-osm-map.md` — corrected to describe the JPG approach (kept filename for link-stability; renamed heading).
+- `docs/AktaKasandry_obsidian/work/Index.md`, `TASK_LIST.md` — updated.
+
+**Decisions:**
+
+- The 1924 JPG lives next to PUBLIC (not inside it) — the generator's `EXTRA_ASSETS` list copies it across. Same path on every refresh; rest of the pipeline is unchanged.
+- 13 MB JPG ships once per first map view. Pre-tiling via `gdal2tiles` would chunk it for faster first-paint; noted as a follow-up, not done.
+
+**Verification:** dev server returns 200 on the map article; `GET /vault-attachments/by-name/boston-map-1924.jpg` → 200, Content-Length 13683422. Build clean.
+
+**Open questions / next steps:** Pin positions need the GM to eyeball — Mount Auburn might be off the NW extent of the Rand McNally cut.
+
+---
+
 ## 2026-05-20 — PUBLIC snapshot + OSM tile map
 
 User asked for a live version backed by the real `G:\…\PUBLIC` structure and an interactive (Google-Maps-style) Boston map instead of the static SVG placeholder.
