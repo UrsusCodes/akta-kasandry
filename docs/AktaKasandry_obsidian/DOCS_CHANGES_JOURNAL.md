@@ -11,6 +11,36 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-20 — Supabase migration prep: SQL files + client + runbook
+
+User asked what they need to do to actually run the migration. Prepared everything that doesn't require Supabase access — gated steps only need their decisions + dashboard time.
+
+**Files touched:**
+
+- `supabase/migrations/001_schema_wiki.sql` — `create schema wiki` + default privileges. Comment flags the dashboard step (Settings → API → Exposed schemas → add `wiki`).
+- `supabase/migrations/002_profiles.sql` — `wiki.profiles` + first-login trigger on `auth.users` + RLS (auth-read, self-update with role-locked `with check`).
+- `supabase/migrations/003_pages.sql` — `wiki.pages` + `wiki.revisions` + revision-write trigger (`SECURITY DEFINER`) + RLS (anon-read, mg-write).
+- `supabase/migrations/004_pins.sql` — `wiki.pins` + `set_updated_at` trigger + RLS (anon-read, mg-write).
+- `supabase/migrations/005_imported_characters.sql` — `wiki.imported_characters` + RLS (anon-read per 2026-05-20 decision, mg-write).
+- `supabase/migrations/006_storage.sql` — RLS policies on `storage.objects` for `wiki-attachments` (anon read, mg insert/update/delete). Bucket itself is created via dashboard.
+- `src/lib/supabase.ts` — lazy Supabase client init, reads env, default schema `wiki`, throws clear error when credentials missing.
+- `docs/RUNBOOKS/supabase-migration.md` — 6-phase step-by-step: prerequisites, client wire, expose schema, run migrations, create bucket, create MG account, smoke-test. Includes verify checks and a rollback section.
+- `docs/AktaKasandry_obsidian/TASK_LIST.md` — Stage A user-action items spelled out.
+- `docs/AktaKasandry_obsidian/TECHNOLOGY_MASTERMIND.md` — link to runbook.
+
+**Decisions:**
+
+- **Migration mode: dashboard SQL Editor** (user choice 2026-05-20). Files are committed in repo for audit + repeatability, but executed manually. Supabase CLI is the natural upgrade if we add staging.
+- **No `Database` codegen yet.** `src/lib/supabase.ts` types the client as the default `SupabaseClient` (with a cast to swallow the schema-typed return from `createClient`). When we want compile-time table typing, run `supabase gen types typescript` and update the cast.
+- **`first-login trigger`** sets default `role='gracz'`. Promotion to `'mg'` is a manual UPDATE for now; admin UI for role management is stage D.
+- **Revision trigger writes via `SECURITY DEFINER`** so it bypasses RLS on `wiki.revisions` (which is read-only for clients).
+
+**Verification:** `npm run build` clean. No file imports `src/lib/supabase.ts` yet — it's wired but dormant until the migration lands.
+
+**Open questions / next steps:** All gated on the user running through the runbook. When migration lands: unblock `npm run push-vault --execute`; then stage D / E proper.
+
+---
+
 ## 2026-05-20 — Auto-refresh watcher for vault changes
 
 User asked for an auto-update script — edit a `.md` in Obsidian, see the change in the running site without re-running the generator by hand.

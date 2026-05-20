@@ -87,3 +87,4 @@ Generator is read-only against the vault — only writes inside the repo.
 - `[[SUPABASE_AND_SYNC]]` — schema, RLS, push/pull scripts, content model
 - `[[DESIGN_SYSTEM]]` — design tokens, components, skin
 - `[[INTEGRATIONS]]` — coc-creator coordination, content vault, PoC reuse
+- [docs/RUNBOOKS/supabase-migration.md](../RUNBOOKS/supabase-migration.md) — step-by-step for wiring the shared Supabase project (first time + re-runs)

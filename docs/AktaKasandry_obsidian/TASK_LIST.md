@@ -21,10 +21,15 @@ Framework scaffolding session — stages A (partial), B (full), C (dry-run only)
 - [x] Add Tailwind v4, wire palette tokens (see `[[DESIGN_SYSTEM]]`) — A2
 - [x] Install: `@supabase/supabase-js`, `zustand`, `react-router-dom@7`, `react-hook-form`, `zod`, `react-markdown`, `remark-gfm`, `react-leaflet@5` (bumped from 4 for React 19 peer) — A1
 - [x] `.env.example` committed; `.env` gitignored — A1
-- [ ] Copy package.json conventions from `coc-creator` (`gh` CLI to inspect) — deferred, current setup mirrors stack
-- [ ] Read `coc-creator/docs/CoCCreator_obsidian/TECHNOLOGY_MASTERMIND.md` section **"Shared Supabase with akta-kasandry"** before touching schema — pending user
-- [ ] Design `wiki.*` schema DDL + RLS policies (see `[[SUPABASE_AND_SYNC]]`) — pending user
-- [ ] Run migration against shared Supabase project — pending user (shared with coc-creator)
+- [x] Design `wiki.*` schema DDL + RLS policies — done in `[[SUPABASE_AND_SYNC]]` (rewritten 2026-05-20), DDL in `supabase/migrations/001..006.sql`
+- [x] Supabase client init (`src/lib/supabase.ts`) — lazy, env-driven, default schema `wiki`
+- [x] Migration runbook (`docs/RUNBOOKS/supabase-migration.md`) — step-by-step for SQL Editor mode
+- [ ] **User action:** populate `.env` with `VITE_SUPABASE_URL` + `VITE_SUPABASE_ANON_KEY` from the shared Supabase project (coordinate with coc-creator for invite + credentials)
+- [ ] **User action:** add `wiki` to Settings → API → Exposed schemas in the dashboard
+- [ ] **User action:** run `supabase/migrations/001..006.sql` in dashboard SQL Editor, in order (see runbook)
+- [ ] **User action:** create `wiki-attachments` bucket via dashboard (Storage → New bucket, public ON)
+- [ ] **User action:** sign up + promote self to `role='mg'` via SQL Editor (`update wiki.profiles set role='mg' where id=…`)
+- [ ] **User action:** ask coc-creator-Claude to add a "Shared Supabase with akta-kasandry" section on their side
 
 ### Stage B — Public reader `#stage/b`
 
