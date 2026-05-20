@@ -22,6 +22,20 @@
   --font-display: 'Cinzel', Georgia, serif;
   --font-body: 'Cormorant Garamond', Georgia, serif;
   --font-mono: 'Special Elite', ui-monospace, monospace;
+
+  /* coc-creator dark palette — consumed by the vendored <CharacterSheet>.
+     Kept at the original dark values it was designed/verified against; the
+     card renders as a self-contained dark dossier panel (see VENDOR.md §6). */
+  --color-coc-bg: #1a1a1a;
+  --color-coc-surface: #242424;
+  --color-coc-surface-light: #2e2e2e;
+  --color-coc-border: #3a3a3a;
+  --color-coc-text: #e8e6e3;
+  --color-coc-text-muted: #9a9a9a;
+  --color-coc-accent: #4a7c59;
+  --color-coc-accent-light: #5a9c6a;
+  --color-coc-danger: #c44040;
+  --color-coc-warning: #c49a40;
 }
 
 html,
