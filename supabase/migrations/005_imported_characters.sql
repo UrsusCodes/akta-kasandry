@@ -5,7 +5,11 @@
 -- See: docs/AktaKasandry_obsidian/work/2026-05-20-import-coc-creator-characters.md
 --
 -- We never write to public.* — only read public.characters via the
--- anon_read_characters policy coc-creator already has in place.
+-- anon_read_characters policy coc-creator already has in place. The extractor
+-- in /admin/import-characters MUST use an explicit column allowlist (see
+-- section 7 of the work note) — never select * — so we don't silently snapshot
+-- any sensitive columns coc-creator might add later. The `data` jsonb stores
+-- the allowlisted subset, not the raw row.
 
 create table wiki.imported_characters (
   id                 bigserial primary key,

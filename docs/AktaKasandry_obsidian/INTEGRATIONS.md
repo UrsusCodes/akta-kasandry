@@ -29,8 +29,43 @@ External systems and sibling projects this app coordinates with. Cross-project c
 2. Check `git log` on that file via `gh` CLI for recent updates
 3. If you're modifying anything *they* might care about (Auth providers, RLS on `auth.*`, project-level settings, billing-affecting changes), surface it to the user — they may need to brief the coc-creator side
 
-> [!warning] Coordination doc is currently one-sided (2026-05-20)
-> Recon on `UrsusCodes/coc-creator` via `gh` (see [[work/2026-05-20-import-coc-creator-characters]]) found **no mention of akta-kasandry anywhere in their docs.** Their `TECHNOLOGY_MASTERMIND.md` has no "Shared Supabase with akta-kasandry" section yet. The shared-database arrangement is documented only on our side. **User action:** add a coordination section on coc-creator's side before any cross-schema work lands, so their future maintenance doesn't accidentally break us.
+> [!success] Coordination doc landed on coc-creator side (2026-05-20)
+> Their side now has `coc-creator/docs/CoCCreator_obsidian/INTEGRATIONS.md` with: (1) `anon_read_characters` as a documented public integration surface, (2) coordination triggers — 4 ops on their side that need to ping us first (see below).
+
+## Cross-project integration surfaces (load-bearing)
+
+These contracts are now load-bearing — changing them on either side without coordination breaks the other.
+
+| Surface | Owner | Consumer | What it does |
+|---|---|---|---|
+| `anon_read_characters` policy on `public.characters` | coc-creator | akta-kasandry (`/admin/import-characters`) | Lets our admin UI SELECT character rows for snapshot import. Tightening this RLS would break our import flow. |
+| `wiki.*` schema | akta-kasandry | (none — internal) | Our writes; never touched by coc-creator. |
+| `wiki-attachments` bucket | akta-kasandry | (none — internal) | Player-facing image uploads (stage D). |
+
+## Coordination triggers (from us → them)
+
+We must ping coc-creator before:
+
+- Anything that would require *them* to relax RLS on `public.*` (we don't expect to ever ask)
+- Anything materially increasing project-wide egress
+
+## Coordination triggers (from them → us)
+
+Per coc-creator's `INTEGRATIONS.md` — they ping us before:
+
+1. Tightening `anon_read_characters` policy on `public.characters`
+2. Rename/drop columns on `public.characters` (additions are safe — our snapshot picks them up)
+3. Changing the portraits bucket from public-read to anything narrower
+4. Wiring Supabase Auth into coc-creator (their custom auth → Supabase Auth migration)
+
+## Feedback from coc-creator-Claude on the character-import plan (2026-05-20)
+
+Their review of [[work/2026-05-20-import-coc-creator-characters]] flagged four non-blocking concerns. Each tracked here so they don't get lost:
+
+1. **`SELECT *` is forward-risk.** Today `public.characters` has nothing sensitive, but if they ever add a PII/secret column we'd silently snapshot it into `wiki.imported_characters.data` (jsonb). **Action:** the admin UI extractor (when built) must use an explicit allowlist of column names, not `select *`. Allowlist documented in the work note. The `data jsonb` column stays — it's the *shape* of the extractor that's constrained, not the storage.
+2. **Never run `supabase db push` from this repo.** Their migration sequence (`001..022`) and ours (`001..006`) collide in the shared `supabase_migrations.schema_migrations` table. Each side runs its own migrations manually via SQL Editor. **Action:** warning added to `docs/RUNBOOKS/supabase-migration.md`.
+3. **Portrait URL drift.** Our snapshot stores `portrait_url` from coc-creator. If they delete or move portraits, our wiki shows broken images. The "imported (stale)" state catches data drift but not URL drift. **Action accepted as-is** for v1 — admin re-imports when they notice. Follow-up: mirror portraits into our `wiki-attachments/imported-characters/<source_id>.{ext}` at import time. Tracked in the work note's "future work" section.
+4. **`anon_read_characters` is now a public API.** Yesterday it was internal RLS; today it's our integration surface. **Action:** captured in the table above as load-bearing.
 
 **Safe without coordination:**
 

@@ -122,19 +122,39 @@ Each imported character renders as a virtual page under `BADACZE/` (currently em
 
 - Real-time updates of imported data (no Supabase realtime sub).
 - Bulk export back to coc-creator (one-way only).
-- Image proxying (we reference coc-creator's portrait URLs directly; they're already public).
+- Image proxying (we reference coc-creator's portrait URLs directly; they're already public). **Follow-up acknowledged from coc-creator-Claude review:** when they move/delete portraits we'll show broken images until admin re-imports. v2 should mirror portraits into our `wiki-attachments/imported-characters/<source_id>.{ext}` at import time so URL drift becomes our problem, not theirs.
 - Player self-service ("claim my character") — admin-only import.
+
+### 7. Column allowlist for the snapshot extractor
+
+Reviewed and approved by coc-creator-Claude (2026-05-20). The admin UI must snapshot **only** these columns from `public.characters` — never `select *`. New sensitive columns added on their side won't silently leak into our `data` jsonb.
+
+```ts
+const CHARACTER_COLUMNS = [
+  'id', 'player_id', 'status',
+  'name', 'age', 'gender', 'appearance',
+  'characteristics', 'luck', 'derived',
+  'occupation_id', 'occupation_skill_points', 'personal_skill_points',
+  'backstory', 'equipment',
+  'cash', 'assets', 'spending_level',
+  'era', 'method', 'perks',
+  'max_skill_value', 'max_wealth', 'max_luck',
+  'residence', 'birthplace',
+  'profile_portrait_url', 'card_portrait_url', 'card_portrait_crop_data',
+  'draft_locked_step', 'created_by',
+  'created_at', 'updated_at',
+] as const
+```
+
+Used as `.select(CHARACTER_COLUMNS.join(','))` in the admin UI fetch.
 
 ## Open coordination items — status 2026-05-20
 
-All four decisions resolved. Implementation now blocks only on:
+All four decisions resolved + coc-creator-Claude reviewed the plan and signed off with four non-blocking flags (folded into sections 6 & 7 above + `INTEGRATIONS.md`).
 
-- Supabase schema migration being run (user → coordinate with coc-creator first)
-- Auth provider setup (user → with coc-creator for SSO)
-
-1. **✅ Coordination doc on coc-creator side** — user confirmed they'll add a "Shared Supabase with akta-kasandry" section to `coc-creator/docs/CoCCreator_obsidian/TECHNOLOGY_MASTERMIND.md`.
+1. **✅ Coordination doc on coc-creator side** — landed as `coc-creator/docs/CoCCreator_obsidian/INTEGRATIONS.md` with `anon_read_characters` as integration surface + 4 coordination triggers.
 2. **✅ Player display name strategy** — option (b) admin-types-it. Plus UX: characters grouped by `source_player_id` in the admin UI; single name input per player; `localStorage` cache between sessions.
 3. **✅ RLS for `wiki.imported_characters` SELECT** — open to anon.
 4. **✅ DDL approval** — DDL in `SUPABASE_AND_SYNC.md` approved as-is.
 
-Implementation order when schema+Auth unlock: (i) migration scripts (`005_imported_characters.sql`) → (ii) `/admin/import-characters` UI with grouped layout → (iii) `<CharacterPage>` renderer → (iv) `useContentTree()` merge.
+Implementation blocks only on: Supabase schema migration being run + Auth wiring. Then order: (i) `005_imported_characters.sql` (already written) → (ii) `/admin/import-characters` UI with grouped layout + column allowlist → (iii) `<CharacterPage>` renderer → (iv) `useContentTree()` merge.

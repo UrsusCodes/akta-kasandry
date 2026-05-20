@@ -85,6 +85,8 @@ We use the dashboard SQL Editor, not Supabase CLI — chosen for the project (pe
 
 > ⚠️ **Run files in order. Stop and read the output after each.** If any error appears, do NOT continue. Fix or revert before the next file.
 
+> 🛑 **Never run `supabase db push` from this repo.** The shared Supabase project uses one global `supabase_migrations.schema_migrations` table, and coc-creator already owns the `001..022` sequence there. If `db push` runs from here it tries to register our `001..006` as new migrations and collides with their history. **Both sides run migrations manually via SQL Editor** — this is part of the shared-database contract ([[INTEGRATIONS]]).
+
 ### 3.1 Open the editor
 
 Dashboard → **Database → SQL Editor → New query**.

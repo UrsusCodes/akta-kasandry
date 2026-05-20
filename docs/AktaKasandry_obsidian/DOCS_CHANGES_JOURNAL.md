@@ -11,6 +11,29 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-20 — coc-creator review feedback folded in
+
+coc-creator-Claude reviewed our plan, landed an `INTEGRATIONS.md` on their side, and surfaced 4 non-blocking flags. Captured here so they don't get lost.
+
+**Files touched:**
+
+- `docs/AktaKasandry_obsidian/INTEGRATIONS.md` — replaced the "coordination doc is one-sided" warning with success callout. New "Cross-project integration surfaces (load-bearing)" table listing `anon_read_characters` as the load-bearing public API contract. New "Coordination triggers" sections (us→them, them→us; 4 triggers each side ping the other). Full feedback log at the bottom.
+- `docs/AktaKasandry_obsidian/work/2026-05-20-import-coc-creator-characters.md` — section 6 updated with the portrait-URL-drift mitigation as v2 follow-up. New section 7 with the column allowlist (32 explicit names; admin UI extractor must use this, never `select *`). Coordination items section now references the four resolved flags.
+- `docs/RUNBOOKS/supabase-migration.md` — explicit warning never to run `supabase db push` from this repo (sequence collision in the shared `schema_migrations` table — both sides run SQL Editor by hand).
+- `supabase/migrations/005_imported_characters.sql` — header comment expanded to flag the column-allowlist constraint on the future admin UI.
+
+**Decisions:**
+
+- DDL doesn't change — the `data jsonb` column stays, but the *extractor* feeding it must use the allowlist. Constrains the future admin UI, not the storage.
+- Portrait mirroring deferred to v2 as `wiki-attachments/imported-characters/<source_id>.{ext}` at import time. v1 accepts URL drift; admin re-imports when they notice.
+- Migration mode confirmed: SQL Editor only, never `supabase db push`. Both sides hold the same rule.
+
+**Verification:** build still clean.
+
+**Open questions / next steps:** user has Supabase access; proceeding through the runbook (Phase 1 → 6).
+
+---
+
 ## 2026-05-20 — Supabase migration prep: SQL files + client + runbook
 
 User asked what they need to do to actually run the migration. Prepared everything that doesn't require Supabase access — gated steps only need their decisions + dashboard time.
