@@ -11,6 +11,29 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-20 — Auth login UI (Stage D — login half)
+
+First use of the live Supabase backend from the frontend. MG/Admin login; player editing deferred per user.
+
+**Files touched:**
+
+- `src/stores/auth.ts` — new. Zustand auth store: `init()` (loads session + profile role, subscribes to `onAuthStateChange`), `signIn`, `signOut`. Degrades gracefully when credentials absent (`enabled: false` → site stays anon-readable). `useIsMG()` selector. First module to actually import `getSupabase()`.
+- `src/routes/Login.tsx` — new. Email/password form (react-hook-form native validation — avoided `@hookform/resolvers` to stay within the locked dep list). Shows a clear "Supabase not configured" message when disabled. Redirects back to origin (`location.state.from`) after login.
+- `src/components/AppShell.tsx` — calls `init()` on mount; header shows "DisplayName (MG)" + Wyloguj when signed in, "Zaloguj" link otherwise. Auth affordances only render when `enabled`.
+- `src/router.tsx` — `/login` route.
+
+**Decisions:**
+
+- **No `@hookform/resolvers` / zodResolver.** Login validation is trivial (email format + required); react-hook-form's native `register` rules cover it. Keeps the dep list locked.
+- **Graceful degradation.** Without `.env`, `enabled=false` — no login UI, site is pure anon read. So the build/dev works for anyone who clones without credentials.
+- **MG-only scope for now.** Player signup/editing deferred (user: "edycja przez graczy jest dalej w planie"). No signup form yet — accounts created via dashboard, role promoted via SQL.
+
+**Verification:** `npm run build` clean. Bundle now 1.84 MB (supabase-js pulled in) — code-split is a stage-G follow-up.
+
+**Open questions / next steps:** what does MG edit first — pages (needs push-vault --execute + reader swap) or pins (isolated)? Asking the user.
+
+---
+
 ## 2026-05-20 — Supabase migration executed — Stage A complete
 
 Ran the full migration against the shared Supabase project (dashboard SQL Editor mode). Stage A is done — first working backend.
