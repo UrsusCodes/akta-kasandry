@@ -1,8 +1,8 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { MapContainer, ImageOverlay, Marker, Popup } from 'react-leaflet'
 import L, { CRS, type LatLngBoundsExpression } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import { pins } from '@/mocks/pins'
+import { usePinsStore } from '@/stores/pins'
 
 /**
  * Interactive Boston 1924 map. The actual map graphic
@@ -35,6 +35,13 @@ const pinIcon = L.divIcon({
 })
 
 export function BostonMap() {
+  const pins = usePinsStore((s) => s.pins)
+  const load = usePinsStore((s) => s.load)
+
+  useEffect(() => {
+    void load()
+  }, [load])
+
   const markers = useMemo(
     () =>
       pins.map((pin) => (
@@ -56,7 +63,7 @@ export function BostonMap() {
           </Popup>
         </Marker>
       )),
-    [],
+    [pins],
   )
 
   return (
