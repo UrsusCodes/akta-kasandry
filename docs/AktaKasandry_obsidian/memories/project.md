@@ -138,7 +138,7 @@ Dropped the Shelf/Book/Chapter/Page hierarchy (BookStack artifact). Content is n
 
 | Stage | Status |
 |---|---|
-| a — Setup | Vite + React 19 + TS + Tailwind v4 + locked stack deps installed. Cthulhu skin ported to `@theme`. **`wiki.*` schema migration NOT executed** — needs user approval (shared Supabase with coc-creator). `.env` not populated. |
+| a — Setup | **COMPLETE 2026-05-20.** Vite + React 19 + TS + Tailwind v4. Cthulhu skin in `@theme`. **`wiki.*` schema migration RAN** (migrations 001..007 in dashboard SQL Editor). Supabase live: 5 tables + RLS + triggers, `wiki-attachments` bucket, MG account `storage.station2023@gmail.com`. `.env.local` populated. Client `src/lib/supabase.ts` ready (dormant). Two setup gotchas documented in runbook (db_schemas GUC propagation, explicit table grants). |
 | b — Public reader | **Complete on mock data.** Recursive tree (Obsidian-style, no fixed levels), `/p/*` catch-all routing, collapsible `<TreeNav>` sidebar, breadcrumbs, markdown render with wikilink remark plugin (AST-safe) all live. Polish diacritics verified everywhere. |
 | c — Push | Dry-run only (`scripts/push-vault.ts`). `--execute` exits 1. Cleanup pipeline (`collapseAsterisks`, `stripDuplicateH1`) and shared wikilink resolver wired. Image-rewrite still TBD (bucket vs repo open). |
 | d — Auth + edit | D1 only: editor `@uiw/react-md-editor` integrated on `/draft` with in-memory state, preview reuses the same renderer as read-mode. Auth, persistence, revisions still pending. |

@@ -24,12 +24,15 @@ Framework scaffolding session — stages A (partial), B (full), C (dry-run only)
 - [x] Design `wiki.*` schema DDL + RLS policies — done in `[[SUPABASE_AND_SYNC]]` (rewritten 2026-05-20), DDL in `supabase/migrations/001..006.sql`
 - [x] Supabase client init (`src/lib/supabase.ts`) — lazy, env-driven, default schema `wiki`
 - [x] Migration runbook (`docs/RUNBOOKS/supabase-migration.md`) — step-by-step for SQL Editor mode
-- [ ] **User action:** populate `.env` with `VITE_SUPABASE_URL` + `VITE_SUPABASE_ANON_KEY` from the shared Supabase project (coordinate with coc-creator for invite + credentials)
-- [ ] **User action:** add `wiki` to Settings → API → Exposed schemas in the dashboard
-- [ ] **User action:** run `supabase/migrations/001..006.sql` in dashboard SQL Editor, in order (see runbook)
-- [ ] **User action:** create `wiki-attachments` bucket via dashboard (Storage → New bucket, public ON)
-- [ ] **User action:** sign up + promote self to `role='mg'` via SQL Editor (`update wiki.profiles set role='mg' where id=…`)
-- [ ] **User action:** ask coc-creator-Claude to add a "Shared Supabase with akta-kasandry" section on their side
+- [x] ✅ **DONE 2026-05-20** — `.env.local` populated (legacy anon JWT from shared project)
+- [x] ✅ `wiki` exposed (via `alter role authenticator set pgrst.db_schemas` — dashboard Save didn't propagate, see runbook known-issue)
+- [x] ✅ migrations 001..007 run in SQL Editor (007 = explicit grants, added after hitting 404 on missing table grants)
+- [x] ✅ `wiki-attachments` bucket created (public)
+- [x] ✅ MG account `storage.station2023@gmail.com` (role `mg`), created via dashboard + promoted via SQL
+- [x] ✅ coc-creator-Claude added their `INTEGRATIONS.md` + reviewed our plan (4 non-blocking flags folded in)
+- [x] ✅ smoke test passed — `wiki.pages` and `wiki.imported_characters` both return `[]` via anon REST
+
+**STAGE A COMPLETE.** Supabase live. Unblocks: push-vault `--execute` (C), pin editing (E), character import (H), page editor save (D).
 
 ### Stage B — Public reader `#stage/b`
 

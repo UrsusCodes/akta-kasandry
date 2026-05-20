@@ -11,6 +11,41 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-20 — Supabase migration executed — Stage A complete
+
+Ran the full migration against the shared Supabase project (dashboard SQL Editor mode). Stage A is done — first working backend.
+
+**What landed live:**
+
+- Schema `wiki` + 5 tables (`profiles`, `pages`, `revisions`, `pins`, `imported_characters`) + triggers (`wiki_on_auth_user_created`, `write_revision`, `set_updated_at`) + RLS policies.
+- `wiki` exposed in PostgREST; explicit table grants for anon/authenticated.
+- Bucket `wiki-attachments` (public) + 4 storage policies.
+- MG account `storage.station2023@gmail.com` (role `mg`).
+- `src/lib/supabase.ts` ready (still dormant — no component imports it yet).
+
+**Two gotchas hit + fixed (now in repo for next time):**
+
+1. **db_schemas didn't propagate.** Dashboard showed "3 of 3 schemas exposed" but PostgREST returned `PGRST106 Invalid schema: wiki`. The `pgrst.db_schemas` GUC on the `authenticator` role was never written by the dashboard Save. Fixed with `alter role authenticator set pgrst.db_schemas = 'public, graphql_public, wiki'` + `notify pgrst, 'reload config'`. Documented as a known-issue in the runbook.
+2. **Missing table grants.** After exposing the schema, queries returned 404 — the tables created in 002..006 lacked anon/authenticated SELECT grants (the `alter default privileges` in 001 didn't apply through SQL Editor). Added `007_grants.sql` with explicit `grant ... on all tables in schema wiki`. Confirmed: `wiki.imported_characters` and `wiki.pages` both return `[]` after.
+
+**Files touched (this entry):**
+
+- `supabase/migrations/007_grants.sql` — new, explicit grants (idempotent)
+- `supabase/migrations/001_schema_wiki.sql` — comment flagging that 007 is the real source of truth for grants
+- `docs/RUNBOOKS/supabase-migration.md` — 7-file table, two known-issue blocks, troubleshooting rows, rollback resets db_schemas GUC
+- `docs/AktaKasandry_obsidian/TASK_LIST.md` — Stage A marked complete
+
+**Decisions:**
+
+- `alter role authenticator set pgrst.db_schemas` is a manual SQL step (project-wide, additive — coc-creator unaffected). Kept out of migration files because it's a project setting, not schema DDL. **Caveat logged:** if coc-creator clicks Save in their Data API settings, it may drop `wiki` — re-run the `alter role` line.
+
+**Open questions / next steps:**
+
+- Storage "broad SELECT policy" hygiene warning — drop anon SELECT on storage.objects, add mg-only (public bucket serves images via `/object/public/` regardless). Pending user go-ahead.
+- Pick the next stage to build: C (push-vault --execute), E (pin editing), H (character import), or D (page editor save).
+
+---
+
 ## 2026-05-20 — coc-creator review feedback folded in
 
 coc-creator-Claude reviewed our plan, landed an `INTEGRATIONS.md` on their side, and surfaced 4 non-blocking flags. Captured here so they don't get lost.
