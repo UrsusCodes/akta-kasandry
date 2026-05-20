@@ -48,6 +48,18 @@ export function AppShell() {
               Draft
             </NavLink>
 
+            {/* MG-only admin link. */}
+            {enabled && role === 'mg' && (
+              <NavLink
+                to="/admin/import-characters"
+                className={({ isActive }) =>
+                  isActive ? 'text-gold' : 'text-parchment hover:text-gold'
+                }
+              >
+                Import
+              </NavLink>
+            )}
+
             {/* Auth affordances — only when Supabase is configured. */}
             {enabled &&
               (user ? (

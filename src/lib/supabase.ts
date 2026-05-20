@@ -49,3 +49,30 @@ export function getSupabase(): SupabaseClient {
   }) as unknown as SupabaseClient
   return client
 }
+
+let anonClient: SupabaseClient | null = null
+
+/**
+ * Session-less client pinned to the `anon` role and the `public` schema.
+ *
+ * Why a second client: coc-creator's `anon_read_characters` policy on
+ * `public.characters` is `TO anon` only — a signed-in MG (role `authenticated`)
+ * is NOT covered and would read nothing. This client never holds a session, so
+ * it always authenticates as `anon` and can read their characters for the
+ * import flow. Writes still go through `getSupabase()` as the authenticated MG
+ * (wiki.imported_characters RLS = mg-only).
+ *
+ * `persistSession: false` + a distinct `storageKey` keeps it from picking up
+ * the main client's stored session.
+ */
+export function getAnonClient(): SupabaseClient {
+  if (!URL || !ANON_KEY) {
+    throw new Error('[supabase] credentials missing — see docs/RUNBOOKS/supabase-migration.md.')
+  }
+  if (anonClient) return anonClient
+  anonClient = createClient(URL, ANON_KEY, {
+    db: { schema: 'public' },
+    auth: { persistSession: false, autoRefreshToken: false, storageKey: 'akta-anon-readonly' },
+  }) as unknown as SupabaseClient
+  return anonClient
+}
