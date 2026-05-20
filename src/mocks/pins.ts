@@ -13,6 +13,7 @@ export const pins: Pin[] = [
     y: 3745,
     title: 'Hale Manor',
     label: 'siedziba',
+    color: '#c89b3c',
     description:
       'Siedziba profesora Victora Hale\'a (centrum miasta). Patrz [[Mapa Bostonu 1924]].',
   },
@@ -22,6 +23,7 @@ export const pins: Pin[] = [
     y: 3870,
     title: 'Whitlock House',
     label: 'dom NPC',
+    color: '#3a5a78',
     description: 'Dom doktora Edwarda Whitlocka — dwie ulice od Hale Manor.',
   },
   {
@@ -30,6 +32,7 @@ export const pins: Pin[] = [
     y: 2200,
     title: 'Cmentarz Mount Auburn',
     label: 'cmentarz',
+    color: '#6b7551',
     description:
       'Najstarszy cmentarz ogrodowy Bostonu (na NW od Bostonu, w okolicy Cambridge/Watertown — może być poza wycinkiem mapy).',
   },

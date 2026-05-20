@@ -34,4 +34,5 @@ export type Pin = {
   title: string
   description: string
   label: string
+  color: string
 }

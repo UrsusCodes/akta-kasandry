@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import type { Pin } from '@/types'
 import { getSupabase, hasSupabaseCredentials } from '@/lib/supabase'
 import { pins as mockPins } from '@/mocks/pins'
+import { DEFAULT_PIN_COLOR } from '@/lib/pinColors'
 
 type NewPin = Omit<Pin, 'id'>
 
@@ -18,7 +19,7 @@ type PinsState = {
   deletePin: (id: string) => Promise<{ error?: string }>
 }
 
-const SELECT = 'id, x, y, title, description, label'
+const SELECT = 'id, x, y, title, description, label, color'
 
 /**
  * Boston map pins store.
@@ -55,6 +56,7 @@ export const usePinsStore = create<PinsState>((set, get) => ({
         title: r.title,
         description: r.description ?? '',
         label: r.label ?? '',
+        color: r.color ?? DEFAULT_PIN_COLOR,
       })),
       source: 'supabase',
       loading: false,
@@ -69,6 +71,7 @@ export const usePinsStore = create<PinsState>((set, get) => ({
       title: pin.title,
       description: pin.description || null,
       label: pin.label || null,
+      color: pin.color || DEFAULT_PIN_COLOR,
     })
     if (error) return { error: error.message }
     await get().load()
