@@ -1,5 +1,6 @@
 import MDEditor from '@uiw/react-md-editor'
 import remarkGfm from 'remark-gfm'
+import rehypeRaw from 'rehype-raw'
 import { Link } from 'react-router-dom'
 import { remarkWikilinks } from '@/lib/remarkWikilinks'
 import { useDraftStore } from '@/stores/draft'
@@ -49,6 +50,7 @@ export function DraftView() {
           preview="live"
           previewOptions={{
             remarkPlugins: [remarkGfm, remarkWikilinks],
+            rehypePlugins: [[rehypeRaw]],
             components: {
               a({ href, children, ...rest }) {
                 if (href && href.startsWith('/')) {

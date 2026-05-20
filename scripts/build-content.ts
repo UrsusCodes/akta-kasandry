@@ -190,24 +190,16 @@ function rewriteImages(
     return `![${alt}](${replaced})`
   })
 
-  // <img src="path" ...> → ![alt](url). React-markdown ignores raw HTML by
-  // default; rather than pulling in rehype-raw, we convert to markdown form so
-  // the image renders. Side effect: GM's width/align/style attributes are lost
-  // (images render full-width in the document flow). If we later want to
-  // preserve right-aligned thumbnails with text wrap, add rehype-raw and skip
-  // this conversion.
+  // <img src="path" ...> stays as raw HTML — rehype-raw on the render side
+  // honours width/align/style attributes (GM's thumbnail pattern with text
+  // wrap). We only rewrite the src to point at the staged attachment.
   markdown = markdown.replace(
-    /<img\s+([^>]*)>/g,
-    (full, attrs: string) => {
-      const srcMatch = attrs.match(/\bsrc=["']([^"']+)["']/i)
-      if (!srcMatch) return full
-      const src = srcMatch[1]
-      if (/^(https?:|data:)/.test(src)) return full // external — leave alone
-      const altMatch = attrs.match(/\balt=["']([^"']*)["']/i)
-      const alt = altMatch ? altMatch[1] : ''
-      const replaced = /^\//.test(src) ? src : stageByBasename(src)
+    /<img\s+([^>]*?)src=["']([^"']+)["']([^>]*)>/g,
+    (full, before: string, src: string, after: string) => {
+      if (/^(https?:|data:|\/)/.test(src)) return full
+      const replaced = stageByBasename(src)
       if (!replaced) return full
-      return `![${alt}](${replaced})`
+      return `<img ${before}src="${replaced}"${after}>`
     },
   )
 

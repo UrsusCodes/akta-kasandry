@@ -11,6 +11,29 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-20 — Add rehype-raw to preserve GM's HTML img formatting
+
+Follow-up to the code-block fix. User opted to add `rehype-raw` (~6 KB gzipped) so the GM's `<img width="220" align="right">` thumbnail pattern survives the render — was either that or keep the simplified markdown-only rendering that lost GM intent.
+
+**Files touched:**
+
+- `package.json` — `rehype-raw: ^7.0.0` added.
+- `src/components/Markdown.tsx` — `rehypePlugins: [rehypeRaw]` added.
+- `src/routes/DraftView.tsx` — same plugin wired into the `/draft` preview pane (matches read-mode behaviour).
+- `scripts/build-content.ts` — reverted the HTML→markdown img conversion. The `<img>` HTML now passes through unchanged; only its `src` is rewritten to `/vault-attachments/by-name/…`.
+- `src/index.css` — added attribute selectors `img[align="right"]` / `img[align="left"]` mapping to `float` + margin (modern HTML dropped the `align` attribute's default behaviour); plus `clear: both` on headers so floats don't bleed into the next section.
+
+**Decisions:**
+
+- Trusted vault → raw HTML rendered without sanitization is OK for now. **Stage D (player-edited pages) will need a sanitizer** — `rehype-sanitize` is the obvious companion. Noted as a follow-up; don't ship player editing without it.
+- Floats cleared on h1/h2/h3 to avoid the classic float-overflows-next-section problem.
+
+**Verification:** build clean; regenerated content shows GM's full `<img>` tags intact with rewritten `src`. HMR live in dev.
+
+**Open questions / next steps:** Add `rehype-sanitize` before stage D editing is unlocked. New top-level dep — same approval path as today.
+
+---
+
 ## 2026-05-20 — Fix: markdown rendering bugs (code-block trap + HTML imgs)
 
 User screenshot showed all page bodies rendered as raw monospace text with wikilinks shown as literal `[[Name]]`. Two root causes:

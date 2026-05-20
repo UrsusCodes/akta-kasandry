@@ -141,6 +141,23 @@ body {
   height: auto;
   border: 1px solid var(--color-gold-muted);
 }
+/* GM's <img align="right"> / <img align="left"> thumbnail pattern — Cthulhu
+   skin compatible. The browser's default align attribute behaviour got dropped
+   from modern HTML; we re-implement it as proper CSS via attribute selectors. */
+.prose-cthulhu img[align="right"] {
+  float: right;
+  margin: 0 0 0.5em 1em;
+}
+.prose-cthulhu img[align="left"] {
+  float: left;
+  margin: 0 1em 0.5em 0;
+}
+/* Clear the float at the end of each section so the next heading lines up. */
+.prose-cthulhu h1,
+.prose-cthulhu h2,
+.prose-cthulhu h3 {
+  clear: both;
+}
 .prose-cthulhu ul,
 .prose-cthulhu ol {
   margin: 0.8em 0;
