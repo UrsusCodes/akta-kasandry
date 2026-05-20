@@ -31,6 +31,9 @@ pnpm-debug.log*
 *.swo
 *~
 
+# Claude Code (local preview / launch config)
+.claude/
+
 # OS
 .DS_Store
 Thumbs.db
