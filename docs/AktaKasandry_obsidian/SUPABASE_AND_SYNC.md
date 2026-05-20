@@ -1,5 +1,5 @@
 ---
-date: 2026-05-19
+date: 2026-05-20
 status: active
 tags:
   - supabase
@@ -9,136 +9,227 @@ tags:
 
 # Supabase & Sync Pipeline
 
-Schema, RLS, sync scripts, and content model live here — they're tightly coupled.
+Schema, RLS, sync scripts, content model. This is the source of truth for what will land on Supabase when the migration runs.
 
-> [!warning] Shared Supabase project
-> Everything we own lives under namespace `wiki` (`wiki.*` tables, `wiki-attachments` bucket). Never touch `public.*` or any other schema — that belongs to coc-creator. See `[[INTEGRATIONS]]`.
+> [!warning] Shared Supabase project (with coc-creator)
+> Everything we own lives under namespace `wiki` (`wiki.*` tables, `wiki-attachments` bucket).
+> - **Never write to `public.*`** — that's coc-creator's territory.
+> - **We *read* `public.characters`** (their RLS allows anon SELECT) for the character-import flow. This is documented as a cross-project read in [[INTEGRATIONS]] and needs to be mirrored in coc-creator's docs (user action).
 
-> [!warning] Schema sketch needs update (2026-05-20)
-> The DDL below predates the refactor to a recursive content tree ([[work/2026-05-20-recursive-content-tree]]). The fixed `shelf` / `book` / `chapter` columns are gone — `wiki.pages` should use `path TEXT PRIMARY KEY` + `name` + `body` + `ready_to_sync`, with `parent_path` derivable from `path`. Treat any column lists below as historical until this file is rewritten.
+---
 
 ## Content model
 
-Mirrors the content vault's `PUBLIC/` folder:
+Recursive tree, Obsidian-style — folders nested freely, leaves are markdown pages. See [[work/2026-05-20-recursive-content-tree]] for why the original Shelf/Book/Chapter hierarchy was dropped.
 
-| Level | Name | Storage |
-|---|---|---|
-| 1 | Shelf | top-level folder under `PUBLIC/` |
-| 2 | Book | folder inside Shelf |
-| 3 | Chapter (optional) | folder inside Book |
-| Leaf | Page | `.md` file (Polish characters, wikilinks, images, tables) |
+Page identity = **full path relative to the vault root**, e.g. `ZASADY/Zasady walki/03. Tutorial walki/Part 1 - Przed walką`. Stable across title renames; breaks on folder moves (acceptable).
 
-A page's identity is its **path relative to `PUBLIC/`**, e.g., `ZASADY/Zasady walki/Tutorial walki/Part 1 - Przed walka`. This is the natural key for sync idempotency.
+Two source streams feed the rendered site:
 
-## Schema (proposed — finalise in stage A)
+1. **Vault snapshot** (`scripts/build-content.ts`) — generated into `src/generated/content.ts` from `G:\…\PUBLIC\`. This is the dominant content source.
+2. **Character snapshots** (admin import — `wiki.imported_characters`) — merged into the tree at runtime under `BADACZE/`.
+
+---
+
+## Schema
 
 ```sql
 create schema if not exists wiki;
 
+-- Per-user profile + role. One row per auth.users row, created on first login
+-- via a trigger (auth.users INSERT → wiki.profiles INSERT with role='gracz').
 create table wiki.profiles (
-  id uuid primary key references auth.users(id),
-  display_name text,
-  role text not null check (role in ('mg', 'gracz'))
+  id            uuid primary key references auth.users(id) on delete cascade,
+  display_name  text,
+  role          text not null default 'gracz' check (role in ('mg', 'gracz')),
+  created_at    timestamptz not null default now()
 );
 
+-- Wiki pages. Path-keyed (slash-separated slugs from root) so the recursive
+-- tree shape isn't hardcoded into columns. `parent_path` is derivable from
+-- `path` but stored for cheap sibling lookups.
 create table wiki.pages (
-  id uuid primary key default gen_random_uuid(),
-  path text unique not null,            -- relative to PUBLIC/, natural key
-  shelf text not null,
-  book text not null,
-  chapter text,
-  title text not null,
-  content text not null,                -- markdown
-  ready_to_sync boolean default false,  -- pull script honours this
-  updated_at timestamptz default now(),
-  updated_by uuid references wiki.profiles(id)
+  path           text primary key,                 -- e.g. 'zasady/terminy/bijatyka'
+  parent_path    text,                             -- '' for root pages, 'zasady/terminy' here
+  name           text not null,                    -- display name with diacritics, e.g. 'Bijatyka'
+  kind           text not null check (kind in ('folder', 'page')),
+  body           text,                             -- markdown, null for pure folders
+  ready_to_sync  boolean not null default false,   -- pull script honours this
+  updated_at     timestamptz not null default now(),
+  updated_by     uuid references wiki.profiles(id)
 );
+create index on wiki.pages (parent_path);
 
+-- Edit history. Append-only. One row per UPDATE of wiki.pages.body, written by
+-- a trigger on wiki.pages.
 create table wiki.revisions (
-  id uuid primary key default gen_random_uuid(),
-  page_id uuid not null references wiki.pages(id) on delete cascade,
-  user_id uuid not null references wiki.profiles(id),
-  content_before text not null,
-  content_after text not null,
-  created_at timestamptz default now()
+  id              uuid primary key default gen_random_uuid(),
+  page_path       text not null references wiki.pages(path) on delete cascade,
+  user_id         uuid not null references wiki.profiles(id),
+  body_before     text not null,
+  body_after      text not null,
+  created_at      timestamptz not null default now()
 );
+create index on wiki.revisions (page_path, created_at desc);
 
+-- Boston map pins. Coordinates in image-local pixels on boston-map-1924.jpg
+-- (top-left origin, source resolution 7803×11702).
 create table wiki.pins (
-  id uuid primary key default gen_random_uuid(),
-  x int not null,
-  y int not null,
-  title text not null,
-  description text,
-  label text,
-  created_by uuid references wiki.profiles(id),
-  created_at timestamptz default now()
+  id           uuid primary key default gen_random_uuid(),
+  x            integer not null,
+  y            integer not null,
+  title        text not null,
+  description  text,
+  label        text,
+  created_by   uuid references wiki.profiles(id),
+  created_at   timestamptz not null default now(),
+  updated_at   timestamptz not null default now()
 );
 
--- Character import from coc-creator. Snapshot model:
---   admin selects characters in /admin/import-characters,
---   row is upserted on source_id, source_updated_at tracks staleness.
--- Detailed design: work/2026-05-20-import-coc-creator-characters.md
+-- Character snapshots from coc-creator. Admin picks rows in
+-- /admin/import-characters, snapshot is upserted on source_id.
+-- Design rationale: work/2026-05-20-import-coc-creator-characters.md
 create table wiki.imported_characters (
-  id bigserial primary key,
-  source_id uuid not null unique,       -- public.characters.id
-  slug text not null unique,            -- url segment, derived from name
+  id                 bigserial primary key,
+  source_id          uuid not null unique,         -- public.characters.id
+  slug               text not null unique,         -- url segment derived from name
 
-  name text not null,
-  occupation_id text,
-  era text,
-  status text,                          -- 'draft' | 'submitted' from source
-  source_player_id uuid,
-  player_name text,                     -- admin-entered (no public.players access)
-  portrait_url text,
+  -- extracted for sort/filter/display:
+  name               text not null,
+  occupation_id      text,
+  era                text,
+  status             text,                         -- 'draft' | 'submitted' from source
+  source_player_id   uuid,
+  player_name        text,                         -- admin-typed at import (public.players is locked)
+  portrait_url       text,
 
-  data jsonb not null,                  -- whole source row snapshot
+  -- whole public.characters row, as-is:
+  data               jsonb not null,
 
-  source_updated_at timestamptz not null,
-  imported_at timestamptz not null default now(),
-  imported_by uuid references auth.users(id)
+  -- snapshot meta:
+  source_updated_at  timestamptz not null,         -- public.characters.updated_at at import
+  imported_at        timestamptz not null default now(),
+  imported_by        uuid references auth.users(id)
 );
 create index on wiki.imported_characters (source_updated_at);
 ```
 
-## RLS policies (sketch — finalise in stage A / D)
+---
 
-- `wiki.pages`: public SELECT (no auth for reading); UPDATE only by author (`updated_by`) or role `mg`.
-- `wiki.revisions`: SELECT by authenticated; INSERT by authenticated (or via trigger on `wiki.pages` UPDATE); no UPDATE / DELETE.
-- `wiki.pins`: public SELECT; INSERT / UPDATE / DELETE only by role `mg`.
-- `wiki.profiles`: SELECT all authenticated; INSERT on first login via trigger; UPDATE own row only.
+## RLS policies
+
+Decisions reflected in the matrix below. Anon = unauthenticated visitor (anyone with the URL). Auth = signed-in via Supabase Auth.
+
+| Table | Anon SELECT | Auth SELECT | INSERT/UPDATE/DELETE |
+|---|---|---|---|
+| `wiki.pages` | ✓ (read-only site) | ✓ | role `mg` or author (`updated_by`) |
+| `wiki.revisions` | ✗ | ✓ | trigger-written only; no manual writes |
+| `wiki.pins` | ✓ | ✓ | role `mg` |
+| `wiki.profiles` | ✗ | own row + display_name of others | own row UPDATE only; INSERT via first-login trigger |
+| `wiki.imported_characters` | ✓ (open per user decision 2026-05-20) | ✓ | role `mg` |
+
+Sketch policies (full migration writes them out):
+
+```sql
+-- wiki.pages: anyone reads, mg or author updates
+alter table wiki.pages enable row level security;
+create policy pages_anon_read on wiki.pages for select using (true);
+create policy pages_mg_write  on wiki.pages for all
+  using (exists (select 1 from wiki.profiles p where p.id = auth.uid() and p.role = 'mg'));
+
+-- wiki.imported_characters: open read, mg-only write
+alter table wiki.imported_characters enable row level security;
+create policy imported_anon_read on wiki.imported_characters for select using (true);
+create policy imported_mg_write  on wiki.imported_characters for all
+  using (exists (select 1 from wiki.profiles p where p.id = auth.uid() and p.role = 'mg'));
+```
+
+---
 
 ## Storage
 
-- Bucket `wiki-attachments`: public read; write only by role `mg`.
+- **Bucket `wiki-attachments`** — image library for vault attachments. Public read; write only by role `mg`.
+- Per-page attachments are staged at *generator time* (`scripts/build-content.ts` → `public/vault-attachments/by-name/`) for the live site. The bucket is for *runtime uploads* via the editor (stage D) — not yet wired.
 
-## Push script (vault → Supabase)
+---
 
-CLI (Node), invoked from project root:
+## Sync pipeline
 
-- Walks `G:\My Drive\OBSIDIAN\RPG\Zew Cthulhu\PUBLIC\` recursively
-- For each `.md`: parse path → derive `shelf` / `book` / `chapter` / `title`, normalise wikilinks (vault → app form), upsert into `wiki.pages` keyed by `path`
-- Idempotent on re-run (no duplicates, no spurious revisions for unchanged content)
-- Asterisks-and-cruft cleanup (port from `C:\temp\bookstack-test\import.py`)
-- Image references: rewrite to point at `wiki-attachments` URLs, or leave relative and resolve client-side — decide in stage C (see `[[work/Index]]`)
+### Vault → site (the dominant flow today)
 
-## Pull script (Supabase → vault)
+`scripts/build-content.ts` reads `VAULT_PUBLIC` (default `G:\…\PUBLIC\`), generates `src/generated/content.ts`, copies attachments into `public/vault-attachments/by-name/`. Read-only against the vault. Runs once with `npm run build-content`, or auto on changes via `npm run watch-content` (Node `fs.watch` + 500 ms debounce → Vite HMR).
 
-CLI (Node):
+This pipeline is **build-time + dev-time only** — it doesn't touch Supabase.
+
+### Vault → `wiki.pages` (`scripts/push-vault.ts`)
+
+Intended for when the site moves from build-time snapshots to runtime Supabase fetches. Currently **dry-run only** (`--execute` exits 1) because the schema migration hasn't been approved.
+
+When unlocked:
+
+- Walks `VAULT_PUBLIC` recursively, upserts each `.md` into `wiki.pages` keyed by `path`
+- Folders get rows too (`kind='folder'`, `body=null`)
+- Cleanup pipeline ported from BookStack PoC: collapseAsterisks, stripDuplicateH1, vaultToApp (wikilink rewrite)
+- Idempotent: hash content, skip unchanged
+
+### `wiki.pages` → vault (`scripts/pull-vault.ts`)
+
+Back-sync for player-edited pages. Currently **dry-run only**.
+
+When unlocked:
 
 - `SELECT * FROM wiki.pages WHERE ready_to_sync = true`
-- For each row: convert wikilinks (app → vault form); preview diff vs current file in `PUBLIC/`
+- Convert wikilinks (app → vault form)
+- Preview diff vs current file in `PUBLIC/`
 - **Manual confirm step** before writing — GM reviews per page
 - After successful write: flip `ready_to_sync = false`
 
-## Wikilink conversion
+### Character import (`/admin/import-characters` — to build)
 
-Two directions:
+Detailed flow in [[work/2026-05-20-import-coc-creator-characters]]. Summary:
 
-- **Vault form:** `[[Page Name]]` or `[[Page Name|alias]]` — `Page Name` is unique within the vault
-- **App form:** `[[<path>]]` or canonical URL — to be finalised in stage C
+1. Admin opens the route (gated by `wiki.profiles.role = 'mg'`).
+2. Frontend calls `supabase.from('characters').select(…)` — works as anon because coc-creator's `anon_read_characters` policy is unfiltered.
+3. UI shows the list with per-row state (`not imported` / `imported (current)` / `imported (stale)`), multi-select.
+4. Admin clicks **Importuj zaznaczone** → for each selected: types player display name → upsert into `wiki.imported_characters`.
+5. Site immediately shows new pages under `BADACZE/<slug>` via `useContentTree()` merge.
 
-Open: whether resolution happens at push-time (store app-form in DB) or render-time (store vault-form, resolve in React). See `[[work/Index]]`.
+### Wikilink conversion
+
+Two-way. Shared parser/resolver in `src/lib/wikilinks.ts` (see [[work/2026-05-19-wikilink-plugin]]):
+
+- **Vault form:** `[[Page]]` or `[[Folder/Page|alias]]`. Resolved by node *name* (Obsidian convention).
+- **App form:** `[Page](/p/<slug-path>)`. URLs use slug-form.
+- Wikilink anchors (`[[Page#Section]]`) — currently stripped (target resolves, anchor dropped). Anchor routing waits for `rehype-slug` (new dep — user approval).
+
+---
+
+## Migration order
+
+Recommended sequence when the schema unlocks. Each step in a separate migration file so the GM can pause between if anything looks off:
+
+1. `001_schema_wiki.sql` — `create schema wiki;`
+2. `002_profiles.sql` — `wiki.profiles` + first-login trigger
+3. `003_pages.sql` — `wiki.pages` + `wiki.revisions` + RLS
+4. `004_pins.sql` — `wiki.pins` + RLS
+5. `005_imported_characters.sql` — `wiki.imported_characters` + RLS
+6. `006_storage.sql` — `wiki-attachments` bucket policies
+
+After 001–003: unlock `scripts/push-vault.ts --execute`. After 004: unlock pin editing. After 005: unlock `/admin/import-characters`.
+
+---
 
 ## Open questions
 
-See `[[work/Index]]` for: slugify strategy for Polish characters, image storage location, realtime channel granularity, wikilink resolution timing.
+- **Image storage strategy** — Supabase `wiki-attachments` bucket vs commit attachments into repo. Currently we commit (`public/vault-attachments/by-name/` gitignored, regenerated locally). Decide before stage D editor lets MG upload new images. See [[work/Index]].
+- **Realtime channels** — granularity for pins (one channel for all vs per-shelf). Affects free-tier egress. Decide in stage E.
+- **Wikilink anchor support** — needs `rehype-slug` (new dep). Decide when an actual anchor link breaks visibly.
+
+---
+
+## See also
+
+- [[INTEGRATIONS]] — cross-project coordination with coc-creator (read of `public.characters`)
+- [[work/2026-05-20-import-coc-creator-characters]] — character import design
+- [[work/2026-05-20-recursive-content-tree]] — why the schema is path-keyed not hierarchy-keyed
+- [[work/2026-05-19-wikilink-plugin]] — wikilink resolver design

@@ -112,11 +112,11 @@ Each imported character renders as a virtual page under `BADACZE/` (currently em
 - Image proxying (we reference coc-creator's portrait URLs directly; they're already public).
 - Player self-service ("claim my character") — admin-only import.
 
-## Open coordination items (user action)
+## Open coordination items — status 2026-05-20
 
-1. **Tell the coc-creator side this is happening.** Add a "Shared Supabase with akta-kasandry" section to their `TECHNOLOGY_MASTERMIND.md` that mentions: we read `public.characters` via anon-key, we never write to `public.*`, our writes are confined to `wiki.*`. Mirror our `INTEGRATIONS.md` boundary statement.
-2. **Decide on player display name strategy** — option (a) `SECURITY DEFINER` function or option (b) admin-types-it. Default proposal: (b).
-3. **Approve the proposed `wiki.imported_characters` DDL** above (or revise) — needed before any of the schema migration is run.
-4. **Confirm RLS posture:** is the `SELECT` policy open to anon (so unauthenticated players see character pages) or authenticated-only (login wall on character pages)?
+1. **✅ Coordination doc on coc-creator side** — user confirmed they'll add a "Shared Supabase with akta-kasandry" section to `coc-creator/docs/CoCCreator_obsidian/TECHNOLOGY_MASTERMIND.md`. Mirror our `INTEGRATIONS.md` boundary: we read `public.characters` via anon, we never write to `public.*`, our writes are confined to `wiki.*`.
+2. **🟡 Player display name strategy** — recommended option (b) admin-types-it. Awaiting user confirmation; default to (b) when implementation starts. Easy to swap to (a) `SECURITY DEFINER` later if needed.
+3. **✅ RLS for `wiki.imported_characters` SELECT** — open to anon (player wiki pages don't gate behind login).
+4. **🟡 DDL approval** — DDL written into `SUPABASE_AND_SYNC.md` (the rewritten version). User reviews when convenient; migration only runs after explicit ok.
 
-Once those four are answered, we can: (i) write the migration, (ii) build `/admin/import-characters`, (iii) extend the renderer with `<CharacterPage>`. None of those start before the four answers land.
+Once #2 and #4 land, implementation order: (i) migration scripts → (ii) `/admin/import-characters` UI → (iii) `<CharacterPage>` renderer → (iv) `useContentTree()` merge.
