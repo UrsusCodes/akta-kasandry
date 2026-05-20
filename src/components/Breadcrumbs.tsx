@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { contentTree } from '@/mocks/content'
+import { contentTree } from '@/content'
 import { findByPath } from '@/lib/tree'
 import type { Crumb, ContentNode } from '@/types'
 

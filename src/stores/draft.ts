@@ -10,14 +10,17 @@ const INITIAL = `# Próbna strona
 
 Pisz po polsku — **ąćęłńóśźż** ĄĆĘŁŃÓŚŹŻ.
 
-Wikilinki działają w podglądzie: [[Beacon Hill]], [[Alistair Whitcomb|antykwariusz]], [[Sesja 1 — List]].
+Wikilinki rozwiązują się względem snapshotu z PUBLIC. Spróbuj klikalnych:
+[[Bijatyka]], [[Mapa Bostonu 1924|mapa]], [[Tutorial walki — hub]], [[Duży sukces]].
 
 ## Tabela
 
-| Co | Gdzie |
-|---|---|
-| Antykwariat | Louisburg Square 12 |
-| Pensjonat | Hanover St., North End |
+| Sukces | Próg | Symbol |
+|---|---|---|
+| Krytyczny | wartość ÷ 5 | ⭐ |
+| Trudny | wartość ÷ 2 | ✅ |
+| Zwykły | ≤ wartość | ✅ |
+| Porażka | > wartość | ❌ |
 
 \`\`\`
 "Trzecia godzina jest najczystsza." — kult

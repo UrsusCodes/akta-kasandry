@@ -24,8 +24,8 @@ export type Crumb = {
 
 export type Pin = {
   id: string
-  x: number
-  y: number
+  lat: number
+  lng: number
   title: string
   description: string
   label: string

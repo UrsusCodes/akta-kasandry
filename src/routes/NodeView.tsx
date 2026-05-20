@@ -1,12 +1,14 @@
 import { Link, useLocation } from 'react-router-dom'
-import { contentTree } from '@/mocks/content'
+import { contentTree } from '@/content'
 import { findByPath } from '@/lib/tree'
 import { Markdown } from '@/components/Markdown'
+import { BostonMap } from '@/components/BostonMap'
+import { MAP_PAGE_PATH, stripLegacyMapEmbed } from '@/lib/specialPages'
 import type { ContentNode } from '@/types'
 
 /**
  * `/p/*` catch-all view. Resolves the rest of the URL into a node and:
- * - page node → renders body via Markdown
+ * - page node → renders body via Markdown (or custom component if special)
  * - folder node with body → renders body + child index
  * - folder node without body → renders child index only
  * - missing → 404-ish message
@@ -30,10 +32,10 @@ export function NodeView() {
   }
 
   if (node.kind === 'page') {
+    if (node.path === MAP_PAGE_PATH) return <MapArticle node={node} />
     return <Markdown>{node.body ?? ''}</Markdown>
   }
 
-  // Folder
   return (
     <article>
       <header className="mb-6">
@@ -52,6 +54,30 @@ export function NodeView() {
       )}
 
       <ChildList nodes={node.children ?? []} />
+    </article>
+  )
+}
+
+function MapArticle({ node }: { node: ContentNode }) {
+  // The PUBLIC article carries a hardcoded <a><img src="http://localhost:8081/…"></a>
+  // from the BookStack PoC. Strip it so the interactive map slots in cleanly,
+  // and let the legend (and any other text) render below.
+  const cleaned = stripLegacyMapEmbed(node.body ?? '')
+  return (
+    <article>
+      <header className="mb-6">
+        <h1 className="font-display text-4xl uppercase tracking-widest text-parchment">
+          {node.name}
+        </h1>
+      </header>
+      <div className="mb-6">
+        <BostonMap />
+      </div>
+      <p className="font-mono mb-6 text-xs text-parchment/60">
+        Mapa: OpenStreetMap. Pinezki: kliknij, by zobaczyć popover. Edycja (drag, klik-dodaj,
+        prawy klik-usuń) czeka na auth + Supabase pin storage.
+      </p>
+      <Markdown>{cleaned}</Markdown>
     </article>
   )
 }

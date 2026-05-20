@@ -4,7 +4,6 @@ import { Breadcrumbs } from './Breadcrumbs'
 
 export function AppShell() {
   const location = useLocation()
-  const onMap = location.pathname.startsWith('/map')
   const onDraft = location.pathname.startsWith('/draft')
 
   return (
@@ -22,18 +21,10 @@ export function AppShell() {
               to="/"
               end
               className={({ isActive }) =>
-                isActive && !onMap && !onDraft ? 'text-gold' : 'text-parchment hover:text-gold'
+                isActive && !onDraft ? 'text-gold' : 'text-parchment hover:text-gold'
               }
             >
               Wiki
-            </NavLink>
-            <NavLink
-              to="/map"
-              className={({ isActive }) =>
-                isActive ? 'text-gold' : 'text-parchment hover:text-gold'
-              }
-            >
-              Mapa
             </NavLink>
             <NavLink
               to="/draft"

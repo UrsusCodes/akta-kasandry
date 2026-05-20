@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { contentTree } from '@/mocks/content'
+import { contentTree } from '@/content'
 import type { ContentNode } from '@/types'
 
 export function Landing() {

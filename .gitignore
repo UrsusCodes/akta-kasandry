@@ -6,6 +6,12 @@ dist/
 dist-ssr/
 *.tsbuildinfo
 
+# Vault snapshot — refreshed by `npm run build-content`.
+# Generated content.ts (~100 KB) IS committed so the app boots after `git clone`.
+# Attachments (typically 20-30 MB of screenshots) are NOT committed — re-run
+# the generator after cloning.
+public/vault-attachments/
+
 # Environment (only .env.example is committed)
 .env
 .env.local

@@ -10,7 +10,7 @@
  * stand-in source. Walks arbitrary depth (no fixed Shelf/Book/Chapter).
  */
 import { appToVault } from '../src/lib/wikilinks'
-import { contentTree } from '../src/mocks/content'
+import { contentTree } from '../src/content'
 import { walkTree } from '../src/lib/tree'
 import { contentHash } from './lib/cleanup'
 import type { ContentNode } from '../src/types'

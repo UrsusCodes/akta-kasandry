@@ -1,33 +1,35 @@
 import type { Pin } from '@/types'
 
 /**
- * Mock pins for the Boston map. Coordinates are in the image's local CRS
- * (0..1000 horizontal, 0..1500 vertical, matching public/maps/boston-placeholder.svg).
- * Stage E proper will replace with `select * from wiki.pins` and add edit mode.
+ * Mock pins on the Boston OSM tile map. Coords are real WGS84 lat/lng. Stage E
+ * proper will replace with `select * from wiki.pins` + edit mode. The locations
+ * for "Hale Manor" and "Whitlock House" are placed on real downtown streets as
+ * fictional addresses for the campaign; "Mount Auburn Cemetery" is real.
  */
 export const pins: Pin[] = [
   {
-    id: 'beacon-hill',
-    x: 410,
-    y: 580,
-    title: 'Beacon Hill',
-    label: 'dzielnica',
-    description: 'Brahminowie i ich sekrety. Patrz strona [[Beacon Hill]].',
+    id: 'hale-manor',
+    lat: 42.358,
+    lng: -71.0598,
+    title: 'Hale Manor',
+    label: 'siedziba',
+    description:
+      'Siedziba profesora Victora Hale\'a (centrum miasta). Patrz [[Mapa Bostonu 1924]].',
   },
   {
-    id: 'north-end',
-    x: 600,
-    y: 460,
-    title: 'North End',
-    label: 'dzielnica',
-    description: 'Włoska enklawa, prohibicyjne piwnice. Patrz [[North End]].',
+    id: 'whitlock-house',
+    lat: 42.3593,
+    lng: -71.062,
+    title: 'Whitlock House',
+    label: 'dom NPC',
+    description: 'Dom doktora Edwarda Whitlocka — dwie ulice od Hale Manor.',
   },
   {
-    id: 'whitcomb',
-    x: 380,
-    y: 620,
-    title: 'Antykwariat Whitcomba',
-    label: 'lokacja',
-    description: 'Louisburg Square 12. Tu zaczyna się sesja 2.',
+    id: 'mount-auburn',
+    lat: 42.371,
+    lng: -71.144,
+    title: 'Cmentarz Mount Auburn',
+    label: 'cmentarz',
+    description: 'Najstarszy cmentarz ogrodowy Bostonu (północny zachód).',
   },
 ]

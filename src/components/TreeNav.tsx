@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import type { ContentNode } from '@/types'
-import { contentTree } from '@/mocks/content'
+import { contentTree } from '@/content'
 
 /**
  * Recursive Obsidian-style sidebar. Folders are collapsible; pages are links.

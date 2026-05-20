@@ -8,7 +8,8 @@
     "build": "npx tsc -b && npx vite build",
     "preview": "vite preview",
     "push-vault": "tsx scripts/push-vault.ts",
-    "pull-vault": "tsx scripts/pull-vault.ts"
+    "pull-vault": "tsx scripts/pull-vault.ts",
+    "build-content": "tsx scripts/build-content.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.4",

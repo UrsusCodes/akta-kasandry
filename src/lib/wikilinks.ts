@@ -1,4 +1,4 @@
-import { contentTree } from '../mocks/content'
+import { contentTree } from '../content'
 import { findByWikilinkTarget } from './tree'
 import type { ContentNode } from '../types'
 
@@ -21,14 +21,23 @@ export type ParsedWikilink = {
   alias?: string
 }
 
+/**
+ * Parse the contents of a `[[…]]` expression. Strips any `#anchor` suffix from
+ * the target before returning (the anchor isn't honoured by the renderer yet —
+ * we just route to the page). The anchor is preserved on the returned object
+ * so the renderer can attach it to the URL once anchor IDs are wired up.
+ */
 export function parseWikilink(inside: string): ParsedWikilink {
+  let raw = inside
+  let alias: string | undefined
   const pipe = inside.indexOf('|')
-  if (pipe === -1) return { raw: inside, target: inside.trim() }
-  return {
-    raw: inside,
-    target: inside.slice(0, pipe).trim(),
-    alias: inside.slice(pipe + 1).trim(),
+  if (pipe !== -1) {
+    alias = inside.slice(pipe + 1).trim()
+    raw = inside.slice(0, pipe)
   }
+  const hash = raw.indexOf('#')
+  const target = (hash === -1 ? raw : raw.slice(0, hash)).trim()
+  return { raw: inside, target, alias }
 }
 
 export type WikilinkMatch = {
