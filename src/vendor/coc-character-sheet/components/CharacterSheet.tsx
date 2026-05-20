@@ -2,7 +2,7 @@ import { getSkillDisplayName, getSkillBase } from '../data/skills'
 import { CHARACTERISTIC_MAP } from '../data/characteristics'
 import { OCCUPATIONS } from '../data/occupations'
 import { DRIVES } from '../data/drivePillars'
-import { ERA_LABELS, METHOD_LABELS, type CharacteristicKey } from '../types/common'
+import { type CharacteristicKey } from '../types/common'
 import { halfValue, fifthValue } from '../lib/utils'
 import { Badge } from './Badge'
 import { CharacterDescriptions } from './CharacterDescriptions'
@@ -82,21 +82,24 @@ export function CharacterSheet({ character: char }: CharacterSheetProps) {
 
   return (
     <div className="space-y-4">
-      {/* Portrait + Basic info */}
-      {char.portrait_url && (
-        <div className="flex justify-center">
-          <img src={char.portrait_url} alt="Portret" className="w-24 h-24 object-cover rounded-lg border border-coc-border" />
+      {/* Portrait + Basic info — AKTA-KASANDRY LOCAL MODIFICATION (diverges from
+          coc-creator source): large 3:4 portrait on the left, identity (age /
+          gender / occupation) on the right at the same height. Era + method
+          dropped per akta-kasandry UX. Re-vendoring overwrites this block —
+          reapply it. */}
+      <div className="flex items-start gap-4">
+        {char.portrait_url && (
+          <img
+            src={char.portrait_url}
+            alt="Portret"
+            className="w-48 aspect-[3/4] shrink-0 rounded-lg border border-coc-border object-cover"
+          />
+        )}
+        <div className="grid grid-cols-1 gap-1.5 pt-1 text-sm">
+          <div><span className="text-coc-text-muted">Wiek:</span> {char.age}</div>
+          <div><span className="text-coc-text-muted">Płeć:</span> {char.gender}</div>
+          <div><span className="text-coc-text-muted">Zawód:</span> {occupation?.name ?? char.occupation_id}</div>
         </div>
-      )}
-      <div className="grid grid-cols-3 gap-2 text-sm">
-        {char.player_name && <div><span className="text-coc-text-muted">Gracz:</span> {char.player_name}</div>}
-        {char.invite_code && <div><span className="text-coc-text-muted">Kod:</span> <span className="font-mono">{char.invite_code}</span></div>}
-        <div><span className="text-coc-text-muted">Wiek:</span> {char.age}</div>
-        <div><span className="text-coc-text-muted">Płeć:</span> {char.gender}</div>
-        <div><span className="text-coc-text-muted">Zawód:</span> {occupation?.name ?? char.occupation_id}</div>
-        <div><span className="text-coc-text-muted">Era:</span> {ERA_LABELS[char.era as keyof typeof ERA_LABELS]}</div>
-        <div><span className="text-coc-text-muted">Metoda:</span> {METHOD_LABELS[char.method as keyof typeof METHOD_LABELS]}</div>
-        {char.distinguisher && <div><span className="text-coc-text-muted">Wyróżnik:</span> {char.distinguisher}</div>}
       </div>
       {char.appearance && (
         <div className="text-sm">
