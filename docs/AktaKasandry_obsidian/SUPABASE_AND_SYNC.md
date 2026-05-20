@@ -73,6 +73,31 @@ create table wiki.pins (
   created_by uuid references wiki.profiles(id),
   created_at timestamptz default now()
 );
+
+-- Character import from coc-creator. Snapshot model:
+--   admin selects characters in /admin/import-characters,
+--   row is upserted on source_id, source_updated_at tracks staleness.
+-- Detailed design: work/2026-05-20-import-coc-creator-characters.md
+create table wiki.imported_characters (
+  id bigserial primary key,
+  source_id uuid not null unique,       -- public.characters.id
+  slug text not null unique,            -- url segment, derived from name
+
+  name text not null,
+  occupation_id text,
+  era text,
+  status text,                          -- 'draft' | 'submitted' from source
+  source_player_id uuid,
+  player_name text,                     -- admin-entered (no public.players access)
+  portrait_url text,
+
+  data jsonb not null,                  -- whole source row snapshot
+
+  source_updated_at timestamptz not null,
+  imported_at timestamptz not null default now(),
+  imported_by uuid references auth.users(id)
+);
+create index on wiki.imported_characters (source_updated_at);
 ```
 
 ## RLS policies (sketch — finalise in stage A / D)

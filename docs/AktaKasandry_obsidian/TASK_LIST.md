@@ -77,6 +77,19 @@ Framework scaffolding session — stages A (partial), B (full), C (dry-run only)
 - [ ] First production deploy
 - [ ] (Optional) custom domain
 
+### Stage H — Character import from coc-creator `#stage/h` `#dep/coc-creator`
+
+Design ready ([[work/2026-05-20-import-coc-creator-characters]]). Implementation blocked on Supabase migration + Auth.
+
+- [ ] **User action:** add "Shared Supabase with akta-kasandry" section to `coc-creator/docs/CoCCreator_obsidian/TECHNOLOGY_MASTERMIND.md` documenting our read-only use of `public.characters`
+- [ ] **User decision:** player-display-name strategy — admin-types-it (default proposal) vs `SECURITY DEFINER` function on coc-creator side
+- [ ] **User decision:** RLS posture for `wiki.imported_characters` SELECT — anon (open) vs authenticated-only
+- [ ] **User approval:** `wiki.imported_characters` DDL sketch in `[[SUPABASE_AND_SYNC]]`
+- [ ] Migration + RLS — pending schema unlock
+- [ ] `/admin/import-characters` route + multi-select UI — pending Auth
+- [ ] `<CharacterPage>` renderer for `BADACZE/<slug>` virtual pages
+- [ ] `useContentTree()` hook merging vault snapshot + imported characters at runtime
+
 ## Out of scope (do not pick up)
 
 - Player image uploads

@@ -29,6 +29,9 @@ External systems and sibling projects this app coordinates with. Cross-project c
 2. Check `git log` on that file via `gh` CLI for recent updates
 3. If you're modifying anything *they* might care about (Auth providers, RLS on `auth.*`, project-level settings, billing-affecting changes), surface it to the user — they may need to brief the coc-creator side
 
+> [!warning] Coordination doc is currently one-sided (2026-05-20)
+> Recon on `UrsusCodes/coc-creator` via `gh` (see [[work/2026-05-20-import-coc-creator-characters]]) found **no mention of akta-kasandry anywhere in their docs.** Their `TECHNOLOGY_MASTERMIND.md` has no "Shared Supabase with akta-kasandry" section yet. The shared-database arrangement is documented only on our side. **User action:** add a coordination section on coc-creator's side before any cross-schema work lands, so their future maintenance doesn't accidentally break us.
+
 **Safe without coordination:**
 
 - Anything strictly inside `wiki.*` schema
@@ -41,6 +44,7 @@ External systems and sibling projects this app coordinates with. Cross-project c
 - Modifying email templates
 - Changing project-level settings (region, plan tier)
 - Anything that materially increases egress
+- **Reading from `public.*` for our own features** (e.g. character import — [[work/2026-05-20-import-coc-creator-characters]]). Their `anon_read_characters` policy lets us, but tells them *we are doing it*.
 
 > [!info] coc-creator has no dev vault
 > coc-creator is an older project — it does not have a `docs/CoCCreator_obsidian/` equivalent of this vault. The `TECHNOLOGY_MASTERMIND.md` file referenced here is a single document in `coc-creator/docs/`, maintained by hand. Treat it as the canonical coordination doc — there's no fuller context behind it.

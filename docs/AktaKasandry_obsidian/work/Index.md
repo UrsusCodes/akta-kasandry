@@ -12,6 +12,8 @@ Map of decision notes, explorations, and dated working memos. Each entry links t
 
 ## Open questions (decisions pending)
 
+- **Import postaci z coc-creator** — [[work/2026-05-20-import-coc-creator-characters]] — design ready, 4 user-action items (coordination doc on their side, player-name strategy, DDL approval, RLS posture). Implementation blocked on those + schema migration.
+
 - ~~**Markdown editor choice**~~ — resolved 2026-05-19: `@uiw/react-md-editor`. See [[work/2026-05-19-editor-choice]].
 - **Slugify strategy for Polish characters** — keep diacritics in URLs (percent-encoded), transliterate (`ą` → `a`), or hash. Affects deep-linking + readability + sync key stability. Resolve before stage **c** (push script needs deterministic keys).
 - **Realtime channel granularity for pins** — single channel for all pins vs per-shelf vs per-book. Affects free-tier egress. Resolve in stage **e**.
