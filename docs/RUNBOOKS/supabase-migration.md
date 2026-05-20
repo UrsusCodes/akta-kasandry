@@ -65,21 +65,9 @@ Should still succeed. Nothing imports `src/lib/supabase.ts` yet — the build on
 
 ---
 
-## Phase 2 — Expose the `wiki` schema (1 min, but easy to miss)
+## Phase 2 — Run the migrations (10 min)
 
-PostgREST (the auto-generated REST layer Supabase uses) only serves schemas explicitly listed in the API settings. Without this step, every `supabase.from('pages')` call returns 404.
-
-### 2.1 Add `wiki` to exposed schemas
-
-Dashboard → **Settings → API → Exposed schemas** → click the field → add `wiki` (comma-separated with `public`, `graphql_public`). Save.
-
-### 2.2 Verify
-
-The field should now read something like `public, graphql_public, wiki`. (You can't verify the actual exposure until tables exist — Phase 4.)
-
----
-
-## Phase 3 — Run the migrations (10 min)
+> 📝 **Order swapped from earlier draft.** In the new Supabase UI, exposing a schema (Phase 3 below) requires the schema to already exist in the DB. So we create it first, expose it after.
 
 We use the dashboard SQL Editor, not Supabase CLI — chosen for the project (per [work/Index.md](../AktaKasandry_obsidian/work/Index.md)).
 
@@ -113,7 +101,7 @@ The six files, in order:
 | 5 | `005_imported_characters.sql` | `wiki.imported_characters` + RLS |
 | 6 | `006_storage.sql` | RLS policies on `storage.objects` for the `wiki-attachments` bucket |
 
-### 3.3 Verify after each migration
+### 2.3 Verify after each migration
 
 After `001`: in the dashboard → **Database → Schemas**, you should see `wiki` listed.
 
@@ -126,6 +114,24 @@ After `004`: `pins` appears.
 After `005`: `imported_characters` appears.
 
 After `006`: in **Database → Policies → storage.objects**, you should see four "wiki-attachments …" policies.
+
+---
+
+## Phase 3 — Expose the `wiki` schema (1 min, but easy to miss)
+
+PostgREST (the auto-generated REST layer) only serves schemas explicitly listed in Data API settings. Without this, `supabase.from('pages')` returns 404 even though the table exists.
+
+### 3.1 Add `wiki` to exposed schemas
+
+In the new Supabase UI: dashboard → **Settings → Data API → Settings tab** (not "Settings → API" — that's only for keys now).
+
+In **Exposed schemas** dropdown → click the field → search for `wiki` (now visible because Phase 2 created it) → check the box. **Save.**
+
+The dropdown should now read "3 of 3 schemas exposed" (graphql_public, public, wiki).
+
+### 3.2 Verify
+
+Going forward, with **Automatically expose new tables** ON (default), any new tables you add to the `wiki` schema later are auto-exposed.
 
 ---
 
@@ -220,7 +226,7 @@ Expected output: `[]` (empty array — table exists but no rows yet). Anything e
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
-| `404 Not Found` | `wiki` schema not exposed | Phase 2.1 |
+| `404 Not Found` | `wiki` schema not exposed | Phase 3.1 |
 | `relation "wiki.pages" does not exist` | 003 didn't run | Re-run 003 |
 | `401 Unauthorized` | wrong anon key in `.env` | Check Phase 1.1 |
 | `invalid request: column does not exist` | partial migration | Drop the schema with `drop schema wiki cascade;` and re-run from 001 |
