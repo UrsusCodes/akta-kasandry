@@ -36,8 +36,13 @@ begin
 end;
 $$;
 
-drop trigger if exists on_auth_user_created on auth.users;
-create trigger on_auth_user_created
+-- Trigger name is prefixed with `wiki_` to avoid colliding with coc-creator's
+-- trigger on the same auth.users table. They use the Supabase-docs canonical
+-- name `on_auth_user_created` to create rows in public.players on signup;
+-- if we used the same name, our `drop trigger if exists` above would silently
+-- nuke theirs. See INTEGRATIONS.md "Coordination triggers".
+drop trigger if exists wiki_on_auth_user_created on auth.users;
+create trigger wiki_on_auth_user_created
   after insert on auth.users
   for each row execute function wiki.handle_new_user();
 

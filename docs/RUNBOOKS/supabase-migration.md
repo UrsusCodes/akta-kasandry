@@ -260,18 +260,17 @@ To wipe everything we created and start over:
 -- 1. Drop our schema (cascades to all tables and triggers)
 drop schema if exists wiki cascade;
 
--- 2. Drop the storage policies (named uniquely so we don't hit coc-creator)
+-- 2. Drop the trigger on auth.users (named uniquely with the `wiki_` prefix
+--    so this won't touch coc-creator's `on_auth_user_created`).
+drop trigger if exists wiki_on_auth_user_created on auth.users;
+
+-- 3. Drop the storage policies (named uniquely so we don't hit coc-creator)
 drop policy if exists "wiki-attachments anon read" on storage.objects;
 drop policy if exists "wiki-attachments mg insert" on storage.objects;
 drop policy if exists "wiki-attachments mg update" on storage.objects;
 drop policy if exists "wiki-attachments mg delete" on storage.objects;
 
--- 3. (Manual) Delete the wiki-attachments bucket from dashboard Storage page.
-
--- 4. The auth.users INSERT trigger won't be there either after step 1
---    (function lived in wiki schema). Verify with:
-select tgname from pg_trigger where tgname = 'on_auth_user_created';
--- Should return 0 rows.
+-- 4. (Manual) Delete the wiki-attachments bucket from dashboard Storage page.
 ```
 
 Then re-run from Phase 3.
