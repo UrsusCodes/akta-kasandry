@@ -90,7 +90,7 @@ For each file under `supabase/migrations/` in this repo, in numeric order:
 5. Verify: bottom panel shows "Success. No rows returned." or row counts. **No red errors.**
 6. Move to the next file.
 
-The six files, in order:
+The seven files, in order:
 
 | # | File | Purpose |
 |---|---|---|
@@ -100,6 +100,7 @@ The six files, in order:
 | 4 | `004_pins.sql` | `wiki.pins` + RLS |
 | 5 | `005_imported_characters.sql` | `wiki.imported_characters` + RLS |
 | 6 | `006_storage.sql` | RLS policies on `storage.objects` for the `wiki-attachments` bucket |
+| 7 | `007_grants.sql` | **explicit** table/sequence grants for anon + authenticated (the `alter default privileges` in 001 doesn't reliably cover SQL-Editor-created tables) |
 
 ### 2.3 Verify after each migration
 
@@ -115,6 +116,8 @@ After `005`: `imported_characters` appears.
 
 After `006`: in **Database → Policies → storage.objects**, you should see four "wiki-attachments …" policies.
 
+After `007`: no visible change, but the API queries in Phase 6 will start returning `[]` instead of 404.
+
 ---
 
 ## Phase 3 — Expose the `wiki` schema (1 min, but easy to miss)
@@ -129,9 +132,21 @@ In **Exposed schemas** dropdown → click the field → search for `wiki` (now v
 
 The dropdown should now read "3 of 3 schemas exposed" (graphql_public, public, wiki).
 
+> ⚠️ **Known issue (2026-05-20): the dashboard Save may not propagate to PostgREST.** We hit this — dashboard showed "3 of 3 exposed" but the API still returned `PGRST106 Invalid schema: wiki`. The `pgrst.db_schemas` GUC on the `authenticator` role wasn't written. **Fix it directly in SQL Editor:**
+>
+> ```sql
+> -- diagnose: does the authenticator role have wiki in its config?
+> select rolname, rolconfig from pg_roles where rolname = 'authenticator';
+> -- if rolconfig has no pgrst.db_schemas (or it lacks wiki), set it explicitly:
+> alter role authenticator set pgrst.db_schemas = 'public, graphql_public, wiki';
+> notify pgrst, 'reload config';
+> ```
+>
+> Wait ~10s, then re-test. This is a **project-wide** setting shared with coc-creator — adding `wiki` is additive (their `public, graphql_public` access is untouched). **Caveat:** if anyone clicks Save in coc-creator's Data API settings later, it may overwrite this GUC and drop `wiki` — just re-run the `alter role` line.
+
 ### 3.2 Verify
 
-Going forward, with **Automatically expose new tables** ON (default), any new tables you add to the `wiki` schema later are auto-exposed.
+Going forward, with **Automatically expose new tables** ON (default), any new tables you add to the `wiki` schema later are auto-exposed (but still need the grants from `007_grants.sql` — re-run it).
 
 ---
 
@@ -226,7 +241,8 @@ Expected output: `[]` (empty array — table exists but no rows yet). Anything e
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
-| `404 Not Found` | `wiki` schema not exposed | Phase 3.1 |
+| `PGRST106 Invalid schema: wiki` | `wiki` not in PostgREST's `db_schemas` (dashboard Save didn't propagate) | Phase 3.1 known-issue block — `alter role authenticator set pgrst.db_schemas` + `notify pgrst, 'reload config'` |
+| `404 Not Found` (schema IS exposed) | tables lack anon/authenticated GRANT — role sees no privilege → "not found" | Run `007_grants.sql` |
 | `relation "wiki.pages" does not exist` | 003 didn't run | Re-run 003 |
 | `401 Unauthorized` | wrong anon key in `.env` | Check Phase 1.1 |
 | `invalid request: column does not exist` | partial migration | Drop the schema with `drop schema wiki cascade;` and re-run from 001 |
@@ -263,6 +279,12 @@ drop schema if exists wiki cascade;
 -- 2. Drop the trigger on auth.users (named uniquely with the `wiki_` prefix
 --    so this won't touch coc-creator's `on_auth_user_created`).
 drop trigger if exists wiki_on_auth_user_created on auth.users;
+
+-- 2b. Remove wiki from PostgREST's exposed schemas (project-wide setting).
+--     Only do this if akta-kasandry is being fully removed — coc-creator
+--     doesn't use wiki so this is safe for them either way.
+alter role authenticator reset pgrst.db_schemas;
+notify pgrst, 'reload config';
 
 -- 3. Drop the storage policies (named uniquely so we don't hit coc-creator)
 drop policy if exists "wiki-attachments anon read" on storage.objects;
