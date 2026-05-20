@@ -58,7 +58,7 @@ export function AdminImport() {
     return [...byPlayer.entries()]
       .map(([playerId, chars]) => ({
         playerId: playerId === '∅' ? null : playerId,
-        chars: chars.sort((a, b) => a.name.localeCompare(b.name, 'pl')),
+        chars: chars.sort((a, b) => (a.name ?? '').localeCompare(b.name ?? '', 'pl')),
       }))
       .sort((a, b) => (a.playerId ?? '').localeCompare(b.playerId ?? ''))
   }, [sources])
@@ -201,7 +201,9 @@ export function AdminImport() {
                           className="h-8 w-8 rounded-full border border-gold-muted object-cover"
                         />
                       )}
-                      <span className="font-body text-parchment">{c.name}</span>
+                      <span className="font-body text-parchment">
+                        {c.name || <em className="text-parchment/50">(bez nazwy)</em>}
+                      </span>
                       <span className="font-mono text-xs text-parchment/40">
                         {[c.occupation_id, c.era, c.status].filter(Boolean).join(' · ')}
                       </span>

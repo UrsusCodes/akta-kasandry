@@ -92,11 +92,14 @@ export const useCharactersStore = create<CharactersState>((set, get) => ({
 
   importOne: async (source, playerName) => {
     if (!hasSupabaseCredentials()) return { error: 'Supabase nie jest skonfigurowane.' }
-    const slug = slugify(source.name)
+    const name = source.name || 'Postać bez nazwy'
+    // Include a short id suffix so two unnamed/duplicate-name characters don't
+    // collide on the unique slug.
+    const slug = `${slugify(name)}-${source.id.slice(0, 4)}`
     const row = {
       source_id: source.id,
       slug,
-      name: source.name,
+      name,
       occupation_id: source.occupation_id ?? null,
       era: source.era ?? null,
       status: source.status ?? null,
