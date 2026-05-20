@@ -77,24 +77,37 @@ CREATE INDEX ON wiki.imported_characters (source_updated_at);
 
 **Re-import semantics:** `INSERT … ON CONFLICT (source_id) DO UPDATE SET …` — same source character upserts in-place, `imported_at` refreshes, `source_updated_at` overwrites. New characters get a new row. Removed characters in coc-creator stay in our table until admin explicitly removes them (we don't auto-delete — that'd surprise players).
 
-### 3. Player display
+### 3. Player display — decided (b), with grouping UX
 
-Players table is opaque (service_role-only). Two options:
+Players table is opaque (service_role-only). Decided **(b) admin-types-it** (2026-05-20). UX requirement from user: admin needs to *see the set of characters owned by the same player* to recognise whose they are (no displayable name on coc-creator side beyond `player_id` UUID).
 
-- **(a) Denormalise at import.** Read `players.name` via a `SECURITY DEFINER` function that coc-creator would need to add (`get_player_display_name(uuid) → text`). Adds a coordination dependency on them.
-- **(b) Show what we already have.** `characters.player_id` is a UUID; we just record it as-is. Admin manually types the display name on import. No new dependency.
+**UI shape:** characters grouped by `source_player_id`. Each group is a collapsible block with a single "Imię gracza: ___" input that applies to all characters chosen from that group:
 
-Going with (b) for v1 — single-GM workflow, the GM knows which player owns which character. Promote to (a) only if it becomes annoying.
+```
+▾ Gracz #abc12345 (3 postaci)        Imię gracza: [_________]
+    [✓] Catburgler        (occupation, era, status)
+    [ ] Soldier
+    [✓] Lumberjack
+
+▾ Gracz #def67890 (1 postać)         Imię gracza: [_________]
+    [✓] Profesor
+```
+
+Hashed-short UUID prefix as the visible identifier (`#abc12345` = first 8 chars of the source UUID). Admin clicks on a character row to peek at portrait + occupation + a few traits — helps them pin who's who if they're not sure from the character name alone.
+
+When admin types a name in the player-level input, it applies to every checked character in that group on save. Cached per session — re-opening the page restores prior typed names by `source_player_id` (in `localStorage` until we wire it into the profile).
+
+Promote to (a) `SECURITY DEFINER` only if it becomes annoying.
 
 ### 4. Admin UI
 
 New route `/admin/import-characters`, gated by Auth role `mg`:
 
-1. On open: `supabase.from('characters').select('id, name, occupation_id, era, status, player_id, updated_at, profile_portrait_url')`.
-2. Cross-reference local `wiki.imported_characters` to compute per-row state: `not imported`, `imported (current)`, `imported (stale — source updated at Y)`.
-3. Table: portrait thumb · name · era · occupation · status (draft/submitted) · imported state · checkbox. Filter inputs above.
-4. Buttons: **Importuj zaznaczone** (upsert), **Odśwież nieaktualne** (re-import where `source_updated_at > snapshot`), **Usuń z wiki** (admin-confirmed delete).
-5. After successful import, show a toast linking to the new wiki page.
+1. On open: `supabase.from('characters').select('id, name, occupation_id, era, status, player_id, updated_at, profile_portrait_url')` plus `supabase.from('imported_characters').select(...)` on our side. Group the result by `source_player_id` in the client.
+2. Per-row state computed against local: `not imported`, `imported (current)`, `imported (stale — source updated at Y)`.
+3. Render: collapsible group per player (see section 3). Each group has a single "Imię gracza" input plus the character checkboxes.
+4. Buttons (top-level): **Importuj zaznaczone** (upsert with the typed player_name applied), **Odśwież nieaktualne** (re-import everything where `source_updated_at > snapshot`, preserves existing `player_name`), **Usuń z wiki** (admin-confirmed delete).
+5. After successful import, toast linking to the new wiki page(s).
 
 ### 5. Where character pages live in the tree
 
@@ -114,9 +127,14 @@ Each imported character renders as a virtual page under `BADACZE/` (currently em
 
 ## Open coordination items — status 2026-05-20
 
-1. **✅ Coordination doc on coc-creator side** — user confirmed they'll add a "Shared Supabase with akta-kasandry" section to `coc-creator/docs/CoCCreator_obsidian/TECHNOLOGY_MASTERMIND.md`. Mirror our `INTEGRATIONS.md` boundary: we read `public.characters` via anon, we never write to `public.*`, our writes are confined to `wiki.*`.
-2. **🟡 Player display name strategy** — recommended option (b) admin-types-it. Awaiting user confirmation; default to (b) when implementation starts. Easy to swap to (a) `SECURITY DEFINER` later if needed.
-3. **✅ RLS for `wiki.imported_characters` SELECT** — open to anon (player wiki pages don't gate behind login).
-4. **🟡 DDL approval** — DDL written into `SUPABASE_AND_SYNC.md` (the rewritten version). User reviews when convenient; migration only runs after explicit ok.
+All four decisions resolved. Implementation now blocks only on:
 
-Once #2 and #4 land, implementation order: (i) migration scripts → (ii) `/admin/import-characters` UI → (iii) `<CharacterPage>` renderer → (iv) `useContentTree()` merge.
+- Supabase schema migration being run (user → coordinate with coc-creator first)
+- Auth provider setup (user → with coc-creator for SSO)
+
+1. **✅ Coordination doc on coc-creator side** — user confirmed they'll add a "Shared Supabase with akta-kasandry" section to `coc-creator/docs/CoCCreator_obsidian/TECHNOLOGY_MASTERMIND.md`.
+2. **✅ Player display name strategy** — option (b) admin-types-it. Plus UX: characters grouped by `source_player_id` in the admin UI; single name input per player; `localStorage` cache between sessions.
+3. **✅ RLS for `wiki.imported_characters` SELECT** — open to anon.
+4. **✅ DDL approval** — DDL in `SUPABASE_AND_SYNC.md` approved as-is.
+
+Implementation order when schema+Auth unlock: (i) migration scripts (`005_imported_characters.sql`) → (ii) `/admin/import-characters` UI with grouped layout → (iii) `<CharacterPage>` renderer → (iv) `useContentTree()` merge.

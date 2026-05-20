@@ -79,15 +79,15 @@ Framework scaffolding session — stages A (partial), B (full), C (dry-run only)
 
 ### Stage H — Character import from coc-creator `#stage/h` `#dep/coc-creator`
 
-Design ready ([[work/2026-05-20-import-coc-creator-characters]]). DDL in [[SUPABASE_AND_SYNC]]. Implementation blocked on Supabase migration + Auth.
+Design ready ([[work/2026-05-20-import-coc-creator-characters]]). DDL in [[SUPABASE_AND_SYNC]]. All decisions made 2026-05-20. Implementation blocks only on Supabase schema migration + Auth.
 
-- [x] **User action:** ✅ user will add "Shared Supabase with akta-kasandry" section to coc-creator side (2026-05-20)
-- [ ] **User decision:** player-display-name strategy — recommended (b) admin-types-it; awaiting confirmation
-- [x] **User decision:** ✅ `wiki.imported_characters` SELECT open to anon (2026-05-20)
-- [ ] **User review:** rewritten `[[SUPABASE_AND_SYNC]]` — DDL is now reviewable
-- [ ] Migration + RLS — pending schema unlock
-- [ ] `/admin/import-characters` route + multi-select UI — pending Auth
-- [ ] `<CharacterPage>` renderer for `BADACZE/<slug>` virtual pages
+- [x] ✅ Coordination doc on coc-creator side (user action) — 2026-05-20
+- [x] ✅ Player-display-name = admin-types-it, grouped by source_player_id, localStorage cache — 2026-05-20
+- [x] ✅ RLS for `wiki.imported_characters` SELECT = anon — 2026-05-20
+- [x] ✅ DDL approved — 2026-05-20
+- [ ] Migration `005_imported_characters.sql` — pending schema unlock
+- [ ] `/admin/import-characters` route with player-grouped UI (collapsible blocks, single name input per player) — pending Auth
+- [ ] `<CharacterPage>` renderer for virtual `BADACZE/<slug>` pages (portrait + characteristics + occupation + equipment + backstory)
 - [ ] `useContentTree()` hook merging vault snapshot + imported characters at runtime
 
 ## Out of scope (do not pick up)
