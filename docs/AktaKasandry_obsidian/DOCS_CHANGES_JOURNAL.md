@@ -11,6 +11,35 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-20 — Map pin editing (Stage E proper)
+
+MG can now manage pins on the Boston map through the app. Backed by `wiki.pins`.
+
+**Files touched:**
+
+- `src/stores/pins.ts` — (from E1) reads `wiki.pins`, mock fallback, CRUD methods.
+- `src/components/BostonMap.tsx` — edit mode:
+  - **Toolbar** "Tryb edycji: WŁ/WYŁ" — only rendered for MG on the live table (`isMG && source === 'supabase'`).
+  - **Add**: click empty map in edit mode → `MapClickHandler` (useMapEvents) captures coords → form panel (title required, label, description) → `addPin` → `wiki.pins` insert.
+  - **Move**: markers are `draggable` in edit mode → `dragend` → `updatePin` with new x/y.
+  - **Delete**: marker popup gets "Usuń pin" button in edit mode → `deletePin`.
+  - Coord conversion `latlngToXY` mirrors Y (CRS.Simple measures from bottom) + clamps to image bounds.
+  - Edit mode auto-disables on logout (`useEffect` on `isMG`).
+- `supabase/seeds/pins.sql` — (from E1) optional 3-pin seed.
+
+**Decisions:**
+
+- **Edit affordances gated twice**: UI hides them unless `isMG && source==='supabase'`, and `wiki.pins` RLS rejects non-MG writes at the DB. Belt + suspenders.
+- **New-pin form is a panel above the map**, not a Leaflet popup — popups re-render and lose form state mid-typing.
+- **Reload after each mutation** instead of optimistic update — table is tiny, keeps store logic trivial. Realtime sub deferred (free-tier egress; single-MG doesn't need live multi-client sync yet).
+- **Editing an existing pin's text** (title/label/description) not built yet — drag-move + delete + re-add covers it for now. Small follow-up: add an "Edytuj" form to the popup.
+
+**Verification:** `npm run build` clean.
+
+**Open questions / next steps:** test the full add/drag/delete loop against live `wiki.pins` (run the seed first if you want starter pins). Then: edit-existing-text polish, realtime sub, or move to next stage (C+reader-swap → page editing, or H import).
+
+---
+
 ## 2026-05-20 — Auth login UI (Stage D — login half)
 
 First use of the live Supabase backend from the frontend. MG/Admin login; player editing deferred per user.
