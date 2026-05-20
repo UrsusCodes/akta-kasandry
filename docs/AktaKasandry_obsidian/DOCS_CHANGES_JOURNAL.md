@@ -11,6 +11,31 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-20 — Auto-refresh watcher for vault changes
+
+User asked for an auto-update script — edit a `.md` in Obsidian, see the change in the running site without re-running the generator by hand.
+
+**Files touched:**
+
+- `scripts/lib/generate.ts` — new. Extracted the generator core (walk, image-stage, serialize, EXTRA_ASSETS copy) from `build-content.ts` so both the one-shot script and the watcher can call `generateContent({ vault })`.
+- `scripts/build-content.ts` — slimmed to a thin entry that calls `generateContent` once.
+- `scripts/watch-content.ts` — new. Initial regen on startup; then watches `dirname(VAULT)` recursively with Node's built-in `fs.watch` (`recursive: true` works fine on Windows, project's primary platform). Filters to changes inside PUBLIC or to a named EXTRA_ASSET; debounces ~500 ms; ignores `.obsidian/`, swap files, tmp.
+- `package.json` — `watch-content` script wired.
+- `docs/AktaKasandry_obsidian/TECHNOLOGY_MASTERMIND.md` — added a "Content pipeline" section explaining the two-terminal workflow.
+
+**Decisions:**
+
+- **Node built-in `fs.watch`, not chokidar.** Chokidar would be more robust on Linux/macOS but is a new top-level dep. Windows (the project's host) has solid native recursive watching. If we ever support Linux/macOS for dev, swap in chokidar then.
+- **Watch `dirname(VAULT)`, not VAULT itself.** That way we also catch changes to EXTRA_ASSETS (e.g. swapping the Boston map JPG) without a second watcher.
+- **Two-terminal workflow** (`npm run dev` + `npm run watch-content`) instead of bundling into a single command. Keeps each script doing one thing; user can stop the watcher independently of the dev server.
+- **No new deps.** rehype-raw was the last; the watcher is built on Node built-ins.
+
+**Verification:** smoke test — watcher starts cleanly, completes initial regen in ~300 ms (28 pages, 54 attachments), then idles waiting for events. Build clean.
+
+**Open questions / next steps:** Test a real edit-and-save loop against the live Obsidian vault — should be transparent but worth a single end-to-end check.
+
+---
+
 ## 2026-05-20 — Add rehype-raw to preserve GM's HTML img formatting
 
 Follow-up to the code-block fix. User opted to add `rehype-raw` (~6 KB gzipped) so the GM's `<img width="220" align="right">` thumbnail pattern survives the render — was either that or keep the simplified markdown-only rendering that lost GM intent.

@@ -54,6 +54,27 @@ Landed in B1, refactored 2026-05-20 to drop fixed-depth views:
   - `DraftView.tsx` (`/draft`) — editor + live preview (D1)
 - Not yet built: `RevisionList`, `DiffView`, `AuthGate`, `LoginForm` — wait for stage D
 
+## Content pipeline (PUBLIC vault → site)
+
+The reader is fed by a generated TypeScript module (`src/generated/content.ts`) — not by reading the vault at runtime. Two scripts manage the snapshot:
+
+| Script | Purpose |
+|---|---|
+| `npm run build-content` | One-shot regenerate. Walks `VAULT_PUBLIC` (default `G:\…\PUBLIC`), writes `src/generated/content.ts`, copies attachments + `EXTRA_ASSETS` (e.g. `boston-map-1924.jpg`) into `public/vault-attachments/by-name/`. |
+| `npm run watch-content` | Long-running watcher. Runs the generator once on startup, then re-runs (~500 ms debounce) on any change inside the vault or to a named EXTRA_ASSET. Vite's HMR picks up the regenerated file and reloads the page. |
+
+Both share `scripts/lib/generate.ts` (the core generator) so behaviour stays consistent.
+
+Workflow for dev:
+
+```
+terminal A:  npm run dev
+terminal B:  npm run watch-content
+# edit a .md file in Obsidian → page auto-reloads within ~1 s
+```
+
+Generator is read-only against the vault — only writes inside the repo.
+
 ## Build / Deploy
 
 - `npm run build` → static `dist/`
