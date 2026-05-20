@@ -11,6 +11,21 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-21 — Fix: index pasted images from the whole vault
+
+The new SPRAWY content showed `_(brak: Pasted image ….png|337)_` placeholders — the images weren't found. Root cause: Obsidian dumps pasted images into the **vault root** (`G:\…\Zew Cthulhu\`), outside `PUBLIC/`, but the generator's image index only scanned `PUBLIC/`.
+
+**Fix (`scripts/lib/generate.ts`):**
+
+- `indexImages` now scans `dirname(vault)` (the whole vault), not just PUBLIC, so vault-root pasted images are found. Only images *referenced* by a published page get staged, so scanning wider doesn't copy unreferenced vault images.
+- Added `IMAGE_INDEX_SKIP` (memory/node_modules/.trash/.git) — narrower than `EXCLUDE_DIRS` because the index MUST descend into `attachments/` (tutorial screenshots live there). `.obsidian` etc. caught by the dotfile check.
+
+**Result:** 54 → 66 attachments staged (the 12 pasted images), 0 `(brak:)` placeholders. Spaced filenames URL-encoded (`%20`) by `encodeURIComponent`; files on disk keep literal spaces — served fine.
+
+Files: `scripts/lib/generate.ts`, regenerated `src/generated/content.ts`, +12 images in `public/vault-attachments/by-name/`.
+
+---
+
 ## 2026-05-21 — Content refresh from PUBLIC (added SPRAWY + renames)
 
 Re-ran `npm run build-content` after the GM added content + renamed folders in the vault.

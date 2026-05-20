@@ -31,6 +31,12 @@ const EXCLUDE_DIRS = new Set([
 const EXCLUDE_SUFFIXES = ['.excalidraw.md']
 const IMAGE_EXTS = new Set(['.png', '.jpg', '.jpeg', '.gif', '.svg', '.webp'])
 
+// Dirs the image index skips while scanning the whole vault (broader than
+// PUBLIC, so Obsidian's vault-root pasted images are found). Excludes the heavy/
+// irrelevant trees but — unlike EXCLUDE_DIRS — keeps `attachments/` so tutorial
+// screenshots there are still indexed.
+const IMAGE_INDEX_SKIP = new Set(['memory', 'node_modules', '.trash', '.git'])
+
 /**
  * Files that live next to PUBLIC but are still needed by the rendered site
  * (e.g. the 13 MB 1924 Boston map JPG, which the GM keeps one folder up so it
@@ -69,7 +75,9 @@ function indexImages(root: string): Map<string, string> {
       continue
     }
     for (const e of entries) {
-      if (e.startsWith('.')) continue
+      // Skip only heavy/irrelevant dirs — DO descend into attachments/ (images
+      // live there). .obsidian etc. are caught by the dotfile check.
+      if (e.startsWith('.') || IMAGE_INDEX_SKIP.has(e)) continue
       const abs = join(dir, e)
       if (isDir(abs)) {
         stack.push(abs)
@@ -198,7 +206,11 @@ export function generateContent({ vault }: { vault: string }): GenerateReport {
   if (existsSync(ATTACHMENTS_OUT)) rmSync(ATTACHMENTS_OUT, { recursive: true, force: true })
   mkdirSync(ATTACHMENTS_OUT, { recursive: true })
 
-  const imageIndex = indexImages(vault)
+  // Index images across the WHOLE vault (one level up from PUBLIC), not just
+  // PUBLIC — Obsidian dumps pasted images (e.g. "Pasted image ….png") into the
+  // vault root by default. Only images actually referenced by a published page
+  // get staged, so scanning wider doesn't copy unreferenced vault images.
+  const imageIndex = indexImages(dirname(vault))
   const copied = new Set<string>()
   const tree = walk(vault, '', imageIndex, copied)
 
