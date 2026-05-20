@@ -58,7 +58,7 @@ Framework scaffolding session — stages A (partial), B (full), C (dry-run only)
 - [x] Boston map — Leaflet `ImageOverlay` over real `boston-map-1924.jpg` (Rand McNally, 7803×11702, staged by `npm run build-content` from one level above PUBLIC). Inside the existing PUBLIC article ([[work/2026-05-20-public-snapshot-and-osm-map]]).
 - [x] Pin markers + popovers (mock data only, no DB yet) — E1
 - [ ] Read pins from `wiki.pins` — pending Supabase
-- [ ] Edit mode (role `mg`): click-add, drag-move, right-click-edit/delete — pending auth
+- [ ] Edit mode (role `mg`): click-add, drag-move, right-click-edit/delete — pending auth. **Decision 2026-05-20:** user opted to wait for the Supabase + Auth path rather than ship a localStorage stopgap. Unlock chain: (1) schema migration approval → (2) Auth provider config → (3) RLS for `wiki.pins` → (4) implement edit-mode UI gated by role `mg`.
 - [ ] Realtime subscription on `wiki.pins` — pending Supabase
 - [ ] Pre-tiled (`gdal2tiles`) version of the 1924 JPG for faster first-paint on slow links — follow-up
 
