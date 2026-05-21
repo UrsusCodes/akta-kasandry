@@ -106,8 +106,11 @@ export const useCharactersStore = create<CharactersState>((set, get) => ({
       status: source.status ?? null,
       source_player_id: source.player_id ?? null,
       player_name: playerName.trim() || null,
+      // card_portrait_url = cropped 3:4 + filtered — canonical for CharacterSheet display.
+      // profile_portrait_url = full-res + filter only (in-app avatar, no crop).
+      // portrait_url = deprecated legacy field (migration 008).
       portrait_url:
-        source.portrait_url ?? source.profile_portrait_url ?? source.card_portrait_url ?? null,
+        source.card_portrait_url ?? source.profile_portrait_url ?? source.portrait_url ?? null,
       data: source, // full allowlisted snapshot
       source_updated_at: source.updated_at,
     }

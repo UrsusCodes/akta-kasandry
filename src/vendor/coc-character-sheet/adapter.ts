@@ -126,10 +126,13 @@ export function mapCharacterRowToSheet(row: PublicCharactersRow): SheetProps {
     main_position: (row.main_position ?? undefined) as CharacterSheetData['main_position'],
     additional_positions: (row.additional_positions ?? undefined) as CharacterSheetData['additional_positions'],
     contacts_v2: (row.contacts_v2 ?? undefined) as CharacterSheetData['contacts_v2'],
-    // best available portrait for screen display
-    // Preference: portrait_url (coc-creator canonical, public Storage URL) →
-    // profile_portrait_url (legacy) → card_portrait_url (legacy).
-    portrait_url: row.portrait_url ?? row.profile_portrait_url ?? row.card_portrait_url ?? undefined,
+    // Best available portrait for CharacterSheet display (aspect-[3/4] slot).
+    // Preference: card_portrait_url (3:4 cropped + filtered — canonical since migration 021) →
+    // profile_portrait_url (full-res + filter, no crop) →
+    // portrait_url (deprecated legacy field, migration 008).
+    // NOTE: CharacterPage.tsx overrides row.portrait_url with the wiki DB column before
+    // calling this function, so the DB-stored value always wins for article rendering.
+    portrait_url: row.portrait_url ?? row.card_portrait_url ?? row.profile_portrait_url ?? undefined,
     sessions: row.sessions ?? undefined,
     distinguisher: row.distinguisher ?? undefined,
     // NOTE: admin_notes, art_prompt, art_gallery deliberately omitted.

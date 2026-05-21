@@ -202,9 +202,9 @@ export function AdminImport() {
                         onChange={() => toggle(c.id)}
                         className="accent-gold"
                       />
-                      {(c.portrait_url || c.profile_portrait_url || c.card_portrait_url) && (
+                      {(c.card_portrait_url || c.profile_portrait_url || c.portrait_url) && (
                         <img
-                          src={c.portrait_url ?? c.profile_portrait_url ?? c.card_portrait_url ?? ''}
+                          src={c.card_portrait_url ?? c.profile_portrait_url ?? c.portrait_url ?? ''}
                           alt=""
                           className="h-8 w-8 rounded-full border border-gold-muted object-cover"
                         />
