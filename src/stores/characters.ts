@@ -107,7 +107,7 @@ export const useCharactersStore = create<CharactersState>((set, get) => ({
       source_player_id: source.player_id ?? null,
       player_name: playerName.trim() || null,
       portrait_url:
-        source.portrait_url ?? source.card_portrait_url ?? source.profile_portrait_url ?? null,
+        source.portrait_url ?? source.profile_portrait_url ?? source.card_portrait_url ?? null,
       data: source, // full allowlisted snapshot
       source_updated_at: source.updated_at,
     }
