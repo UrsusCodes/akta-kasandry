@@ -21,7 +21,7 @@ type Props = {
  */
 export function Markdown({ children }: Props) {
   return (
-    <div className="prose-cthulhu bg-parchment p-8">
+    <div className="prose-cthulhu bg-parchment p-4 sm:p-8">
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkWikilinks]}
         rehypePlugins={[rehypeRaw]}

@@ -12,7 +12,7 @@ export function Breadcrumbs() {
   return (
     <nav
       aria-label="breadcrumbs"
-      className="font-display mb-6 flex flex-wrap items-center gap-x-2 gap-y-1 border-b border-gold-muted/40 pb-3 text-sm uppercase tracking-wider text-parchment"
+      className="font-display mb-6 flex flex-wrap items-center gap-x-2 gap-y-1 border-b border-gold-muted/40 pb-3 text-xs uppercase tracking-wider text-parchment md:text-sm"
     >
       {crumbs.map((c, i) => (
         <span key={i} className="flex items-center gap-2">

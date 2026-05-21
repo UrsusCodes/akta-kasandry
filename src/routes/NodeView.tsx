@@ -34,9 +34,10 @@ export function NodeView() {
   }
 
   if (node.kind === 'page') {
-    if (node.character) return <CharacterPage character={node.character} />
-    if (node.path === MAP_PAGE_PATH) return <MapArticle node={node} />
-    return <Markdown>{node.body ?? ''}</Markdown>
+    const back = <BackButton path={node.path} />
+    if (node.character) return <>{back}<CharacterPage character={node.character} /></>
+    if (node.path === MAP_PAGE_PATH) return <>{back}<MapArticle node={node} /></>
+    return <>{back}<Markdown>{node.body ?? ''}</Markdown></>
   }
 
   // A folder whose children are imported characters → render a portrait hub.
@@ -45,6 +46,7 @@ export function NodeView() {
 
   return (
     <article>
+      <BackButton path={node.path} />
       <header className="mb-6">
         <h1 className="font-display text-4xl uppercase tracking-widest text-parchment">
           {node.name}
@@ -65,9 +67,26 @@ export function NodeView() {
       {isPlayerHub ? (
         <CharacterHub nodes={characterChildren} />
       ) : (
-        <ChildList nodes={node.children ?? []} />
+        <ChildGrid nodes={node.children ?? []} />
       )}
     </article>
+  )
+}
+
+/**
+ * Mobile-only back button (md:hidden). Links to the parent folder or to the
+ * home page when already at a root-level node.
+ */
+function BackButton({ path }: { path: string }) {
+  const slashIdx = path.lastIndexOf('/')
+  const to = slashIdx > 0 ? `/p/${path.slice(0, slashIdx)}` : '/'
+  return (
+    <Link
+      to={to}
+      className="mb-4 inline-flex items-center gap-1 border border-gold-muted/50 px-3 py-1.5 font-display text-xs uppercase tracking-wider text-parchment/70 transition hover:border-gold hover:text-gold md:hidden"
+    >
+      <span>‹</span> Powrót
+    </Link>
   )
 }
 
@@ -137,29 +156,40 @@ function MapArticle({ node }: { node: ContentNode }) {
   )
 }
 
-function ChildList({ nodes }: { nodes: ContentNode[] }) {
+/**
+ * Tile-based child grid (replaces ChildList).
+ * Single column on mobile, 2 columns on sm+.
+ * Folder tiles are visually heavier (gold tint); page tiles are lighter.
+ */
+function ChildGrid({ nodes }: { nodes: ContentNode[] }) {
   if (nodes.length === 0) {
     return <p className="font-body italic text-parchment/60">Pusty folder.</p>
   }
-  // One list, original (alphabetical) order. Folder vs page is signalled by
-  // styling, not by grouping into separate sections.
   return (
-    <ul className="space-y-1">
+    <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
       {nodes.map((n) => (
         <li key={n.path}>
           <Link
             to={`/p/${n.path}`}
-            className={
+            className={`flex items-center gap-3 border px-4 py-3 transition ${
               n.kind === 'folder'
-                ? 'font-display flex items-baseline gap-2 border-l-2 border-transparent px-3 py-2 text-lg uppercase tracking-wider text-gold transition hover:border-gold hover:bg-teal-dark/40'
-                : 'font-body flex items-baseline gap-2 border-l-2 border-transparent px-3 py-1 text-parchment transition hover:border-gold hover:text-gold'
-            }
+                ? 'border-gold-muted/60 bg-teal-dark/30 hover:border-gold hover:bg-teal-dark/60'
+                : 'border-gold-muted/20 hover:border-gold-muted/50'
+            }`}
           >
-            <span className="w-4 text-gold-muted">{n.kind === 'folder' ? '▸' : '·'}</span>
-            <span>{n.name}</span>
+            <span className="shrink-0 text-gold-muted">{n.kind === 'folder' ? '▸' : '·'}</span>
+            <span
+              className={`truncate ${
+                n.kind === 'folder'
+                  ? 'font-display text-sm uppercase tracking-wider text-gold'
+                  : 'font-body text-parchment'
+              }`}
+            >
+              {n.name}
+            </span>
             {n.kind === 'folder' && (
-              <span className="font-mono ml-2 text-xs text-parchment/40">
-                {(n.children?.length ?? 0)}
+              <span className="font-mono ml-auto shrink-0 text-xs text-parchment/40">
+                {n.children?.length ?? 0}
               </span>
             )}
           </Link>
