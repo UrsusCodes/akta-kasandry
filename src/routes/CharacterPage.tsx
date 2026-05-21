@@ -14,7 +14,17 @@ import type { ImportedCharacterData } from '@/types'
  * snapshot provenance footer wrap it to match the rest of the site.
  */
 export function CharacterPage({ character }: { character: ImportedCharacterData }) {
-  const props = mapCharacterRowToSheet(character.data as unknown as PublicCharactersRow)
+  // The dedicated `portrait_url` column on `imported_characters` is always the
+  // canonical portrait (set by importOne from the freshest source data).
+  // Override whatever portrait fields are in the JSONB snapshot so the sheet
+  // always shows the same portrait as the tile — even for rows imported before
+  // portrait_url was added to the allowlist, or when the adapter's fallback
+  // chain would otherwise prefer a legacy profile_portrait_url.
+  const row: PublicCharactersRow = {
+    ...(character.data as unknown as PublicCharactersRow),
+    portrait_url: character.portrait_url ?? undefined,
+  }
+  const props = mapCharacterRowToSheet(row)
 
   return (
     <article>
