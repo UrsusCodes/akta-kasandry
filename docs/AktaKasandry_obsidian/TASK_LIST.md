@@ -11,7 +11,7 @@ Staged plan mirrors the project spec (a-g). Active stage at top of "In progress"
 
 ## In progress
 
-Framework scaffolding session — stages A (partial), B (full), C (dry-run only), D1 (editor pick), E1 (placeholder map).
+Stages A, B, E, G, H: **complete**. C (dry-run only), D1 (editor live, no persistence yet), F (dry-run only). Next: vault push `--execute` (C), or page editing persistence (D), or back-sync (F).
 
 ## Backlog (staged)
 
@@ -91,23 +91,24 @@ Framework scaffolding session — stages A (partial), B (full), C (dry-run only)
 - [x] ✅ SPA fallback (index.html→404.html), base path `/akta-kasandry/`, image base prefix via `withBase`
 - [x] ✅ Repo public (`UrsusCodes/akta-kasandry`), auto-deploy on push to main
 - [ ] (Optional) custom domain
-- [ ] (Maintenance) bump Actions to Node 24 before June 2026 deprecation
+- [x] ✅ (Maintenance) bump Actions to Node 24 — 2026-05-21
 - [ ] (Cosmetic) deep links return HTTP 404 status (SPA still works) — only fixable by a host with real SPA fallback; accepted GH Pages tradeoff
 
 **STAGE G COMPLETE.** Site is live, auto-deploys on push.
 
 ### Stage H — Character import from coc-creator `#stage/h` `#dep/coc-creator`
 
-Design ready ([[work/2026-05-20-import-coc-creator-characters]]). DDL in [[SUPABASE_AND_SYNC]]. All decisions made 2026-05-20. Implementation blocks only on Supabase schema migration + Auth.
+Design ready ([[work/2026-05-20-import-coc-creator-characters]]). DDL in [[SUPABASE_AND_SYNC]]. All decisions made 2026-05-20. Implementation complete 2026-05-21.
 
 - [x] ✅ Coordination doc on coc-creator side (user action) — 2026-05-20
 - [x] ✅ Player-display-name = admin-types-it, grouped by source_player_id, localStorage cache — 2026-05-20
 - [x] ✅ RLS for `wiki.imported_characters` SELECT = anon — 2026-05-20
 - [x] ✅ DDL approved — 2026-05-20
-- [ ] Migration `005_imported_characters.sql` — pending schema unlock
-- [ ] `/admin/import-characters` route with player-grouped UI (collapsible blocks, single name input per player) — pending Auth
-- [ ] `<CharacterPage>` renderer for virtual `BADACZE/<slug>` pages (portrait + characteristics + occupation + equipment + backstory)
-- [ ] `useContentTree()` hook merging vault snapshot + imported characters at runtime
+- [x] ✅ Migration `005_imported_characters.sql` — run as part of 001..007 batch 2026-05-20
+- [x] ✅ `/admin/import` route with player-grouped UI, player-name inputs, select/import/remove — 2026-05-20
+- [x] ✅ `<CharacterPage>` renderer — vendored `CharacterSheet` from coc-creator, portrait + sheet — 2026-05-21
+- [x] ✅ `useContentStore` merging vault snapshot + imported characters under `BADACZE/` — 2026-05-20
+- [x] ✅ Portrait fix: read `portrait_url` (canonical coc-creator field) — 2026-05-21
 
 ## Out of scope (do not pick up)
 

@@ -11,6 +11,30 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-05-21 — Fix: portrait_url not shown in character importer
+
+Characters whose portrait lives in `public.characters.portrait_url` (coc-creator's canonical field — a public Storage URL) had no thumbnail in the AdminImport list and no portrait in the CharacterSheet, because our column allowlist only fetched the legacy `profile_portrait_url` / `card_portrait_url` fields (both `null` for newer characters like Eleine Howard).
+
+**Fix:**
+
+- `src/lib/characterColumns.ts` — added `portrait_url` and `art_gallery` to the explicit allowlist (reviewed + approved per import design doc §7).
+- `src/stores/characters.ts` — `SourceCharacter` now carries `portrait_url`; `importOne` derives the snapshot portrait preferring `portrait_url`, then the legacy fields as fallback.
+- `src/routes/AdminImport.tsx` — thumbnail in the character list uses the same preference order (`portrait_url ?? profile_portrait_url ?? card_portrait_url`).
+
+Characters with only legacy fields (Lillian Whitley) still work. Characters with no portrait anywhere (James Kelly) correctly show none.
+
+Verified against live data: `portrait_url= SET` for all 3 characters in the DB; live bundle confirmed to contain `portrait_url`.
+
+---
+
+## 2026-05-21 — Content: reformat "Cytaty i sytuacje z sesji"
+
+The "03 Cytaty i sytuacje z sesji" page under SPRAWY/01 ZNAK ŻYCIA rendered poorly — the original file used raw `_italics_` for scene descriptions inside blockquotes that conflicted with the player-quote style. Reformatted to use `---` separators between scenes and consistent `> **Speaker:** text` quote style.
+
+`src/generated/content.ts` regenerated after the vault file was edited.
+
+---
+
 ## 2026-05-21 — Fix: index pasted images from the whole vault
 
 The new SPRAWY content showed `_(brak: Pasted image ….png|337)_` placeholders — the images weren't found. Root cause: Obsidian dumps pasted images into the **vault root** (`G:\…\Zew Cthulhu\`), outside `PUBLIC/`, but the generator's image index only scanned `PUBLIC/`.
