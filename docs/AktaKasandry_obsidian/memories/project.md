@@ -71,6 +71,16 @@ Older BookStack PoC. Salvage these assets:
 - `G:\My Drive\OBSIDIAN\RPG\Zew Cthulhu\CLAUDE.md` — vault conventions (Polish characters, wikilinks, folder structure)
 - `G:\My Drive\OBSIDIAN\RPG\Zew Cthulhu\boston-map-1924.jpg` — 7803×11702, 13MB; commit into this repo at `public/maps/boston-map-1924.jpg` (don't re-fetch on build)
 
+### rpg-recorder (transcript data producer) `#dep/rpg-recorder`
+
+- `C:\Users\Pawel\rpg-recorder` — sister project that records/transcribes RPG sessions from multiple mics and produces **transcript overlay JSON** (full transcript + competing-mic chunks + attribution probabilities).
+- **Boundary:** rpg-recorder = producer, Akta Kasandry = consumer. Single interface = `<slug>-<variant>-overlay.json`, spec at `rpg-recorder/outputs/transcript-viz/data/SCHEMA.md` (mirrored to `src/lib/transcripts/overlay.ts` — do not invent fields).
+- The audio/Whisper/attribution pipeline is **not** in this repo. New sessions are produced there and arrive as overlay JSON + a `variants.json` entry. Adding a session here is data-only (no code change).
+- Powers the `/sesje` viewer (stage I). Details: [[work/2026-06-19-transcript-viewer-port]].
+
+> [!info] Transcript audio is not hosted here
+> Per-channel Opus (~300 MB/session) is intentionally NOT committed/streamed. Each chunk shows `chNN @ mm:ss`; the GM fills `public/transcripts/data/audio-links.json` with shareable (Google Drive) links for manual seeking. Revisit GitHub Releases / R2 only if real in-browser playback is ever wanted. Note this is the one place the project's "no audio/video embeds" exclusion is relaxed — and only as external links, not hosted media.
+
 ### Cross-process memory
 
 - `C:\Users\Pawel\.claude\projects\G--My-Drive-OBSIDIAN-RPG-Zew-Cthulhu\memory\` — Claude Code memory directory for the content vault (separate working context). Includes `project_publikacja_web.md` — the publication-web plan from the content side. Useful for understanding what the GM expects from this app's player-facing side.

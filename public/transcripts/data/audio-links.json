@@ -1,0 +1,33 @@
+{
+  "_readme": [
+    "Maps each session channel to an external audio file (e.g. Google Drive) for MANUAL seeking.",
+    "The viewer does NOT stream audio; for each chunk it shows 'chNN @ mm:ss' and, if a url is set,",
+    "an external link. The timestamp is the offset to seek to inside that channel's file (play.start).",
+    "Fill `url` with a shareable link AFTER you upload the per-channel .opus. Leave url empty ('') to",
+    "show the timestamp only. If you split a channel into parts, add more segments with start/end",
+    "(seconds, transcript-channel concat clock); the viewer picks the segment covering the timestamp",
+    "and shows the offset within that part. `end: null` means open-ended (last/only part).",
+    "`speaker` is informational only."
+  ],
+  "sessions": {
+    "sol-w-ranach": {
+      "channels": {
+        "0": { "speaker": "Jakub M", "segments": [{ "url": "", "start": 0, "end": null }] },
+        "1": { "speaker": "Paweł MG", "segments": [{ "url": "", "start": 0, "end": null }] },
+        "2": { "speaker": "Nika G", "segments": [{ "url": "", "start": 0, "end": null }] },
+        "3": { "speaker": "Rafał G", "segments": [{ "url": "", "start": 0, "end": null }] },
+        "4": { "speaker": "Kamil K", "segments": [{ "url": "", "start": 0, "end": null }] }
+      }
+    },
+    "ug2": {
+      "channels": {
+        "0": { "speaker": "Jakub M", "segments": [{ "url": "", "start": 0, "end": null }] },
+        "1": { "speaker": "Piotrek S", "segments": [{ "url": "", "start": 0, "end": null }] },
+        "2": { "speaker": "Rafał", "segments": [{ "url": "", "start": 0, "end": null }] },
+        "3": { "speaker": "Nika", "segments": [{ "url": "", "start": 0, "end": null }] },
+        "4": { "speaker": "Kamil", "segments": [{ "url": "", "start": 0, "end": null }] },
+        "5": { "speaker": "Paweł MG", "segments": [{ "url": "", "start": 0, "end": null }] }
+      }
+    }
+  }
+}

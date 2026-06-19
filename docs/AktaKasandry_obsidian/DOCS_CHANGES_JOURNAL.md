@@ -11,6 +11,31 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-06-19 — Feature: transcript provenance viewer (`/sesje`), ported from rpg-recorder
+
+New section to read session transcripts with **competing-microphone chunks + attribution probabilities**, switch attribution variants, and correct speaker/text. Ported from the sister project rpg-recorder; full rationale in [[work/2026-06-19-transcript-viewer-port]].
+
+**Architecture:** rpg-recorder = producer, Akta Kasandry = consumer. Single interface = `<slug>-<variant>-overlay.json` (spec mirrored from rpg-recorder's `SCHEMA.md` into `src/lib/transcripts/overlay.ts`). Audio pipeline NOT ported. Adding a session is data-only (overlay JSON + `variants.json` entry) — no code change.
+
+**Audio decision — no in-app streaming.** Evaluated commit-to-repo / GitHub Releases / R2 / Drive-sharding; chose **manual seek links**. Each chunk shows `chNN @ mm:ss`; filling `audio-links.json` with a per-channel URL turns it into an external link to seek manually (supports sharded channels via segments). No audio committed (~300 MB/session avoided).
+
+**Files added:**
+- Data: `public/transcripts/data/` — 11 overlays (Sol w Ranach ×7, UG 2 ×4) + trimmed `variants.json` + `audio-links.json` skeleton (~39 MB JSON, no audio).
+- `src/lib/transcripts/{overlay,format,data,audioLinks,corrections,effective}.ts`
+- `src/stores/transcript.ts`
+- `src/components/transcripts/{TranscriptList,TranscriptRow,ProvenancePanel,Legend,VariantBar}.tsx`
+- `src/routes/{Sessions,SessionView}.tsx`
+
+**Files changed:** `src/router.tsx` (+2 routes), `src/components/AppShell.tsx` (full-bleed `/sesje` + "Sesje" nav link), `src/index.css` (transcript console styles + `content-visibility` virtualization).
+
+**Notable choices:** renderer rewritten as React/TS in the Cthulhu skin (not embedded HTML); 5000-row virtualization via CSS `content-visibility:auto` (no new dependency); ambiguous lines (`assigned:false`) render neutral with `?`; corrections persist per `<slug>.<variant>` in localStorage and export as JSON.
+
+**Verified:** both sessions load; chunk % (48/36/16, sum 1.0, sorted winner→prob); variant switch (5094↔3550); paint + text edit persist; `tsc -b` + `vite build` green; data in `dist/`. Page screenshots hang in the headless renderer (known upstream caveat) — verified via a11y snapshot + DOM eval.
+
+**Open follow-up (next session topic):** per-session summaries authored from transcript + GM conversation, with summary sections deep-linking into transcript sections (needs an anchor scheme + scroll-to/highlight target in the viewer).
+
+---
+
 ## 2026-05-21 — Fix: portrait_url not shown in character importer
 
 Characters whose portrait lives in `public.characters.portrait_url` (coc-creator's canonical field — a public Storage URL) had no thumbnail in the AdminImport list and no portrait in the CharacterSheet, because our column allowlist only fetched the legacy `profile_portrait_url` / `card_portrait_url` fields (both `null` for newer characters like Eleine Howard).

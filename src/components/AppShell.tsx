@@ -8,6 +8,9 @@ import { useContentStore } from '@/stores/content'
 export function AppShell() {
   const location = useLocation()
   const onDraft = location.pathname.startsWith('/draft')
+  // The transcript viewer wants the full viewport (3-pane console), so it opts
+  // out of the centered max-w-7xl content column and the wiki tree sidebar.
+  const onSessions = location.pathname.startsWith('/sesje')
 
   const init = useAuthStore((s) => s.init)
   const enabled = useAuthStore((s) => s.enabled)
@@ -58,6 +61,14 @@ export function AppShell() {
               }
             >
               Wiki
+            </NavLink>
+            <NavLink
+              to="/sesje"
+              className={({ isActive }) =>
+                isActive ? 'text-gold' : 'text-parchment hover:text-gold'
+              }
+            >
+              Sesje
             </NavLink>
             <NavLink
               to="/draft"
@@ -179,17 +190,24 @@ export function AppShell() {
         )}
       </aside>
 
-      <div className="mx-auto flex max-w-7xl gap-6 px-4 py-4 md:px-6 md:py-6">
-        {/* Desktop sidebar — hidden on mobile (drawer takes over) */}
-        <aside className="hidden w-72 shrink-0 md:block">
-          <TreeNav />
-        </aside>
-
-        <main className="min-w-0 flex-1">
-          <Breadcrumbs />
+      {onSessions ? (
+        // Full-bleed: the transcript console manages its own layout/width.
+        <main className="min-h-[60vh]">
           <Outlet />
         </main>
-      </div>
+      ) : (
+        <div className="mx-auto flex max-w-7xl gap-6 px-4 py-4 md:px-6 md:py-6">
+          {/* Desktop sidebar — hidden on mobile (drawer takes over) */}
+          <aside className="hidden w-72 shrink-0 md:block">
+            <TreeNav />
+          </aside>
+
+          <main className="min-w-0 flex-1">
+            <Breadcrumbs />
+            <Outlet />
+          </main>
+        </div>
+      )}
 
       <footer className="border-t border-gold-muted bg-teal-dark py-4">
         <div className="font-mono mx-auto max-w-7xl px-6 text-center text-xs text-parchment/60">

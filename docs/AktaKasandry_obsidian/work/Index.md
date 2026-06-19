@@ -12,6 +12,8 @@ Map of decision notes, explorations, and dated working memos. Each entry links t
 
 ## Open questions (decisions pending)
 
+- **Session summaries with transcript deep-links** (Stage J) — discussed 2026-06-19, not designed. Open: transcript anchor scheme (utterance id / range / time), summary storage+format, viewer deep-link target (scroll-to + highlight). See [[work/2026-06-19-transcript-viewer-port]] §"Next topic".
+
 - **Import postaci z coc-creator** — [[work/2026-05-20-import-coc-creator-characters]] — design ready, 4 user-action items (coordination doc on their side, player-name strategy, DDL approval, RLS posture). Implementation blocked on those + schema migration.
 
 - ~~**Markdown editor choice**~~ — resolved 2026-05-19: `@uiw/react-md-editor`. See [[work/2026-05-19-editor-choice]].
@@ -26,6 +28,7 @@ Map of decision notes, explorations, and dated working memos. Each entry links t
 - 2026-05-19 — [[work/2026-05-19-editor-choice|Markdown editor]] — `@uiw/react-md-editor`. Preview reuses our react-markdown + remarkWikilinks pipeline; plain textarea = no IME pitfalls with Polish diacritics.
 - 2026-05-20 — [[work/2026-05-20-recursive-content-tree|Content model: recursive tree]] — dropped Shelf/Book/Chapter (BookStack artifact). Single `ContentNode` with `kind: 'folder' \| 'page'` + arbitrary nesting. Routing collapsed to `/p/*` catch-all.
 - 2026-05-20 — [[work/2026-05-20-public-snapshot-and-osm-map|PUBLIC snapshot + interactive 1924 map]] — content source is now a generator over `G:\…\PUBLIC` (`npm run build-content`). Boston map: Leaflet `ImageOverlay` over the real 1924 Rand McNally JPG (staged by the generator), inside the existing article (no dedicated `/map` route).
+- 2026-06-19 — [[work/2026-06-19-transcript-viewer-port|Transcript viewer port]] — `/sesje` section ported from rpg-recorder. Producer/consumer boundary = overlay JSON; audio = manual Drive seek links (no in-app streaming); virtualization via CSS `content-visibility`.
 
 ## Active explorations
 

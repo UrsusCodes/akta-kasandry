@@ -5,6 +5,8 @@ import { NodeView } from './routes/NodeView'
 import { DraftView } from './routes/DraftView'
 import { Login } from './routes/Login'
 import { AdminImport } from './routes/AdminImport'
+import { Sessions } from './routes/Sessions'
+import { SessionView } from './routes/SessionView'
 
 // Match the Vite base so deep links work under the GitHub Pages subpath
 // (/akta-kasandry/…) in prod and at root (/) in dev.
@@ -18,6 +20,8 @@ export const router = createBrowserRouter(
       children: [
         { index: true, element: <Landing /> },
         { path: 'p/*', element: <NodeView /> },
+        { path: 'sesje', element: <Sessions /> },
+        { path: 'sesje/:slug', element: <SessionView /> },
         { path: 'draft', element: <DraftView /> },
         { path: 'login', element: <Login /> },
         { path: 'admin/import-characters', element: <AdminImport /> },

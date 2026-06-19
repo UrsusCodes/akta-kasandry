@@ -11,7 +11,7 @@ Staged plan mirrors the project spec (a-g). Active stage at top of "In progress"
 
 ## In progress
 
-Stages A, B, E, G, H: **complete**. C (dry-run only), D1 (editor live, no persistence yet), F (dry-run only). Next: vault push `--execute` (C), or page editing persistence (D), or back-sync (F).
+Stages A, B, E, G, H, **I**: **complete**. C (dry-run only), D1 (editor live, no persistence yet), F (dry-run only). Next: per-session summaries with transcript deep-links (design — see Stage J), vault push `--execute` (C), page editing persistence (D), or back-sync (F).
 
 ## Backlog (staged)
 
@@ -109,6 +109,30 @@ Design ready ([[work/2026-05-20-import-coc-creator-characters]]). DDL in [[SUPAB
 - [x] ✅ `<CharacterPage>` renderer — vendored `CharacterSheet` from coc-creator, portrait + sheet — 2026-05-21
 - [x] ✅ `useContentStore` merging vault snapshot + imported characters under `BADACZE/` — 2026-05-20
 - [x] ✅ Portrait fix: read `portrait_url` (canonical coc-creator field) — 2026-05-21
+
+### Stage I — Transcript provenance viewer `#stage/i` `#dep/rpg-recorder`
+
+Ported from rpg-recorder. Full rationale: [[work/2026-06-19-transcript-viewer-port]]. Producer/consumer boundary = `<slug>-<variant>-overlay.json` (schema mirrored to `src/lib/transcripts/overlay.ts`).
+
+- [x] ✅ Data layer: 11 overlays (Sol w Ranach ×7, UG 2 ×4) + trimmed `variants.json` + `audio-links.json` in `public/transcripts/data/` — 2026-06-19
+- [x] ✅ Overlay TS types + lib (`format`/`data`/`audioLinks`/`corrections`/`effective`) — 2026-06-19
+- [x] ✅ `useTranscriptStore` (manifest, current slug/variant, speaker toggles, pin/hover, paint, corrections) — 2026-06-19
+- [x] ✅ Renderer as React/Cthulhu components; `content-visibility` virtualization (5000 rows, no new dep) — 2026-06-19
+- [x] ✅ Provenance panel: competing chunks with % bars, 5-method votes, audio seek links — 2026-06-19
+- [x] ✅ Editor: paint speaker / edit text / localStorage / export JSON — 2026-06-19
+- [x] ✅ Routes `/sesje` + `/sesje/:slug?v=`, full-bleed AppShell, "Sesje" nav — 2026-06-19
+- [ ] **Audio playback** — deferred by decision (manual Drive seek links). Revisit GitHub Releases / R2 only if real in-browser playback is wanted.
+
+**STAGE I COMPLETE (viewer + corrections).** Adding a session is data-only.
+
+### Stage J — Session summaries with transcript deep-links `#stage/j` `#decision/open`
+
+Per-session/per-investigation summaries authored from the transcript + GM conversation, where summary paragraphs/sections **deep-link into the matching transcript section**. Discussed 2026-06-19, not yet designed.
+
+- [ ] Decide the transcript **anchor scheme** (utterance id / id-range / time window) for stable deep-links
+- [ ] Decide summary **storage + format** (vault page? new `wiki.*` table? frontmatter block?)
+- [ ] Viewer **deep-link target**: scroll-to + highlight an utterance or range from a URL (e.g. `/sesje/:slug?v=…#u=<id>`)
+- [ ] Authoring flow (GM writes summary; how the anchors get attached)
 
 ## Out of scope (do not pick up)
 

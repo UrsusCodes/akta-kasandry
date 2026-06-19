@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "sessions": {
+    "sol-w-ranach": {
+      "label": "Sol w Ranach",
+      "session_id": "34dc8a9a678a",
+      "default_variant": "parallel-split-epoch",
+      "variants": [
+        {
+          "id": "kamilk-clean",
+          "label": "Pre multi-method — Kamil-cleaned enrollment",
+          "file": "sol-w-ranach-kamilk-clean-overlay.json",
+          "n_utterances": 3550,
+          "timeline": "concat"
+        },
+        {
+          "id": "5-methods",
+          "label": "ADR-005: 5-method consensus voting",
+          "file": "sol-w-ranach-5-methods-overlay.json",
+          "n_utterances": 3550,
+          "timeline": "concat"
+        },
+        {
+          "id": "baseline-relative",
+          "label": "ADR-006: AGC-aware baseline-relative RMS",
+          "file": "sol-w-ranach-baseline-relative-overlay.json",
+          "n_utterances": 3506,
+          "timeline": "concat"
+        },
+        {
+          "id": "epoch-timeline",
+          "label": "AUD-32: raw epoch timeline (no veto)",
+          "file": "sol-w-ranach-epoch-timeline-overlay.json",
+          "n_utterances": 2932,
+          "timeline": "epoch"
+        },
+        {
+          "id": "legacy-epoch",
+          "label": "Pre-AUD-36 production (epoch)",
+          "file": "sol-w-ranach-legacy-epoch-overlay.json",
+          "n_utterances": 3073,
+          "timeline": "epoch"
+        },
+        {
+          "id": "parallel-split-concat",
+          "label": "AUD-36 parallel-split (concat coords)",
+          "file": "sol-w-ranach-parallel-split-concat-overlay.json",
+          "n_utterances": 5227,
+          "timeline": "concat"
+        },
+        {
+          "id": "parallel-split-epoch",
+          "label": "AUD-36 parallel-split (epoch) — current production",
+          "file": "sol-w-ranach-parallel-split-epoch-overlay.json",
+          "n_utterances": 5094,
+          "timeline": "epoch"
+        }
+      ]
+    },
+    "ug2": {
+      "label": "UG 2",
+      "session_id": "f14eae5b8f7b",
+      "default_variant": "current",
+      "variants": [
+        {
+          "id": "baseline",
+          "label": "Initial baseline (pre Paweł MG enrollment fix)",
+          "file": "ug2-baseline-overlay.json",
+          "n_utterances": 4323,
+          "timeline": "concat"
+        },
+        {
+          "id": "pawel-fixed",
+          "label": "Paweł MG enrollment fix (+515 utterances)",
+          "file": "ug2-pawel-fixed-overlay.json",
+          "n_utterances": 4323,
+          "timeline": "concat"
+        },
+        {
+          "id": "with-rafal",
+          "label": "After Rafał global enrollment",
+          "file": "ug2-with-rafal-overlay.json",
+          "n_utterances": 4323,
+          "timeline": "concat"
+        },
+        {
+          "id": "current",
+          "label": "Current production (post E-HW + Kamil identity)",
+          "file": "ug2-current-overlay.json",
+          "n_utterances": 4693,
+          "timeline": "concat"
+        }
+      ]
+    }
+  }
+}

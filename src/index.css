@@ -185,3 +185,56 @@ body {
   border-top: 1px solid var(--color-gold-muted);
   margin: 2em 0;
 }
+
+/* ============================================================
+   Transcript provenance viewer (/sesje) — a dark "console" that
+   keeps rpg-recorder's speaker colors legible while wearing the
+   Cthulhu gold framing. Ported from transcript-viz/index.html.
+   ============================================================ */
+
+/* Each row opts into content-visibility so the browser skips layout/paint for
+   off-screen lines — gives near-virtualized perf for 5000-row transcripts
+   without a JS windowing lib. contain-intrinsic-size seeds the scrollbar height
+   and is updated to the real size after first render (the `auto` keyword). */
+.tv-row {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 42px;
+}
+
+/* speaker-colored prob bar in the provenance card */
+.tv-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(245, 230, 200, 0.14);
+  overflow: hidden;
+  flex: 1;
+}
+.tv-bar > i {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+}
+
+/* thin gold-tinted scrollbars for the legend/dock/transcript panes */
+.tv-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-gold-muted) transparent;
+}
+.tv-scroll::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+.tv-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-gold-muted);
+  border-radius: 5px;
+}
+.tv-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* the active/pinned row ring (toggled imperatively to avoid re-rendering the
+   whole list on hover) */
+.tv-row.tv-active {
+  outline: 1px solid var(--color-gold);
+  outline-offset: -1px;
+}
