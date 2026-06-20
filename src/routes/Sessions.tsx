@@ -29,6 +29,13 @@ export function Sessions() {
         by je zobaczyć.
       </p>
 
+      <Link
+        to="/streszczenie-demo"
+        className="font-display mt-4 inline-block border border-gold-muted/60 px-3 py-1.5 text-xs uppercase tracking-wider text-gold hover:border-gold hover:bg-gold/10"
+      >
+        ↪ Demo: streszczenie z deep-linkami do transkryptu
+      </Link>
+
       {status === 'loading' && (
         <p className="font-mono mt-8 text-sm text-parchment/50">Ładowanie manifestu…</p>
       )}

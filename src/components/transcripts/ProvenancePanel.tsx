@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranscriptStore } from '@/stores/transcript'
 import { effective } from '@/lib/transcripts/effective'
 import { resolveAudioRef } from '@/lib/transcripts/audioLinks'
@@ -21,6 +21,7 @@ const METHOD_LABELS: Record<string, string> = {
  */
 export function ProvenancePanel() {
   const overlay = useTranscriptStore((s) => s.overlay)
+  const slug = useTranscriptStore((s) => s.slug)
   const corrections = useTranscriptStore((s) => s.corrections)
   const nameToColor = useTranscriptStore((s) => s.nameToColor)
   const pinnedIdx = useTranscriptStore((s) => s.pinnedIdx)
@@ -55,12 +56,15 @@ export function ProvenancePanel() {
         <span className="font-display text-[11px] uppercase tracking-widest text-gold">
           Konkurujące mikrofony · {u.chunks.length}
         </span>
-        <button
-          onClick={() => setPinned(isPinned ? null : idx)}
-          className="font-display border border-gold-muted/50 px-2 py-0.5 text-[10px] uppercase tracking-wider text-parchment/80 hover:border-gold hover:text-gold"
-        >
-          {isPinned ? '✕ Odepnij' : 'Przypnij'}
-        </button>
+        <div className="flex items-center gap-1.5">
+          {isPinned && <CopyAnchor slug={slug} id={u.id} />}
+          <button
+            onClick={() => setPinned(isPinned ? null : idx)}
+            className="font-display border border-gold-muted/50 px-2 py-0.5 text-[10px] uppercase tracking-wider text-parchment/80 hover:border-gold hover:text-gold"
+          >
+            {isPinned ? '✕ Odepnij' : 'Przypnij'}
+          </button>
+        </div>
       </div>
 
       {chunks.map((c) => (
@@ -110,6 +114,29 @@ export function ProvenancePanel() {
         </div>
       )}
     </div>
+  )
+}
+
+/** Copies the summary deep-link token `{sesja:<slug>#<id>}` for this line. */
+function CopyAnchor({ slug, id }: { slug: string | null; id: string }) {
+  const [done, setDone] = useState(false)
+  useEffect(() => {
+    if (!done) return
+    const t = setTimeout(() => setDone(false), 1400)
+    return () => clearTimeout(t)
+  }, [done])
+  const token = `{sesja:${slug}#${id}}`
+  return (
+    <button
+      onClick={() => {
+        void navigator.clipboard?.writeText(token)
+        setDone(true)
+      }}
+      title={`Kopiuj kotwicę do streszczenia: ${token}`}
+      className="font-display border border-gold-muted/50 px-2 py-0.5 text-[10px] uppercase tracking-wider text-parchment/80 hover:border-gold hover:text-gold"
+    >
+      {done ? '✓ Skopiowano' : '⎘ Kotwica'}
+    </button>
   )
 }
 

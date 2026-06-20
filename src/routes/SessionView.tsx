@@ -19,12 +19,37 @@ export function SessionView() {
   const open = useTranscriptStore((s) => s.open)
   const status = useTranscriptStore((s) => s.status)
   const error = useTranscriptStore((s) => s.error)
+  const overlay = useTranscriptStore((s) => s.overlay)
   const setPinned = useTranscriptStore((s) => s.setPinned)
   const active = useTranscriptStore((s) => s.pinnedIdx ?? s.hoverIdx)
+
+  const deepLink = searchParams.get('u') // `<id>` or `<from>..<to>`
 
   useEffect(() => {
     if (slug) void open(slug, v)
   }, [slug, v, open])
+
+  // Deep-link from a summary marker: scroll to, flash and pin the target line(s).
+  useEffect(() => {
+    if (status !== 'ready' || !overlay || !deepLink) return
+    const [fromId, toId] = deepLink.split('..')
+    const fromIdx = overlay.utterances.findIndex((u) => u.id === fromId)
+    if (fromIdx < 0) return
+    const toIdx = toId ? overlay.utterances.findIndex((u) => u.id === toId) : fromIdx
+    const endIdx = toIdx >= fromIdx ? toIdx : fromIdx
+    setPinned(fromIdx)
+    const t = setTimeout(() => {
+      const target = document.querySelector(`.tv-row[data-idx="${fromIdx}"]`)
+      target?.scrollIntoView({ block: 'center' })
+      for (let i = fromIdx; i <= endIdx; i++) {
+        const r = document.querySelector(`.tv-row[data-idx="${i}"]`)
+        if (!r) continue
+        r.classList.add('tv-flash')
+        setTimeout(() => r.classList.remove('tv-flash'), 2400)
+      }
+    }, 120)
+    return () => clearTimeout(t)
+  }, [status, overlay, deepLink, setPinned])
 
   // Esc clears the pinned line
   useEffect(() => {
