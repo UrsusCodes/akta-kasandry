@@ -36,7 +36,7 @@ Czwórka przybyszów trafia do **Salt Hills** — zakurzonego miasteczka pod roz
 
 ### Poranny napad na bank
 
-Spokojny poranek pęka jak szyba: **bank w Salt Hills eksploduje**. {sesja:sol-w-ranach#3128dc3b593a} Zamaskowani bandyci — chusty na twarzach, kapelusze, broń — szturmują miasteczko; kto wychyli się z budynku, dostaje kulę. W chaosie ginie **szeryf**, **Augustus** (ojciec Kate) zostaje postrzelony, a sami napastnicy **porywają Kate** i zabierają **pakunek misjonarza** z banku. Bohaterowie chwytają za broń — Winchestery, strzelby, rewolwery — i wdają się w **pierwszą strzelaninę**: Jolene (Nika) z dachu hotelu, reszta z ulicy.
+Spokojny poranek pęka jak szyba: **bank w Salt Hills eksploduje**. {sesja:sol-w-ranach#3128dc3b593a} Zamaskowani bandyci — chusty na twarzach, kapelusze, broń — szturmują miasteczko; kto wychyli się z budynku, dostaje kulę. W chaosie ginie **szeryf**, **Augustus** (ojciec Kate) zostaje postrzelony, a sami napastnicy **porywają Kate** i zabierają z banku **pakunek misjonarza** — niepozorną przesyłkę, o którą tak naprawdę poszło całe to piekło. Bohaterowie chwytają za broń — Winchestery, strzelby, rewolwery — i wdają się w **pierwszą strzelaninę**: Jolene (Nika) z dachu hotelu, reszta z ulicy.
 
 ### Pościg
 
@@ -56,7 +56,7 @@ Drużyna natyka się na **Indiankę** i wymienia z nią ogień. {sesja:sol-w-ran
 
 ### Utopiony misjonarz i dezerter
 
-Na suchej pustyni znajdują rzecz niemożliwą — **ciało misjonarza, jakby utopione**, choć wody tu nie ma na mile. {sesja:sol-w-ranach#3809f189ef25} Potem trafiają na **dezertera z gangu**, który zaczyna składać kawałki układanki: pakunek, pastor, jezioro.
+Na suchej pustyni znajdują rzecz niemożliwą — **ciało misjonarza, jakby utopione**, choć wody tu nie ma na mile. {sesja:sol-w-ranach#3809f189ef25} To on przywiózł feralny pakunek: **posążek Cthulhu**, który znalazł na **Filipinach** i o którym wiedział zbyt wiele. Potem drużyna trafia na **dezertera z gangu**, który zaczyna składać kawałki układanki: posążek, pastor, jezioro.
 
 ---
 
@@ -64,11 +64,11 @@ Na suchej pustyni znajdują rzecz niemożliwą — **ciało misjonarza, jakby ut
 
 ### Fort, jezioro, kryjówka gangu
 
-Trop kończy się przy **kraterze z jeziorem** {sesja:sol-w-ranach#a170f04b3221} i ruinami **hiszpańskiego fortu** — to **kryjówka gangu i pastora**. Pod osłoną nocy drużyna **infiltruje** obóz i trafia w środek **ceremonii ofiarnej**. Zaczyna się walka.
+Trop kończy się przy **kraterze z jeziorem** {sesja:sol-w-ranach#a170f04b3221} i ruinami **hiszpańskiego fortu** — to **kryjówka gangu i pastora**. Pośrodku jeziora leży **wyspa z ołtarzem**, a na nim spoczął **posążek Cthulhu** z bankowego pakunku. Pod osłoną nocy drużyna **infiltruje** obóz i trafia w środek **ceremonii ofiarnej**. Zaczyna się walka.
 
-### Szaman, Star Spawn i wygrana strzelanina
+### Szaman, Gwiezdny Pomiot i wygrana strzelanina
 
-W ferworze strzelaniny bohaterom udaje się **uwolnić ofiarę — indiańskiego szamana**. Wtedy jezioro się otwiera: z głębin wynurza się **Star Spawn Cthulhu**. {sesja:sol-w-ranach#839a366839f7} Sceny szaleństwa, sypiące się punkty poczytalności — ale drużyna **wygrywa strzelaninę**, a **Bostona** dobija **magiczna ochra**, jedyne, co działa na to, czego kula się nie ima.
+W ferworze strzelaniny bohaterom udaje się **uwolnić ofiarę — indiańskiego szamana**. Wtedy jezioro się otwiera: z głębin wynurza się **Gwiezdny Pomiot** (nazwa robocza) — pradawne cielsko przyzwane przez posążek i ceremonię. {sesja:sol-w-ranach#839a366839f7} Sceny szaleństwa, sypiące się punkty poczytalności — ale drużyna **wygrywa strzelaninę**, a **Bostona** dobija **magiczna ochra**, jedyne, co działa na to, czego kula się nie ima.
 
 ---
 
@@ -88,7 +88,7 @@ W ciemności i wodzie następuje **dobicie pastora** i starcie z **istotami z g�
 
 ### Salt Hills — i prawda o Kate
 
-Drużyna wraca do **Salt Hills**. {sesja:sol-w-ranach#bfeade32bf67} Rok później miasteczko zbiera się na **ślub Jacka (Rafał) i Kate** — **pastor** (już inny) udziela im ślubu {sesja:sol-w-ranach#0813eff32f03}, a **Jolene** (Nika) także zmienia nazwisko. {sesja:sol-w-ranach#5dc0194e97ba}
+Drużyna wraca do **Salt Hills**. {sesja:sol-w-ranach#bfeade32bf67} Rok później, jak w finałowej scenie filmu, miasteczko zbiera się na **ślub Jacka (Rafał) i Kate**. {sesja:sol-w-ranach#0813eff32f03}
 
 I wtedy pada **reveal**: **Kate to Kasandra**. To tu, na pustyni Nowego Meksyku, zawiązuje się **Klub / Akta Kasandry** — organizacja, której echo niesie się przez kolejne sesje aż do Bostonu 1924.
 
@@ -96,9 +96,9 @@ I wtedy pada **reveal**: **Kate to Kasandra**. To tu, na pustyni Nowego Meksyku,
 
 ## Kluczowe wątki i odkrycia
 
-- **Pakunek misjonarza** — oś całej intrygi; to o niego rozegrał się napad na bank.
+- **Posążek Cthulhu z pakunku** — oś całej intrygi: misjonarz przywiózł go z Filipin, gang odbił go z banku, a skończył na **ołtarzu na wyspie** pośrodku jeziora.
 - **Boston i pastor** — ludzcy antagoniści w służbie czegoś nieludzkiego; Bostona zabija dopiero **magiczna ochra**.
-- **Star Spawn Cthulhu** w jeziorze i **istoty z głębin** w zalanych tunelach — pustynny western okazuje się maską mitu Cthulhu.
+- **Gwiezdny Pomiot** (nazwa robocza) w jeziorze i **istoty z głębin** w zalanych tunelach — pustynny western okazuje się maską mitu Cthulhu.
 - **Szaman** i **masakra Indian** — lokalna wiedza i lokalna zbrodnia u korzeni sprawy.
 - **Kate = Kasandra** — narodziny **Akt / Klubu Kasandry**; spinka z resztą kampanii.
 
