@@ -10,6 +10,7 @@ import { SessionView } from './routes/SessionView'
 import { SummaryDemo } from './routes/SummaryDemo'
 import { QuotesDemo } from './routes/QuotesDemo'
 import { UG2Summary } from './routes/UG2Summary'
+import { UG2Narracja } from './routes/UG2Narracja'
 
 // Match the Vite base so deep links work under the GitHub Pages subpath
 // (/akta-kasandry/…) in prod and at root (/) in dev.
@@ -28,6 +29,7 @@ export const router = createBrowserRouter(
         { path: 'streszczenie-demo', element: <SummaryDemo /> },
         { path: 'streszczenie-demo/cytaty', element: <QuotesDemo /> },
         { path: 'streszczenie-ug2', element: <UG2Summary /> },
+        { path: 'streszczenie-ug2/narracja', element: <UG2Narracja /> },
         { path: 'draft', element: <DraftView /> },
         { path: 'login', element: <Login /> },
         { path: 'admin/import-characters', element: <AdminImport /> },

@@ -15,6 +15,8 @@ const SUMMARY = `# Urodzaj Grozy (UG 2) — streszczenie
 
 > Gangsterski one-shot, który zaczyna się od bimbru i tortur, a kończy w jaskini nad „świętym źródłem Matki". Każdy gra **dwiema postaciami** — jednym **gangsterem** i jednym **akademikiem** — bo to przeróbka scenariusza, w którym normalnie wybiera się jedną ze stron; MG puścił obie naraz. Gra się kolejno: **gangsterami → akademikami → mieszanie**. I — jak w Sól w Ranach — wszystko prowadzi do **Klubu / Akt Kasandry**.
 
+→ **[Pełna narracja (ciągiem, z cytatami)](/streszczenie-ug2/narracja)**
+
 > Na wstępie MG — **poza fikcją, na „meta" poziomie** — wylicza, czego oczekiwać po sesji (głównie pod kątem pewnego „wewnętrznego" zagrożenia), po czym dodaje: **„jedna z tych rzeczy nie jest prawdą; rozkmińcie która, zanim będzie za późno."** {sesja:ug2#00d78428ad8e} Nieprawdą okazuje się **pierwsze zdanie** — że grają „swoją dziarską, gangsterską grupą". Bo zagrają **też akademikami**. To właśnie jest twist: **dwie drużyny, nie jedna.**
 
 ### Obsada (każdy gra dwie postacie)
