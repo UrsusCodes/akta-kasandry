@@ -15,7 +15,7 @@ const SUMMARY = `# Urodzaj Grozy (UG 2) — streszczenie
 
 > Gangsterski one-shot, który zaczyna się od bimbru i tortur, a kończy w jaskini nad „świętym źródłem Matki". Każdy gra **dwiema postaciami** — jednym **gangsterem** i jednym **akademikiem** — bo to przeróbka scenariusza, w którym normalnie wybiera się jedną ze stron; MG puścił obie naraz. Gra się kolejno: **gangsterami → akademikami → mieszanie**. I — jak w Sól w Ranach — wszystko prowadzi do **Klubu / Akt Kasandry**.
 
-> Na wstępie MG składa złowróżbną obietnicę: „możecie sobie ufać, nikt nie ma mrocznych sekretów ani paktów z mrocznymi siłami…" — po czym dodaje: **„jedna z tych rzeczy nie jest prawdą; rozkmińcie która, zanim będzie za późno."** {sesja:ug2#00d78428ad8e}
+> Na wstępie MG — **poza fikcją, na „meta" poziomie** — wylicza, czego oczekiwać po sesji (głównie pod kątem pewnego „wewnętrznego" zagrożenia), po czym dodaje: **„jedna z tych rzeczy nie jest prawdą; rozkmińcie która, zanim będzie za późno."** {sesja:ug2#00d78428ad8e} Nieprawdą okazuje się **pierwsze zdanie** — że grają „swoją dziarską, gangsterską grupą". Bo zagrają **też akademikami**. To właśnie jest twist: **dwie drużyny, nie jedna.**
 
 ### Obsada (każdy gra dwie postacie)
 
@@ -65,7 +65,7 @@ Pod fasadą interesu coś gnije. Pod ścianą, w błocie, siedzi **chory wieśni
 
 ### Bitwa na farmie
 
-Negocjacje pękają i krater zamienia się w jatkę: **granaty** {sesja:ug2#2a8b3928b40e}, **lampa naftowa** Fritza, strzelby i karabiny. W środku pojawia się **istota — Matka** (albo jej pomiot): potworna, z wydłużającą się ręką. {sesja:ug2#46f5864b8941} **Joseph Kelly** (brat Jamesa) zostaje **przebity na wylot i rozerwany na pół**. **Cormac McMiller** w panice **ucieka jednym z aut** i już nie wraca. Istotę kładzie w końcu **ogień** — płonące cielsko, a koktajl Mołotowa i wybuch odrywają jej głowę.
+Negocjacje pękają i krater zamienia się w jatkę: **granaty** {sesja:ug2#2a8b3928b40e}, **lampa naftowa** Fritza, strzelby i karabiny. W środku pojawia się **istota — Matka** (albo jej pomiot): potworna, z wydłużającą się ręką. {sesja:ug2#46f5864b8941} **Joseph Kelly** (brat Jamesa) zostaje **przebity na wylot i rozerwany na pół**. **Cormac McMiller popada w obłęd i ucieka** jednym z aut — z rozgrywki znika (przeżył, pewnie wróci do gangu). Istotę kładzie w końcu **ogień** — płonące cielsko, a koktajl Mołotowa i wybuch odrywają jej głowę.
 
 ### Rhodes i „święte źródło Matki"
 
@@ -73,7 +73,7 @@ Wśród zamieszania bohaterowie uwalniają **profesora Henry'ego Rhodesa** — a
 
 ### Zawalenie jaskini
 
-W jaskini drużyna **wysadza ładunek**. Eksplozja **wstrząsa wodą i rozrywa istotę na kawałki** {sesja:ug2#c3a7c3ed39af}, a strop zaczyna się walić — **odcinając dostęp wody na długie lata**. Spadające głazy **przygniatają Jamesa** {sesja:ug2#5f24b27c1793}; jedna z postaci zostaje **uwięziona pod kamieniami, krzycząc o pomoc, która nie nadchodzi** — reszta wychodzi z jaskini. Na koniec palą farmę i kukurydzę, by skażony alkohol przestał płynąć po okolicy.
+W jaskini drużyna **wysadza ładunek**. Eksplozja **wstrząsa wodą i rozrywa istotę na kawałki** {sesja:ug2#c3a7c3ed39af}, a strop zaczyna się walić — **odcinając dostęp wody na długie lata**. Spadające głazy **przygniatają Jamesa** {sesja:ug2#5f24b27c1793}, a **Mortimer** zostaje **uwięziony pod kamieniami, krzycząc o pomoc, która nie nadchodzi** — reszta wychodzi z jaskini, zostawiając go. Na koniec palą farmę i kukurydzę, by skażony alkohol przestał płynąć po okolicy.
 
 ---
 
@@ -81,7 +81,7 @@ W jaskini drużyna **wysadza ładunek**. Eksplozja **wstrząsa wodą i rozrywa i
 
 Dwie sceny domykają sesję:
 
-- **James**, ocalały, ale **sam — bez brata**, siedzi w mieszkaniu i patrzy w sufit; w oknie pojawia się postać o **rozbitej, pokrytej bliznami głowie i rozdwojonym oku**.
+- **James** — **sam, bez brata** — siedzi w mieszkaniu i patrzy w sufit; w oknie staje postać o **rozbitej, pokrytej bliznami głowie i rozdwojonym oku**. (MG zostawia tę scenę celowo niejednoznaczną — sen, halucynacja, „mogło się nie wydarzyć".)
 - Tygodnie później **dr Eleine Howard** wraca do mieszkania i zastaje w swoim fotelu nieznajomego z zaproszeniem: reprezentuje pewien progresywny klub dżentelmenów z wieloma damami w składzie. **„Czy słyszała pani kiedykolwiek o klubie Cassandy?"** {sesja:ug2#a37238c0d8c5}
 
 Tak **Urodzaj Grozy** — podobnie jak Sól w Ranach — wpina się w **Akta / Klub Kasandry**.
@@ -93,7 +93,8 @@ Tak **Urodzaj Grozy** — podobnie jak Sól w Ranach — wpina się w **Akta / K
 - **Matka zabita / zapieczętowana** — rozerwana wybuchem, a zawalona jaskinia odcina jej źródło wody „na długie, długie lata". To była największa nagroda sesji.
 - **Bracia Carmody** rozbici (młodszy **Brandon** zabity), **bimbrownia i kukurydza spalone** — skażony alkohol przestaje płynąć.
 - **Profesora Rhodesa nie uratowano** (zniewolony, ginie). **Pastora Sprouston** nie rozliczono.
-- **Straty postaci:** **Joseph Kelly** rozerwany przez istotę; jedna postać **uwięziona w zawalonej jaskini** (porzucona, na granicy obłędu); **Cormac McMiller** zdezerterował autem (przeżył — „będziemy kontynuować").
+- **Straty gangsterów:** **Joseph Kelly** rozerwany przez Matkę na farmie; **James** zmiażdżony, a **Mortimer** porzucony pod gruzami w jaskini — obaj giną w finale; **Cormac McMiller** popada w **obłęd i ucieka** (przeżył, znika z rozgrywki — pewnie wróci do gangu).
+- **Akademicy przeżyli wszyscy** — z różnie naruszoną psychiką.
 - **Hak na przyszłość:** zjawa w oknie Jamesa; werbunek **dr Eleine Howard** do **Klubu Cassandry**.
 
 ---
