@@ -29,12 +29,20 @@ export function Sessions() {
         by je zobaczyć.
       </p>
 
-      <Link
-        to="/streszczenie-demo"
-        className="font-display mt-4 inline-block border border-gold-muted/60 px-3 py-1.5 text-xs uppercase tracking-wider text-gold hover:border-gold hover:bg-gold/10"
-      >
-        ↪ Streszczenie: Sól w Ranach (z deep-linkami do transkryptu)
-      </Link>
+      <div className="mt-4 flex flex-wrap gap-3">
+        <Link
+          to="/streszczenie-demo"
+          className="font-display inline-block border border-gold-muted/60 px-3 py-1.5 text-xs uppercase tracking-wider text-gold hover:border-gold hover:bg-gold/10"
+        >
+          ↪ Streszczenie: Sól w Ranach
+        </Link>
+        <Link
+          to="/streszczenie-ug2"
+          className="font-display inline-block border border-gold-muted/60 px-3 py-1.5 text-xs uppercase tracking-wider text-gold hover:border-gold hover:bg-gold/10"
+        >
+          ↪ Streszczenie: Urodzaj Grozy (UG 2)
+        </Link>
+      </div>
 
       {status === 'loading' && (
         <p className="font-mono mt-8 text-sm text-parchment/50">Ładowanie manifestu…</p>
