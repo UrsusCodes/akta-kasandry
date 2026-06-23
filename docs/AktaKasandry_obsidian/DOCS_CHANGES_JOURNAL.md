@@ -11,6 +11,34 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-06-22 — Transcript viewer simplified to read-only + first session summaries (Sól w Ranach, UG 2)
+
+Long session continuing the `/sesje` work. Outcome: read-only viewer on the production variant, plus two full session summaries with transcript deep-links.
+
+**Viewer simplified (Stage I).** Dropped variant switching — always loads the session's default (latest production) variant; removed the variant pill bar. Trimmed shipped data to just the two production overlays (`sol-w-ranach-parallel-split-epoch`, `ug2-current`) — deleted 9 non-default overlays (~31 MB), `variants.json` now one variant per session. Removed in-view editing (paint speaker, text edit, export corrections, copy-anchor, chunk "przypisz"); read components no longer apply localStorage corrections. `VariantBar` → `SessionHeader`. Editor capabilities stay in the store for a future separate edit screen. Kept: transcript, speaker toggles, competing chunks with %, audio seek links, 5-method votes, summary deep-links.
+
+**Session summaries (Stage K — NEW).** Built `remarkTranscriptAnchors` plugin: `{sesja:<slug>#<utteranceId>}` (and `..` ranges) in markdown → "↪ transkrypt" pills → `/sesje/<slug>?u=<id>`; SessionView reads `?u=`, scrolls/flashes/pins the line; ProvenancePanel "⎘ Kotwica" copies the token (later removed in the read-only pass). Pages (all demo routes, to be moved into the vault later):
+- `/streszczenie-demo` — **Sól w Ranach** summary (Western CoC; Salt Hills, New Mexico), + `/streszczenie-demo/cytaty`.
+- `/streszczenie-ug2` — **Urodzaj Grozy (UG 2)** summary (Prohibition Boston gangster + academics dual-group), + `/streszczenie-ug2/narracja` (long-form continuous narrative produced by a sub-agent).
+
+**Two campaign sessions reconstructed** (rosters + plots) — both end by seeding the **Klub / Akta Kasandry** (the project namesake). Sól: Kate = Cassandra Hollister. UG 2: Dr Eleine Howard recruited to the Cassandra Club. Recurring motifs across sessions: a Pastor, a water-bound Mythos creature, the Howard family, the Cassandra org.
+
+**CRITICAL DATA LESSON (epoch vs concat).** The overlay `timeline: "epoch"` clock (`utterance.start`) is a stretched wall-clock, NOT real audio time — it spreads recorded audio across the real evening incl. break gaps, so `start` jumps. To reason about "what's on the tape" you MUST histogram by `play.start` (or use the `concat` variant), never by epoch `start`. I burned a lot of time concluding content was "missing" from epoch-`start` gaps when it wasn't. Best reading trick for plot: dump a **single channel** (e.g. the GM, `Paweł MG`) sorted by `play.start` — one mic is linear, giving a clean chronological narration spine (sorting ALL speakers by concat `start` interleaves per-channel clocks and scrambles scenes). Full write-up: [[work/2026-06-22-transcript-data-lessons]].
+
+**Genuinely lost content (needs GM memory, not recoverable from tape):**
+- **Sól w Ranach** — the whole climax (fort → ceremony → killing Boston → tunnels, ~beats 6–11) was lost to a **recorder software error** (confirmed by the user via the rpg-recorder side). Reconstructed in the summary from the GM's account, flagged "⚠ nagranie urwane", no anchors. Recorded part ends at "dawn of day 3, heading to the crater".
+- **UG 2** — the **night recon + first human shootout** (between the Carmody negotiations and the academics entering) fell into a **deliberate recording pause** ([1:21:07] GM "Wyłączę teraz recording" for food + off-mic price-negotiation; resumes [1:23] already at the academics). NOT yet written — **first task next session** is to get these beats from the GM and insert a flagged "off-mic" section into both UG 2 pages.
+
+**Recording length note (UG 2).** Audio is continuous ~2h38m (concat, 0 gaps) but that's *on-mic recorded* time — the GM paused recording several times (food, off-mic negotiation, mic recharges, dead mics). The epoch variant spreads it over ~8h45 wall-clock with big gaps, but those gap *sizes* are the same unreliable epoch derivation — treat as "a long evening with several substantial breaks", not exact. No absolute time-of-day in `build_meta`; reliable clock would need the raw `data/sessions/f14eae5b8f7b/` chunk timestamps in rpg-recorder.
+
+**Audio still not hosted.** Decision unchanged: no in-app streaming; `audio-links.json` skeleton committed for manual Google-Drive seek links (GM to fill). Viewer shows `chNN @ mm:ss` + optional external link.
+
+**Files:** `src/routes/{SummaryDemo,QuotesDemo,UG2Summary,UG2Narracja,SessionView,Sessions}.tsx`, `src/components/transcripts/{SessionHeader,Legend,TranscriptList,TranscriptRow,ProvenancePanel}.tsx` (VariantBar deleted), `src/lib/remarkTranscriptAnchors.ts`, `src/components/Markdown.tsx`, `src/router.tsx`, `src/index.css`, `public/transcripts/data/*` (trimmed). Plus a private GM-only note in the content vault: `G:\…\Zew Cthulhu\Sol w Ranach - ciete cytaty (GM only).md` (off-`PUBLIC/`, one cut edgy quote).
+
+**Open:** UG 2 "śmieszne i epickie momenty" page not made; the missing UG 2 fragments (above); maybe switch viewer to the `concat` variant for sane timestamps (would require re-anchoring ~all markers); move summaries from demo routes into the vault; fold the narrative's extra details (Cayda/the "Drogi Ernesti" letter, the cave temptation) into the short UG 2 summary.
+
+---
+
 ## 2026-06-19 — Feature: transcript provenance viewer (`/sesje`), ported from rpg-recorder
 
 New section to read session transcripts with **competing-microphone chunks + attribution probabilities**, switch attribution variants, and correct speaker/text. Ported from the sister project rpg-recorder; full rationale in [[work/2026-06-19-transcript-viewer-port]].

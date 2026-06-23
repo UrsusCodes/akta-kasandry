@@ -77,6 +77,10 @@ Older BookStack PoC. Salvage these assets:
 - **Boundary:** rpg-recorder = producer, Akta Kasandry = consumer. Single interface = `<slug>-<variant>-overlay.json`, spec at `rpg-recorder/outputs/transcript-viz/data/SCHEMA.md` (mirrored to `src/lib/transcripts/overlay.ts` — do not invent fields).
 - The audio/Whisper/attribution pipeline is **not** in this repo. New sessions are produced there and arrive as overlay JSON + a `variants.json` entry. Adding a session here is data-only (no code change).
 - Powers the `/sesje` viewer (stage I). Details: [[work/2026-06-19-transcript-viewer-port]].
+- **2026-06-22:** viewer is now **read-only on the production variant**; two **session summaries** live (demo routes, to move into the vault): Sól w Ranach (`/streszczenie-demo` + `/cytaty`) and UG 2 (`/streszczenie-ug2` + `/narracja`), with `{sesja:<slug>#<id>}` deep-links. Both sessions end seeding the **Klub / Akta Kasandry** (Sól: Kate = Cassandra Hollister; UG 2: Cassandra Club recruitment).
+
+> [!warning] Read transcript data the right way — two sessions have off-tape gaps
+> The epoch `start` clock is a stretched wall-clock, NOT audio time — histogram by `play.start` (or use the concat variant); read a single channel (GM) for chronological plot. **Sól w Ranach lost its climax to a recorder software error; UG 2 lost the night-recon + first shootout to a recording pause** — both must be filled from GM memory. Full lessons + lost-content map: [[work/2026-06-22-transcript-data-lessons]].
 
 > [!info] Transcript audio is not hosted here
 > Per-channel Opus (~300 MB/session) is intentionally NOT committed/streamed. Each chunk shows `chNN @ mm:ss`; the GM fills `public/transcripts/data/audio-links.json` with shareable (Google Drive) links for manual seeking. Revisit GitHub Releases / R2 only if real in-browser playback is ever wanted. Note this is the one place the project's "no audio/video embeds" exclusion is relaxed — and only as external links, not hosted media.

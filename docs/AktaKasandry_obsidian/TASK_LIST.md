@@ -11,7 +11,10 @@ Staged plan mirrors the project spec (a-g). Active stage at top of "In progress"
 
 ## In progress
 
-Stages A, B, E, G, H, **I**: **complete**. C (dry-run only), D1 (editor live, no persistence yet), F (dry-run only). Next: per-session summaries with transcript deep-links (design — see Stage J), vault push `--execute` (C), page editing persistence (D), or back-sync (F).
+Stages A, B, E, G, H, **I**, **J**: **complete**. **K (session summaries): in progress** — Sól w Ranach + UG 2 summaries live, but **UG 2 is missing the off-mic night-recon + first shootout** (see Stage K). C (dry-run only), D1 (editor live, no persistence yet), F (dry-run only).
+
+> [!important] NEXT SESSION — first task
+> Get from the GM the beats of UG 2's **nocny zwiad + pierwsza strzelanina z ludźmi Carmodych** (off-mic, between negotiations and the academics) and insert a flagged "⚠ poza nagraniem" section into both `/streszczenie-ug2` and `/streszczenie-ug2/narracja`. Then optionally: UG 2 quotes page; fold the narrative's extra details into the short summary.
 
 ## Backlog (staged)
 
@@ -133,6 +136,27 @@ Per-session/per-investigation summaries authored from the transcript + GM conver
 - [ ] Decide summary **storage + format** (vault page? new `wiki.*` table? frontmatter block?)
 - [ ] Viewer **deep-link target**: scroll-to + highlight an utterance or range from a URL (e.g. `/sesje/:slug?v=…#u=<id>`)
 - [ ] Authoring flow (GM writes summary; how the anchors get attached)
+
+### Stage J — Session-summary deep-links `#stage/j`
+
+- [x] ✅ `remarkTranscriptAnchors` — `{sesja:<slug>#<id>}` / `..` ranges → "↪ transkrypt" pills → `/sesje/<slug>?u=<id>` — 2026-06-20
+- [x] ✅ Viewer deep-link target — `?u=` scroll/flash/pin (single id or range) — 2026-06-20
+- [x] ✅ Wired into shared `Markdown` renderer — 2026-06-20
+
+**STAGE J COMPLETE.** Anchors use the deployed (epoch) variant's utterance ids.
+
+### Stage K — Session summaries `#stage/k` `#dep/rpg-recorder`
+
+Player-facing session summaries authored from transcript + GM memory, in the "Znak Życia" house style, with `{sesja:…}` deep-links. Currently on demo routes; **to be moved into the vault** under the right `SPRAWY/` cases.
+
+- [x] ✅ **Sól w Ranach** — `/streszczenie-demo` + `/streszczenie-demo/cytaty` (Western CoC; climax lost to recorder software error, reconstructed from GM memory, flagged, no anchors) — 2026-06-20
+- [x] ✅ **Urodzaj Grozy (UG 2)** — `/streszczenie-ug2` (3-act, dual gangster+academic group) + `/streszczenie-ug2/narracja` (long-form, sub-agent) — 2026-06-22
+- [ ] **UG 2 — write the off-mic night-recon + first human shootout** (between negotiations and academics; recording was paused) — from GM memory, flagged section, both pages. **← first task next session**
+- [ ] UG 2 — "śmieszne i epickie momenty" page (have gems: „insane bullshit", „nie chcę żadnej laski dynamitu", „let me die")
+- [ ] Fold the UG 2 narrative's extra details (Cayda / „Drogi Ernesti" letter, the cave temptation) into the short summary
+- [ ] Move summaries from demo routes into the vault (`SPRAWY/02 URODZAJ GROZY/`, and a case for Sól w Ranach); decide final routing
+- [ ] (Optional) switch the `/sesje` viewer to the `concat` variant for sane real-time timestamps — would require re-anchoring all markers to concat ids
+- [ ] (Optional) audio — fill `audio-links.json` with Drive links so chunk ▶ links work
 
 ## Out of scope (do not pick up)
 
