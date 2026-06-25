@@ -9,7 +9,7 @@ import { Markdown } from '@/components/Markdown'
 
 const NARRACJA = `# Urodzaj Grozy — pełna narracja
 
-*Zew Cthulhu, prohibicja, Boston i wioska Black Creek na zachód od Arkham. Strażnik Tajemnic: Paweł. Każdy z graczy prowadzi dwie postacie — gangstera i akademika; sesja zaczyna się od drużyny gangsterów, później dołączają akademicy, a w finale obie grupy działają razem.*
+*Zew Cthulhu, prohibicja, Boston i wioska Blackwater Creek na zachód od Arkham. Strażnik Tajemnic: Paweł. Każdy z graczy prowadzi dwie postacie — gangstera i akademika; sesja zaczyna się od drużyny gangsterów, później dołączają akademicy, a w finale obie grupy działają razem.*
 
 → **[Krótkie streszczenie z deep-linkami](/streszczenie-ug2)**
 
@@ -53,11 +53,11 @@ Cormac McMiller spróbował miękkiego podejścia — poklepał Brocka po ramien
 > **James Kelly:** „Robisz to nie dla siebie. Tylko dla kogoś. Dla rodziny. Dla matki. Myślisz, że nie wiemy, gdzie ona jest?"
 > **James Kelly:** „Kobiet się nie krzywdzi, niezależnie od tego, jakich głupich synów wychowały. Nie zamierzam krzywdzić jego matki. Nie pozwolę też, by zrobił to ktoś inny."
 
-Złamany więzień podał jedno nazwisko: **Damian Carmody**.
+Złamany więzień podał jedno nazwisko: **Damien Carmody**.
 
 ### [32:00–43:00] Zadra Jamesa, rozkazy McBride'a, dobicie Brocka
 
-Nazwisko Carmody'ego okazało się znajome — zwłaszcza dla Jamesa. Damian Carmody parę lat wcześniej przyjechał do Bostonu robić karierę boksera i drobnego bandyty; nie wyszło mu ani jedno, ani drugie. Podczas sparingu, gdy James puścił mu serię ciosów, Carmody — schodząc z ringu — przykopał go w bok nogi i od tamtej pory James cierpi na przewlekły ból kolana. Wkrótce potem Carmody zwinął się z Bostonu i wrócił do rodzinnej dziury — **Black Creek**, zapadłej wioski na zachód od Arkham. To stamtąd pochodzi złoty trunek.
+Nazwisko Carmody'ego okazało się znajome — zwłaszcza dla Jamesa. Damien Carmody parę lat wcześniej przyjechał do Bostonu robić karierę boksera i drobnego bandyty; nie wyszło mu ani jedno, ani drugie. Podczas sparingu, gdy James puścił mu serię ciosów, Carmody — schodząc z ringu — przykopał go w bok nogi i od tamtej pory James cierpi na przewlekły ból kolana. Wkrótce potem Carmody zwinął się z Bostonu i wrócił do rodzinnej dziury — **Blackwater Creek**, zapadłej wioski na zachód od Arkham. To stamtąd pochodzi złoty trunek.
 
 > **James Kelly:** „O bracie, twoja noga i jego głowa. Dosłownie nadetnę mu na twarz."
 
@@ -76,34 +76,57 @@ Drużyna zabrała sprzęt: liny, łom, lampę naftową, aparat fotograficzny, br
 
 Joseph naburmuszył się na brata za zatajenie dawnego nałogu — krótki konflikt, który James zażegnał przytuleniem. Za miastem i Arkham rozpostarły się smutne pustkowia: mimo lata wszystko tonęło w ponurości, błocie i słodkawym zapachu rozkładu.
 
-### [55:00–1:06:00] Black Creek — pastor Sprouston
+### [55:00–1:06:00] Blackwater Creek — pastor Sprouston
 
 Auta wjechały na centralny plac — kilka chałup, sklep i kościół, dzieci bawiące się w błocie. Z kościoła wyszedł podstarzały mężczyzna w koloratce.
 
-> **Richard Sprouston:** „Dzień dobry panom. Nazywam się Sprouston. Mogę wam jakoś pomóc?"
+> **Dick Sprouston:** „Dzień dobry panom. Nazywam się Sprouston. Mogę wam jakoś pomóc?"
 
 Sprouston okazał się nie tylko pastorem, ale i szeryfem. Bracia Carmody to dla niego utrapienie i obraza majestatu bożego — gwałtowni, uzbrojeni, grożący lokalnym, zwłaszcza młodszy z braci.
 
-> **Richard Sprouston:** „Myślę, że jest wrzodem. Jest też obrazą majestatu bożego. Więc jeżeli jesteście w stanie go wykorzenić... mam nadzieję, że odwiedzicie wieczorną mszę, żebyśmy mogli o tym porozmawiać."
+> **Dick Sprouston:** „Myślę, że jest wrzodem. Jest też obrazą majestatu bożego. Więc jeżeli jesteście w stanie go wykorzenić... mam nadzieję, że odwiedzicie wieczorną mszę, żebyśmy mogli o tym porozmawiać."
 
 ### [1:06:00–1:15:00] Sklep Baxtera i podjazd pod farmę
 
-Drużyna zajrzała do sklepu **Nathaniela Baxtera**. Sklepikarz bez słowa sprzedał tę samą złotą butelkę za dolara i potwierdził, że trunek pochodzi od Carmodych — trudnych, gwałtownych ludzi, zwłaszcza młodszego, **Brandona**. Padła wzmianka o wyschniętym strumieniu i lesie Black Creek za farmą. Drużyna zostawiła auta kilometr przed farmą i ruszyła pieszo przez pola wysokiej kukurydzy ze strachem na wróble.
+Drużyna zajrzała do sklepu **Nathaniela Baxtera**. Sklepikarz bez słowa sprzedał tę samą złotą butelkę za dolara i potwierdził, że trunek pochodzi od Carmodych — trudnych, gwałtownych ludzi, zwłaszcza młodszego, **Brendana**. Padła wzmianka o wyschniętym strumieniu i lesie Blackwater Creek za farmą. Drużyna zostawiła auta kilometr przed farmą i ruszyła pieszo przez pola wysokiej kukurydzy ze strachem na wróble.
 
 > **Joseph Kelly:** „Ależ koledzy, to jest tylko las na pustkowiu. Co może się tutaj wydarzyć?"
 
-### [1:15:00–1:23:00] Negocjacje z Damianem Carmody
+### [1:15:00–1:23:00] Negocjacje z Damienem Carmody
 
-Przy bimbrowni siedział typ ze strzelbą; po słowach Cormaca o interesach zawołał Carmody'ego. Zebrała się grupka: pomocnik ze strzelbą (Jack), pomocnik z wojskowym karabinem oraz sam **Damian Carmody** z rewolwerem wciśniętym za pasek. James trzymał się z tyłu.
+Przy bimbrowni siedział typ ze strzelbą; po słowach Cormaca o interesach zawołał Carmody'ego. Zebrała się grupka: pomocnik ze strzelbą (Jack), pomocnik z wojskowym karabinem oraz sam **Damien Carmody** z rewolwerem wciśniętym za pasek. James trzymał się z tyłu.
 
-> **Damian Carmody:** „Produkujemy sporo. Kukurydza jest obfita i słodka, więc... jesteśmy w stanie w miesiąc ze 100 litrów zrobić. Może więcej."
-> **Damian Carmody:** „Myślę, że się zatem dogadamy. Chodźcie tutaj. Dopijmy się, zjedzmy. Łatwiej będzie przegadać."
+> **Damien Carmody:** „Produkujemy sporo. Kukurydza jest obfita i słodka, więc... jesteśmy w stanie w miesiąc ze 100 litrów zrobić. Może więcej."
+> **Damien Carmody:** „Myślę, że się zatem dogadamy. Chodźcie tutaj. Dopijmy się, zjedzmy. Łatwiej będzie przegadać."
+
+### ⚠ Poza nagraniem (z relacji MG) — Noc na farmie i pierwsza strzelanina
+
+⚠ **Ten fragment nie zachował się na taśmie.** W tym miejscu Strażnik wyłączył nagrywanie (**[1:21:07]** „Wyłączę teraz recording") na posiłek i ciche dobicie negocjacji; gdy nagranie wróciło, akcja była już przy akademikach na Farmie Jarveyów. Poniższe odtworzono z relacji Strażnika — bez deep-linków, bo nie ma ich do czego podpiąć.
+
+**A. Gangsterzy — noc i pierwsza strzelanina.** Negocjacje z Damienem Carmody domknęły się **po myśli gangsterów** — dystrybucja złotego trunku stanęła na warunkach wyraźnie korzystnych dla ludzi McBride'a. James i Joseph Kelly przełknęli to z trudem (stara zadra Jamesa nie znikła), ale przyjęli.
+
+Kłopot zaczął się przy autach: silniki nie odpaliły, bo **wielkie szczury przegryzły kable** pod maskami obu wozów. (Jak się okaże, to sprawka **Brendana Carmody**, który telepatycznie włada zwierzętami na farmie.) Gangsterzy wrócili po pomoc — i odbili się od ściany; ludzie Carmodych kłamali, że nie mają żadnej ciężarówki. Została noc w unieruchomionych samochodach.
+
+Na warcie stał **James**. W ciemności przyciągnął jego wzrok **strach na wróble** — wysoka sylwetka, która zdawała się zmieniać pozycję. **Fritz** ruszył na zwiad: w ukryciu znalazł **ciężarówkę**, a w niej **sprzęt archeologiczny i książki historyczne** (dobytek zaginionego profesora). Wtedy zza domu, od strony pola, nadeszła **postać**: wychudzona, **ponad trzy metry wzrostu**. Fritz wcisnął się pod ciężarówkę. Olbrzym wszedł **tylnymi drzwiami**; ze środka dobiegła **sprzeczka, potem szamotanina**. Po chwili postać wyszła i **wróciła na pole**. Fritz, ledwie panując nad nerwami, doczołgał się do swoich.
+
+*(Ów trzymetrowy „strach na wróble" to **Brendan Carmody**, młodszy z braci, **przemieniony pod wpływem Matki** — Dziecię Macierzy. To on tej nocy skręcił kark własnemu **Damienowi**, karą za sprzedaż daru Matki poza obszar jej błogosławieństwa, i to on uderzy później na farmę, gdy zejdą się tam obie drużyny, i rozerwie Jamesa.)*
+
+O **świcie** gangsterzy poszli na farmę raz jeszcze — i tym razem wyrzucono ich znacznie ostrzej. **Damiena nigdzie nie było.** Najemnicy oznajmili krótko: **umowa zerwana, bimbru nie zobaczą.** Wkurzeni gracze przypuścili szturm:
+
+- **Fritz** zakradł się od tyłu na **dach głównego domu**, by snajpować — ale zastał tam już **strzelca najemników**.
+- **James i Joseph** runęli wręcz, tłukąc kogo popadnie — m.in. **drwala z siekierą**.
+- **Mortimer** parł do przodu i **oberwał szybko**; ciężka rana położyła go na ziemi (przeżył).
+- **McMiller** strzelał w ferworze, w pewnym momencie **w środku bimbrowni** — **jeden pechowy rzut dzielił całą wytwórnię od wybuchu** (ironiczne echo zakazu McBride'a o „losowej salwie i lasce dynamitu"). Szczęście dopisało.
+
+Gdy proch opadł, **wszyscy najemnicy leżeli martwi.** Gracze znaleźli **Damiena ze skręconym karkiem**, a **w podziemiach — uwięzionego człowieka** (jeszcze nierozpoznanego; to porwany profesor Roades). Farma była ich.
+
+**B. Akademicy — miasteczko, pastor i droga na Farmę Jarveyów.** Równolegle scenariusz wprowadził **akademików**, wysłanych przez dziekana **Boston University** (część trafiła tam po znajomości). Cel: odnaleźć zaginionego profesora archeologii **Henry'ego Roadesa** i jego żonę **Abigail**. Dwoma autami wjechali do **Blackwater Creek** i rozmawiali z **Dickiem Sproustonem** — pastorem i samozwańczym szeryfem — który ostrzegał przed braćmi Carmody, ale i **subtelnie sugerował, że to oni mogą stać za zniknięciem** profesora. **West** zwrócił uwagę na dwójkę dzieciaków **rozpuszczających dżdżownice w słoju z wodą**; zaintrygowany **odkupił słój** i drużyna zaczęła sprawdzać, **co woda trawi, a czego nie** — wyszło, że **mięso znika, a kości zostają**. Tropem profesora pojechali na **Farmę Jarveyów**, gdzie Roades wcześniej nocował.
 
 ### [1:23:00–1:30:00] Akademicy wkraczają — chory wieśniak i list profesora
 
-Tu do gry weszli akademicy: **Dr Edwin Thorne**, **Dr Eleine Howard**, **Dr Herbert West**, bibliotekarz **Wallace Harvey** i **Dr Cecil Cavendish**. Dr Howard podeszła do mężczyzny siedzącego w błocie — bladego, półprzytomnego; gdy go zagadnęła, cienka czarna stróżka ropistego płynu zaczęła mu spływać wzdłuż wargi. Dr West dyskretnie pobrał próbkę. Wewnątrz domu znaleziono niedokończony, wielokrotnie przekreślany list zaczynający się od słów „Drogi Ernesti".
+Na **Farmie Jarveyów** (tu wraca nagranie) działa pięcioro akademików: **Dr Edwin Thorne**, **Dr Eleine Howard**, **Dr Herbert West**, bibliotekarz **Wallace Harvey** i **Dr Cecil Cavendish**. Dr Howard podeszła do **Starego Pete'a**, alkoholicznego parobka Jarveyów, siedzącego w błocie — bladego, półprzytomnego; gdy go zagadnęła, cienka czarna stróżka ropistego płynu zaczęła mu spływać wzdłuż wargi. Dr West dyskretnie pobrał próbkę. Wewnątrz domu znaleziono niedokończony, wielokrotnie przekreślany list zaczynający się od słów „Drogi Ernesti" — adresowany do **Ernesta McTavisha**, emerytowanego profesora Boston University i zleceniodawcy wyprawy Roadesa.
 
-> **List (czyta dr Thorne):** „Black Creek rzeczywiście zostało zbudowane w miejscu, gdzie niegdyś stała przystań Cayda. Odkryłem wiele artefaktów wczesnego osadnictwa, a także szczątki... Jest tu tak wiele, że czasami słyszę głos swojej matki. Znam ten głos. Jaskinia nie jest mitem. Cayda próbował ją zawalić, ale ona tam jest, jakby nigdy nie umarła. Postarałem się o dynamit. Muszę ją uwolnić. Boże, bądź miłościw mnie grzesznemu."
+> **List (czyta dr Thorne):** „Blackwater Creek rzeczywiście zostało zbudowane w miejscu, gdzie niegdyś stała przystań Cayda. Odkryłem wiele artefaktów wczesnego osadnictwa, a także szczątki... Jest tu tak wiele, że czasami słyszę głos swojej matki. Znam ten głos. Jaskinia nie jest mitem. Cayda próbował ją zawalić, ale ona tam jest, jakby nigdy nie umarła. Postarałem się o dynamit. Muszę ją uwolnić. Boże, bądź miłościw mnie grzesznemu."
 
 Wiedza historyczna dr Thorne'a: **Cayda** był przywódcą małej purytańskiej sekty, która opuściła Boston z powodu prześladowań i założyła przystań, jaka później bez śladu zniknęła z kart historii.
 
@@ -123,38 +146,47 @@ Scenę zdominowały tarcia w grupie — kłótnia o słoik, spory o decyzyjnoś�
 
 ### [1:48:00–2:01:00] Wspólna bitwa na farmie i śmierć Jamesa
 
-W tym momencie obie drużyny znalazły się razem na farmie, gdy z bimbrowni wyłoniła się **Matka**: istota o wydłużającej się, sięgającej daleko ręce. Wybuchła chaotyczna walka — granaty, lampa naftowa Fritza, butelki alkoholu chwytane na koktajle Mołotowa. Akademicy i gangsterzy zaczęli improwizować wspólnie. Tragedia dosięgła **Jamesa Kelly'ego**:
+W tym momencie obie drużyny znalazły się razem na farmie, gdy z bimbrowni wyłonił się **Brendan Carmody** — Dziecię Macierzy, ten sam „strach na wróble" z nocnej warty: potworna, wychudzona istota o wydłużającej się, sięgającej daleko ręce. Wybuchła chaotyczna walka — granaty, lampa naftowa Fritza, butelki alkoholu chwytane na koktajle Mołotowa. Akademicy i gangsterzy zaczęli improwizować wspólnie. Tragedia dosięgła **Jamesa Kelly'ego**:
 
 > **Strażnik Tajemnic:** „Ona bierze, i ta ręka wydłuża się w ten sposób. Przebija cię na wylot, podnosi do góry — rozpadasz się na dwa kawałki obok."
 > **Joseph Kelly:** „Mój James."
 > **Dr Eleine Howard (do istoty):** „Zapłacisz mi za to."
 
-### [2:01:00–2:14:00] Ogień kładzie Matkę, pojawia się Rhodes
+### [2:01:00–2:14:00] Ogień kładzie istotę z farmy, pojawia się Roades
 
-Drużyna skupiła ogień na istocie. Fritz cisnął płonącą lampą; ogień zajął Matkę. Joseph Kelly, w akcie zemsty za brata, podszedł do pochylonej, płonącej już istoty i zadał decydujący cios.
+Drużyna skupiła ogień na istocie. Fritz cisnął płonącą lampą; ogień zajął cielsko Brendana. Joseph Kelly, w akcie zemsty za brata, podszedł do pochylonej, płonącej już istoty i zadał decydujący cios.
 
 > **Strażnik Tajemnic:** „Podchodzisz, ta istota jest taka pochylona już w targach. Dajesz takiego aprykata — i głowa odrywa się w końcu od płonącego ciała i odlatuje w bok."
 
-W trakcie walki **Cormac McMiller** popadł w obłęd i w panice uciekł solo jednym z aut — przeżył, ale zniknął z gry. Po śmierci Matki pojawił się zniewolony porwany profesor:
+W trakcie walki **Cormac McMiller** popadł w obłęd i w panice uciekł solo jednym z aut — przeżył, ale zniknął z gry. Po śmierci istoty pojawił się zniewolony, uwolniony z podziemi profesor:
 
-> **Henry Rhodes:** „Nazywam się Henry Rhodes. Uwięzili mnie tutaj. Matka jest uwięziona w jaskini, ale ona może wyleczyć wszystko. Może uleczyć twojego brata. Tam trzeba pójść."
+> **Henry Roades:** „Nazywam się Henry Roades. Uwięzili mnie tutaj. Matka jest uwięziona w jaskini, ale ona może wyleczyć wszystko. Może uleczyć twojego brata. Tam trzeba pójść."
 
-Joseph, opętany rozpaczą i nadzieją, wziął ciało Jamesa na plecy. Drużyna — wbrew zdrowemu rozsądkowi — ruszyła ciężarówką ku jaskini.
+Joseph, opętany rozpaczą i nadzieją, wziął ciało Jamesa na plecy. Drużyna — wbrew zdrowemu rozsądkowi — ruszyła ku jaskini.
 
-### [2:14:00–2:21:00] Jaskinia — ładunek, uwięziony Mortimer, kuszenie Josepha
+### [2:14:00–2:21:00] Jaskinia — ofiara Josepha, narodziny Matki i ucieczka
 
-W jaskini, przy źródle, drużyna założyła ładunek dynamitu. Herbert West podpalił lont i sprintem uciekł z zasięgu. Tymczasem Matka — przez wodę źródła — zaczęła działać: na oczach Josepha ciało **Jamesa** powoli zaczęło wstawać, „lepszy James" wyłaniający się z wody. To była ostateczna pokusa.
+⚠ **Środek tej sceny — od wejścia do jaskini po detonację — nie zachował się na taśmie.** O **[2:15]** Strażnik wyłączył nagrywanie (dogasały mikrofony — „Zatrzymuję recording, bo mikrofony zaraz…"); taśma wraca dopiero przy rzucie na ucieczkę i eksplozji. Poniższe — poza samą eksplozją i tym, co po niej — odtworzono z relacji Strażnika.
 
-> **Joseph Kelly:** „On wrócił! On wrócił do życia!"
-> **pozostali:** „Spierdolisz stąd, on cię podpuszcza, kurwa!"
+Do jaskini ruszyła pieszo **mieszana grupa ocalałych** — gangsterzy i akademicy (bez **McMillera**, który uciekł autem). **Joseph** niósł na plecach **ciało brata**. Jaskinia leży **w górę rzeki**: to z niej wypływa strumień, na którym bracia postawili **tamę** zasilającą skażone pola kukurydzy. Trzeba było wspiąć się **po mokrych kamieniach** — zeszło chwilę, ale bez większych strat (**Eleine** znów żałowała, że nie zapisała się na kurs wspinaczki). W środku ciągnęło się **wypłukane koryto** między **stromymi skarpami**, a na końcu czekało **głębokie jezioro**.
 
-Joseph wybiegł z korytarza tuż przed eksplozją.
+Przy wodzie **Roades** zachęcał, by **wrzucić ciało Jamesa** do źródła — Matka go wskrzesi. Joseph stanął przed wyborem i ostatecznie postanowił **pozwolić bratu odejść w spokoju** — po czym **strzelił Roadesowi w głowę**. Profesor runął do wody.
+
+To **sprowokowało Matkę.** Na powierzchnię wynurzyła się **Abigail Roades** — obrzydliwa masa mięsa, twarz częściowo rozłupana na pół, z odsłoniętą częścią czaszki.
+
+*(Tylko na poziomie „meta" gracze poznają jej historię: Abigail upadła tu kiedyś, roztrzaskała sobie głowę i wpadła do wody — tak narodziła się Matka. Roades przez całą sprawę szukał właśnie jej, swojej żony.)*
+
+Widok uderzył w psychikę wszystkich — **Eleine na moment straciła przytomność**, reszta była mocno rozbita. Najgorzej wyszło na **Mortimerze**: ponieważ wcześniej **pił skażoną whiskey**, na oczach drużyny **stał się — tymczasowo — wyznawcą Matki.**
+
+Zaczęła się długa, zacięta walka o odpalenie dynamitu. Część drużyny stała **za blisko ładunku**, **opętany Mortimer przeszkadzał**, a Matka **mackowatymi kończynami** próbowała chwytać i wciągać ludzi do wody. W szamotaninie **ciało Jamesa wpadło do jeziora.**
+
+Ładunek w końcu udało się odpalić — i drużyna rzuciła się do ucieczki. **Mortimer został.** **Fritz** baaardzo długo próbował wyrwać go z transu, aż w końcu poddał się i uciekł sam.
 
 > **Strażnik Tajemnic:** „Eksplozja wstrząsa całą jaskinią, rozrywając istotę na kawałki. Spadające kamienie blokują dostęp wody — przynajmniej na długie, długie lata."
 
-Pod gruzami uwięziony został **Mortimer Flannery**. Przygniecony, wystający z korytarza, niezdolny do ruchu, krzyczał o pomoc — która nie nadeszła. Drużyna, wychodząc z jaskini, zostawiła go.
+Wybudzony z transu Mortimer też rzucił się do wyjścia — ale drogę zastąpił mu **świeżo powstały zombie-James** (ciało porwane przez wodę Matki). Spóźniony, **przygnieciony spadającymi głazami**, nie zdążył. **Nadprzyrodzona regeneracja z daru Matki nie pozwoliła mu umrzeć** — Mortimer został tam **kompletnie niepoczytalny**.
 
-> **Strażnik Tajemnic:** „Twój teammate zostaje w jaskini, przygnieciony i krzyczący »pomocy, pomocy« — ale pomoc nie nadchodzi, a on sam po prostu zostaje tam przygnieciony."
+> **Strażnik Tajemnic:** „Twój teammate zostaje w jaskini, przygnieciony i krzyczący »pomocy, pomocy« — ale pomoc nie nadchodzi."
 
 ### [2:21:00–2:31:00] Ucieczka, podpalenie farmy, podsumowanie
 
@@ -162,7 +194,7 @@ Po wyjściu z jaskini ocaleni dostrzegli grupę ludzi z latarniami nadciągając
 
 > **Dr Eleine Howard (o pastorze):** „Ja go kiedyś dopadnę."
 
-Wynik: Matka zabita i zapieczętowana, Brandon Carmody martwy, bimbrownia i kukurydza spalone. Nie uratowano Rhodesa, nie rozliczono pastora. Zginęli: **James Kelly** (farma) i **Mortimer Flannery** (jaskinia, na karcie „obłęd"); **Cormac McMiller** w obłędzie uciekł. Przeżyli: **Joseph Kelly**, **Fritz Mueller** oraz wszyscy akademicy.
+Wynik: **Matka (Abigail Roades)** rozerwana i zapieczętowana, obaj bracia Carmody martwi (**Damien** — kark skręcony przez brata; **Brendan** — istota z farmy, spalony), bimbrownia i kukurydza spalone. **Roadesa nie uratowano** (Joseph zastrzelił go w jaskini), pastora **Dicka Sproustona** nie rozliczono. Zginął **James Kelly** (farma). **Mortimer Flannery** przeżył, lecz został w zawalonej jaskini **kompletnie niepoczytalny** — uratowała go regeneracja z daru Matki; **Cormac McMiller** w obłędzie uciekł. Przeżyli: **Joseph Kelly**, **Fritz Mueller** oraz wszyscy akademicy.
 
 ### [2:31:00–2:38:00] Epilog — dwie sceny
 
@@ -178,7 +210,7 @@ Czy to James, który wrócił, czy halucynacja Josepha — Strażnik zostawił c
 
 Na tym zaproszeniu — werbunku do Klubu Kasandry — sesja się zakończyła.
 
-> _Pełna narracja zrekonstruowana z (kompletnego) nagrania przez osobnego agenta. Wersja robocza — daj znać, co poprawić._
+> _Pełna narracja zrekonstruowana z nagrania, uzupełniona o relację MG w dwóch lukach off-mic (noc na farmie + środek walki w jaskini). Wersja robocza — daj znać, co poprawić._
 `
 
 export function UG2Narracja() {
