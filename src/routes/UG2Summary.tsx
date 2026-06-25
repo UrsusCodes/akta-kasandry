@@ -37,7 +37,7 @@ const SUMMARY = `# Urodzaj Grozy (UG 2) — streszczenie
 
 ### Wezwanie do McBride'a
 
-Wieczór w speakeasy (*Rhymers Club* / *Old State House*). Za kotarą „private" urzęduje **Declan McBride**, szef organizacji. {sesja:ug2#5835c7a73370} Wzywa swoją ekipę „wolnych agentów": **Mortimera** (siostrzeńca), **JJ — braci Kelly**, **Fritza** i księgowego **McMillera**.
+<img src="/img/ug2/mcbride.jpg" alt="Declan McBride" width="200" align="right" style="margin: 0.3rem 0 0.8rem 1.2rem;" />Wieczór w speakeasy (*Rhymers Club* / *Old State House*). Za kotarą „private" urzęduje **Declan McBride**, szef organizacji. {sesja:ug2#5835c7a73370} Wzywa swoją ekipę „wolnych agentów": **Mortimera** (siostrzeńca), **JJ — braci Kelly**, **Fritza** i księgowego **McMillera**.
 
 ### Brock i źródło dobrego trunku
 
@@ -53,9 +53,12 @@ McBride jest jasny: w Blackwater Creek bracia mają **świetną bimbrownię** �
 
 ### Pastor, sklepikarz i farma
 
-Blackwater Creek to ponure pustkowie — błoto, słodki zapach rozkładu, parę chałup, kościół i sklep. Z kościoła wychodzi **Dick Sprouston** — miejscowy **pastor, a zarazem szeryf**. {sesja:ug2#66f8c76d776b} Ostrzega przed **braćmi Carmody**: gwałtowni, uzbrojeni, terroryzują okolicę; chętnie zobaczyłby ich „wykorzenionych", a po fakcie zaprasza na wieczorną mszę. Sklepikarz **Nathaniel Baxter** {sesja:ug2#4a5e4f9e16b0} sprzedaje ich złoty trunek (bo nie ma gdzie indziej) i potwierdza, że gorszy jest **młodszy brat, Brendan**.
+![Miasteczko Blackwater Creek](/img/ug2/town.jpg)
+*Blackwater Creek — kościół i błotnisty rozjazd.*
 
-Na farmie — **pole kukurydzy ze strachem na wróble** i **bimbrownia**. {sesja:ug2#0b660dc80198} Kukurydza jest **„obfita i słodka"**, dają z niej 100+ litrów miesięcznie. {sesja:ug2#759774161672} **Damien Carmody** z ludźmi (strzelba, karabin wojskowy) zgadza się negocjować — zaprasza na jedzenie i trunek.
+<img src="/img/ug2/sprouston.jpg" alt="Dick Sprouston" width="200" align="right" style="margin: 0.3rem 0 0.8rem 1.2rem;" />Blackwater Creek to ponure pustkowie — błoto, słodki zapach rozkładu, parę chałup, kościół i sklep. Z kościoła wychodzi **Dick Sprouston** — miejscowy **pastor, a zarazem szeryf**. {sesja:ug2#66f8c76d776b} Ostrzega przed **braćmi Carmody**: gwałtowni, uzbrojeni, terroryzują okolicę; chętnie zobaczyłby ich „wykorzenionych", a po fakcie zaprasza na wieczorną mszę. Sklepikarz **Nathaniel Baxter** {sesja:ug2#4a5e4f9e16b0} sprzedaje ich złoty trunek (bo nie ma gdzie indziej) i potwierdza, że gorszy jest **młodszy brat, Brendan**.
+
+<img src="/img/ug2/carmody.jpg" alt="Damien Carmody" width="200" align="right" style="margin: 0.3rem 0 0.8rem 1.2rem;" />Na farmie — **pole kukurydzy ze strachem na wróble** i **bimbrownia**. {sesja:ug2#0b660dc80198} Kukurydza jest **„obfita i słodka"**, dają z niej 100+ litrów miesięcznie. {sesja:ug2#759774161672} **Damien Carmody** z ludźmi (strzelba, karabin wojskowy) zgadza się negocjować — zaprasza na jedzenie i trunek.
 
 ### ⚠ Poza nagraniem — noc na farmie i pierwsza strzelanina (z relacji MG)
 
@@ -71,7 +74,10 @@ O świcie gangsterów wyrzucono z farmy ostrzej; Damiena nie było, a najemnicy 
 
 > ⚠ **Początek wątku akademickiego też poza nagraniem.** Akademików z **Boston University** (zlecenie dziekana) wysłano po zaginionego profesora archeologii **Henry'ego Roadesa** i jego żonę **Abigail**. W **Blackwater Creek** rozmawiali z **Dickiem Sproustonem**, który subtelnie sugerował sprawstwo braci Carmody; **West** odkupił od dzieciaków **słój, w którym rozpuszczały dżdżownice** — woda **trawi mięso, ale nie kości**. Tropem profesora dotarli na **Farmę Jarveyów**.
 
-Na Farmie Jarveyów pod ścianą, w błocie, siedzi **Stary Pete** — alkoholiczny parobek, blady, półprzytomny, a z ust cieknie mu **cienka czarna maź**. {sesja:ug2#3b313bfb1e3f} **Wallace** (bibliotekarz) pobiera próbkę; w domu znajdują niedokończony list „Drogi Ernesti" (do **Ernesta McTavisha** z Boston University). Akademicy trafiają na **porzucone wykopalisko** profesora przy wyschniętym strumieniu i odkopują **masę ludzkich kości** — czaszek i piszczeli **zdeformowanych** (spłaszczonych, rozciągniętych, pod dziwnymi kątami) i noszących **ślady spalenia**, datowanych na **koniec XVII wieku**. {sesja:ug2#0c0cd7d741fe} To pozostałość po **zaginionej purytańskiej sekcie** {sesja:ug2#4d951c55723d} (przywódca **Cayda**), która uciekła z Bostonu i założyła przystań, po czym **zniknęła z historii**. Strumień wpływał kiedyś w las — ku jaskini.
+![Farma Jarveyów](/img/ug2/farm_jarvey.jpg)
+*Farma Jarveyów — z bajorem, przy którym siedział Stary Pete.*
+
+<img src="/img/ug2/pete.jpg" alt="Stary Pete" width="200" align="right" style="margin: 0.3rem 0 0.8rem 1.2rem;" />Na Farmie Jarveyów pod ścianą, w błocie, siedzi **Stary Pete** — alkoholiczny parobek, blady, półprzytomny, a z ust cieknie mu **cienka czarna maź**. {sesja:ug2#3b313bfb1e3f} **Wallace** (bibliotekarz) pobiera próbkę; w domu znajdują niedokończony list „Drogi Ernesti" (do **Ernesta McTavisha** z Boston University). Akademicy trafiają na **porzucone wykopalisko** profesora przy wyschniętym strumieniu i odkopują **masę ludzkich kości** — czaszek i piszczeli **zdeformowanych** (spłaszczonych, rozciągniętych, pod dziwnymi kątami) i noszących **ślady spalenia**, datowanych na **koniec XVII wieku**. {sesja:ug2#0c0cd7d741fe} To pozostałość po **zaginionej purytańskiej sekcie** {sesja:ug2#4d951c55723d} (przywódca **Cayda**), która uciekła z Bostonu i założyła przystań, po czym **zniknęła z historii**. Strumień wpływał kiedyś w las — ku jaskini.
 
 ---
 
@@ -79,15 +85,21 @@ Na Farmie Jarveyów pod ścianą, w błocie, siedzi **Stary Pete** — alkoholic
 
 ### Bitwa na farmie
 
+![Brendan Carmody — istota z kukurydzy](/img/ug2/brendan.jpg)
+*Brendan Carmody — Dziecię Macierzy, „strach na wróble".*
+
 Negocjacje pękają i krater zamienia się w jatkę: **granaty** {sesja:ug2#2a8b3928b40e}, **lampa naftowa** Fritza, strzelby i karabiny. W środku pojawia się **Brendan Carmody** — przemieniony młodszy brat (Dziecię Macierzy), ten sam „strach na wróble": potworna istota z wydłużającą się ręką. {sesja:ug2#46f5864b8941} **James Kelly** zostaje **przebity na wylot i rozerwany na pół**. **Cormac McMiller popada w obłęd i ucieka** jednym z aut — z rozgrywki znika (przeżył, pewnie wróci do gangu). Istotę kładzie w końcu **ogień** — płonące cielsko, a koktajl Mołotowa i wybuch odrywają jej głowę.
 
 ### Roades i „święte źródło Matki"
 
-Wśród zamieszania bohaterowie uwalniają **profesora Henry'ego Roadesa** — ale on jest **zniewolony**: błaga, by zanieść go do **świętego źródła Matki** w jaskini, bo „**Matka jest uwięziona w jaskini, ale może uleczyć wszystko**", nawet zabitego brata. {sesja:ug2#3c8768eea70a} {sesja:ug2#e18f5b6715b1} To pułapka kultu: **Matką jest w istocie Abigail Roades** — żona profesora, pochłonięta przez Macierz (awatar związany z wodą). To jej Roades szukał przez całą sprawę.
+<img src="/img/ug2/roades.jpg" alt="Henry Roades" width="200" align="right" style="margin: 0.3rem 0 0.8rem 1.2rem;" />Wśród zamieszania bohaterowie uwalniają **profesora Henry'ego Roadesa** — ale on jest **zniewolony**: błaga, by zanieść go do **świętego źródła Matki** w jaskini, bo „**Matka jest uwięziona w jaskini, ale może uleczyć wszystko**", nawet zabitego brata. {sesja:ug2#3c8768eea70a} {sesja:ug2#e18f5b6715b1} To pułapka kultu: **Matką jest w istocie Abigail Roades** — żona profesora, pochłonięta przez Macierz (awatar związany z wodą). To jej Roades szukał przez całą sprawę.
 
 ### Zawalenie jaskini
 
 > ⚠ **Środek walki w jaskini — poza nagraniem (z relacji MG).** Do jaskini (w górę rzeki, u źródła tamy zasilającej pola) idzie pieszo mieszana grupa; **Joseph** niesie ciało brata. Roades namawia, by wrzucić Jamesa do źródła — ale Joseph postanawia **pozwolić bratu odejść** i **strzela Roadesowi w głowę**. To budzi **Matkę (Abigail)**: masa mięsa z rozłupaną twarzą. Cios w psychikę jest potężny (**Eleine mdleje**), a **Mortimer** — bo pił skażoną whiskey — **na moment staje się wyznawcą Matki** i przeszkadza. Matka chwyta mackami; ciało Jamesa wpada do wody (powstaje **zombie-James**).
+
+![Matka — Abigail Roades](/img/ug2/mother.jpg)
+*Matka — Abigail Roades, awatar w jaskinnym jeziorze.*
 
 W jaskini drużyna **wysadza ładunek**. Eksplozja **wstrząsa wodą i rozrywa istotę na kawałki** {sesja:ug2#c3a7c3ed39af}, a strop zaczyna się walić — **odcinając dostęp wody na długie lata**. Spadające głazy grzebią wnętrze {sesja:ug2#5f24b27c1793}. **Mortimer** zostaje: **Fritz** długo próbuje wyrwać go z transu, w końcu ucieka sam; wybudzony Mortimer, zatrzymany przez zombie-Jamesa, nie zdąża i zostaje przygnieciony — **regeneracja z daru Matki ratuje mu życie, ale zostaje kompletnie niepoczytalny**. Na koniec ocaleli palą farmę i kukurydzę, by skażony alkohol przestał płynąć po okolicy.
 
