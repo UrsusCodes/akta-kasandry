@@ -39,9 +39,11 @@ const SUMMARY = `# Urodzaj Grozy (UG 2) — streszczenie
 
 <img src="/img/ug2/mcbride.jpg" alt="Declan McBride" width="200" align="right" style="margin: 0.3rem 0 0.8rem 1.2rem;" />Wieczór w speakeasy (*Rhymers Club* / *Old State House*). Za kotarą „private" urzęduje **Declan McBride**, szef organizacji. {sesja:ug2#5835c7a73370} Wzywa swoją ekipę „wolnych agentów": **Mortimera** (siostrzeńca), **JJ — braci Kelly**, **Fritza** i księgowego **McMillera**.
 
+McBride stawia na stole **dwie z pozoru identyczne butelki**: jedną z mętnym, obrzydliwym miejscowym bimbrem, drugą — z **ciemnozłotym trunkiem klasy kanadyjskiej** („**To jest po prostu fenomenalne**"). Ktoś z zewnątrz rozprowadza ten złoty towar po mieście, a jeden ze „szczurków" organizacji zaczął handlować nim na własną rękę — i właśnie wisi przesłuchiwany w sąsiednim pokoju.
+
 ### Brock i źródło dobrego trunku
 
-W zapleczu, przywiązany do krzesła, z wybitymi zębami na podłodze, siedzi **Brock**. {sesja:ug2#6a4de39928af} Jeden z „luźnych szczurków" organizacji odkupił od kogoś **wyśmienity** alkohol (klasy kanadyjskiej, nie miejscowy obrzydliwy bimber) i zaczął handlować na własną rękę. McBride chce **źródło**. Bohaterowie wyciągają z Brocka nazwisko: **Damien Carmody** {sesja:ug2#0aab12e64610} — dawny pięściarz-łobuz z Bostonu (z którym **James** ma starą zadrę: Carmody rozwalił mu kolano po przegranym sparingu), który zwinął się z miasta i wrócił do rodzinnej dziury — **Blackwater Creek**, na zachód od Arkham. {sesja:ug2#5ea12999e158} Brocka, po wszystkim, dobijają łomem i topią w zatoce.
+W zapleczu, przywiązany do krzesła, z wybitymi zębami na betonowej podłodze, siedzi **Brock**. {sesja:ug2#6a4de39928af} **James** podnosi jeden z zębów i chowa go do kieszeni jako „pamiątkę po ofierze", a przesłuchanie prowadzi z lodowatą precyzją: „**Nie jestem twoim szefem. Jestem twoim katem.**" {sesja:ug2#48a9f61b45ef} Twardy Brock twierdzi, że i tak zginie — ale drużyna znajduje jego czuły punkt, **matkę**, i więzień pęka, podając nazwisko: **Damien Carmody** {sesja:ug2#0aab12e64610} — dawny pięściarz-łobuz z Bostonu (z którym **James** ma starą zadrę: Carmody rozwalił mu kolano po przegranym sparingu), który wrócił do rodzinnej dziury — **Blackwater Creek**, na zachód od Arkham. {sesja:ug2#5ea12999e158} Po wszystkim **Joseph dobija Brocka łomem**, a ciało zostaje obciążone i utopione w zatoce. *(Brock jeszcze wróci — patrz epilog.)*
 
 ### Zlecenie
 
@@ -89,7 +91,7 @@ Akademików z **Boston University** (zlecenie dziekana) wysłano po zaginionego 
 ![Brendan Carmody — istota z kukurydzy](/img/ug2/brendan.jpg)
 *Brendan Carmody — Dziecię Macierzy, „strach na wróble".*
 
-Negocjacje pękają i krater zamienia się w jatkę: **granaty** {sesja:ug2#2a8b3928b40e}, **lampa naftowa** Fritza, strzelby i karabiny. W środku pojawia się **Brendan Carmody** — przemieniony młodszy brat (Dziecię Macierzy), ten sam „strach na wróble": potworna istota z wydłużającą się ręką. {sesja:ug2#46f5864b8941} **James Kelly** zostaje **przebity na wylot i rozerwany na pół**. **Cormac McMiller popada w obłęd i ucieka** jednym z aut — z rozgrywki znika (przeżył, pewnie wróci do gangu). Istotę kładzie w końcu **ogień** — płonące cielsko, a koktajl Mołotowa i wybuch odrywają jej głowę.
+Negocjacje pękają i krater zamienia się w jatkę: **granaty** {sesja:ug2#2a8b3928b40e}, **lampa naftowa** Fritza, strzelby i karabiny. W środku pojawia się **Brendan Carmody** — przemieniony młodszy brat (Dziecię Macierzy), ten sam „strach na wróble": potworna istota z wydłużającą się ręką. {sesja:ug2#46f5864b8941} **James Kelly** zostaje **przebity na wylot i rozerwany na pół** — a wstrząśnięta **Eleine** rzuca istocie w twarz: „**Zapłacisz mi, kurwo, za to**". {sesja:ug2#7f976a645714} **Cormac McMiller popada w obłęd i ucieka** jednym z aut — z rozgrywki znika (przeżył, pewnie wróci do gangu). Istotę kładzie w końcu **ogień** — płonące cielsko, a koktajl Mołotowa i wybuch odrywają jej głowę.
 
 ### Roades i „święte źródło Matki"
 
@@ -111,7 +113,7 @@ W jaskini drużyna **wysadza ładunek**. Eksplozja **wstrząsa wodą i rozrywa i
 Dwie sceny domykają sesję:
 
 - **Joseph** — ocalały, lecz **sam, bez brata Jamesa** — siedzi w mieszkaniu i patrzy w sufit; w oknie staje postać o **rozbitej, pokrytej bliznami głowie i rozdwojonym oku**. To **Brock** — informator dobity łomem i utopiony na początku sprawy — który „przeżył" egzekucję dzięki **darowi Matki** (pił skażony trunek, który sam rozprowadzał) i wrócił po Josepha. (Realny powrót czy wyrzut sumienia — MG zostawia niejednoznacznie.)
-- Tygodnie później **dr Eleine Howard** wraca do mieszkania i zastaje w swoim fotelu nieznajomego z zaproszeniem: reprezentuje pewien progresywny klub dżentelmenów z wieloma damami w składzie. **„Czy słyszała pani kiedykolwiek o klubie Cassandry?"** {sesja:ug2#a37238c0d8c5}
+- Tygodnie później **dr Eleine Howard** wraca do mieszkania i zastaje w swoim fotelu nieznajomego z zaproszeniem: reprezentuje pewien progresywny klub dżentelmenów z wieloma damami w składzie. **„Czy słyszała pani kiedykolwiek o klubie Kasandry?"** {sesja:ug2#a37238c0d8c5}
 
 Tak **Urodzaj Grozy** — podobnie jak Sól w Ranach — wpina się w **Akta / Klub Kasandry**.
 
@@ -124,7 +126,7 @@ Tak **Urodzaj Grozy** — podobnie jak Sól w Ranach — wpina się w **Akta / K
 - **Profesora Roadesa nie uratowano** — Joseph zastrzelił go w jaskini. **Pastora Dicka Sproustona** nie rozliczono.
 - **Straty gangsterów:** **James Kelly** rozerwany przez Brendana na farmie (ginie). **Mortimer** przygnieciony w zawalonej jaskini — **przeżył dzięki regeneracji z daru Matki, ale jest kompletnie niepoczytalny**. **Joseph Kelly** i **Fritz** przeżyli. **Cormac McMiller** popada w **obłęd i ucieka** (przeżył, znika z rozgrywki — pewnie wróci do gangu).
 - **Akademicy przeżyli wszyscy** — z różnie naruszoną psychiką.
-- **Hak na przyszłość:** Brock — ożywiony darem Matki — w oknie Josepha; werbunek **dr Eleine Howard** do **Klubu Cassandry**.
+- **Hak na przyszłość:** Brock — ożywiony darem Matki — w oknie Josepha; werbunek **dr Eleine Howard** do **Klubu Kasandry**.
 
 ---
 
@@ -134,9 +136,35 @@ Tak **Urodzaj Grozy** — podobnie jak Sól w Ranach — wpina się w **Akta / K
 - **Zaginiona purytańska sekta (XVII w.)** — spalone, zdeformowane kości u źródeł całej sprawy.
 - **Matka w jaskini** — mityczna istota związana z wodą (echo „wodnego diabła" z Sól w Ranach); ogień i zawał ją powstrzymują.
 - **Dwie grupy, dwie połowy prawdy** — gangsterzy (cel: bracia) i akademicy (cel: Roades) składają historię z dwóch stron.
-- **Klub Cassandry** — spinka z resztą kampanii i z **Aktami Kasandry**.
+- **Klub Kasandry** — spinka z resztą kampanii i z **Aktami Kasandry**.
 
-> _Wersja robocza. Daj znać, co poprawić: imiona, kolejność, akcenty — i czy dorobić osobną stronę „śmieszne i epickie momenty"._
+---
+
+## Śmieszne i epickie momenty
+
+> Najlepsze teksty wieczoru — część „w roli", część zza stołu. Każdy odnośnik **↪ transkrypt** prowadzi do tego miejsca w nagraniu.
+
+**Epickie**
+
+- **James** do Brocka: „Nie jestem twoim szefem. Jestem twoim katem." {sesja:ug2#48a9f61b45ef}
+- **McBride** wydaje rozkaz, który zemści się ironią: „Nie chcę, żeby jakaś losowa salwa albo niepoważnie rzucona laska dynamitu zakończyła istnienie tego przybytku." {sesja:ug2#7375e02727ca} — kilka godzin później **McMiller** strzela w środku bimbrowni i jest **o jeden pechowy rzut** od wysadzenia wszystkiego.
+- **Eleine** nad ciałem Jamesa, prosto do Matki: „Zapłacisz mi, kurwo, za to." {sesja:ug2#7f976a645714}
+- **Joseph** dobija płonącą istotę — MG: „…głowa odrywa się w końcu od płonącego ciała i odlatuje w bok." {sesja:ug2#9d718d4382fa}
+- **Eleine** o pastorze Sproustonie (którego świadomie zostawiono na później): „Ja go kiedyś dopadnę, kurwa." {sesja:ug2#bb3e7f79e3db}
+
+**Śmieszne**
+
+- **Mortimer**, esteta zbrodni: „bardziej pasjonuje mnie posiadanie czegoś, czego inni nie mają" {sesja:ug2#8c817d940165} — a o łyku złotego trunku: „**Smakuje jak tęcza.**" {sesja:ug2#e3a66bc7b6c7}
+- **Joseph**, klasyczne „ostatnie słowa": „Ależ koledzy, to jest tylko las na pustkowiu. Co może się tutaj wydarzyć?" {sesja:ug2#005e17a108ce}
+- **Saga słoika** — akademicy i słój z rozpuszczonymi dżdżownicami: „Nie, ten, kto ma słoik, ma wakacje." {sesja:ug2#8f80092ece74} • „Nie, to jest mój słoik, wy decydujecie, gdzie idziemy." {sesja:ug2#d537e5add875}
+- **McMiller**, księgowy z niespodzianką: „W walizce mam naładowanego shotguna, just in fucking case." {sesja:ug2#fb03bacf313b}
+- **Rafał** o szefie organizacji: „Braciszek jest intimidating as fuck." {sesja:ug2#1868f22eea83}
+- **MG** (meta): „następnym razem wezmę sobie umiejętność **insane bullshit**." {sesja:ug2#4b12b5d96fb4}
+- I gorzko-śmieszne, gdy kości zaczęły się sypać przy stole: „**Let me die.**" {sesja:ug2#9f70f4b228f4}
+
+---
+
+> _Wersja robocza. Daj znać, co poprawić: imiona, kolejność, akcenty._
 `
 
 export function UG2Summary() {

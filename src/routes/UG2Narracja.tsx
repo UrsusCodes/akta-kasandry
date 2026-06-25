@@ -243,7 +243,7 @@ To **Brock** — informator, którego na początku sprawy torturowano, a Joseph 
 
 **Scena druga — Dr Eleine Howard.** Tygodnie później, gdy w głowie Eleine kłębią się kłamstwa opowiedziane na uniwersytecie, wraca do swojego mieszkania. Drzwi są odryglowane. Wyciąga broń, wchodzi — w jej ulubionym fotelu, plecami do niej, ktoś siedzi.
 
-> **Nieznajomy (werbownik):** „Cieszę się, że już pani wróciła. Mam olbrzymią przyjemność przynieść pani szczególne zaproszenie. Reprezentuję pewien klub dżentelmenów — choć dla ścisłości jesteśmy progresywni i mamy wiele dam wśród naszych członków. Czy słyszała pani kiedykolwiek o klubie Cassandry?"
+> **Nieznajomy (werbownik):** „Cieszę się, że już pani wróciła. Mam olbrzymią przyjemność przynieść pani szczególne zaproszenie. Reprezentuję pewien klub dżentelmenów — choć dla ścisłości jesteśmy progresywni i mamy wiele dam wśród naszych członków. Czy słyszała pani kiedykolwiek o klubie Kasandry?"
 
 Na tym zaproszeniu — werbunku do Klubu Kasandry — sesja się zakończyła.
 
