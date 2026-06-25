@@ -60,11 +60,12 @@ McBride jest jasny: w Blackwater Creek bracia mają **świetną bimbrownię** �
 
 <img src="/img/ug2/carmody.jpg" alt="Damien Carmody" width="200" align="right" style="margin: 0.3rem 0 0.8rem 1.2rem;" />Na farmie — **pole kukurydzy ze strachem na wróble** i **bimbrownia**. {sesja:ug2#0b660dc80198} Kukurydza jest **„obfita i słodka"**, dają z niej 100+ litrów miesięcznie. {sesja:ug2#759774161672} **Damien Carmody** z ludźmi (strzelba, karabin wojskowy) zgadza się negocjować — zaprasza na jedzenie i trunek.
 
-### ⚠ Poza nagraniem — noc na farmie i pierwsza strzelanina (z relacji MG)
+### Noc na farmie i pierwsza strzelanina
 
-> ⚠ **Tego fragmentu nie ma na taśmie** — Strażnik wyłączył nagrywanie na posiłek i ciche dobicie negocjacji, a gdy wróciło, akcja była już przy akademikach. Odtworzone z relacji MG, bez deep-linków.
+![Farma braci Carmody](/img/ug2/farm_carmody.jpg)
+*Farma braci Carmody — nocny zwiad i poranna strzelanina.*
 
-Negocjacje z **Damienem** stanęły na warunkach **korzystnych dla gangsterów**; bracia Kelly przyjęli to z niechęcią. Przy autach okazało się, że **wielkie szczury przegryzły kable** w silnikach (sprawka **Brendana**, który włada zwierzętami) — a farma odmówiła pomocy, kłamiąc, że nie ma ciężarówki. Drużyna przeczekiwała noc w wozach.
+<img src="/img/ug2/boar.jpg" alt="Skażone zwierzę — Dar Macierzy" width="200" align="right" style="margin: 0.3rem 0 0.8rem 1.2rem;" />Negocjacje z **Damienem** stanęły na warunkach **korzystnych dla gangsterów**; bracia Kelly przyjęli to z niechęcią. Przy autach okazało się, że **wielkie szczury przegryzły kable** w silnikach (sprawka **Brendana**, który włada zwierzętami) — a farma odmówiła pomocy, kłamiąc, że nie ma ciężarówki. Drużyna przeczekiwała noc w wozach.
 
 Na warcie **James** dostrzegł stracha na wróble, który **zmieniał pozycję**. **Fritz** poszedł na zwiad: znalazł **ciężarówkę ze sprzętem archeologicznym i książkami** (dobytek zaginionego profesora), a potem zobaczył, jak z pola za domem wychodzi **wychudzona, ponad trzymetrowa postać**, wchodzi tylnymi drzwiami, wszczyna szamotaninę i wraca na pole. *(To Brendan Carmody, przemieniony przez Matkę — i to on tej nocy skręcił kark własnemu Damienowi za handel darem Matki poza jej błogosławieństwem.)*
 
@@ -72,7 +73,7 @@ O świcie gangsterów wyrzucono z farmy ostrzej; Damiena nie było, a najemnicy 
 
 ### Czarna maź i spalone kości — Farma Jarveyów
 
-> ⚠ **Początek wątku akademickiego też poza nagraniem.** Akademików z **Boston University** (zlecenie dziekana) wysłano po zaginionego profesora archeologii **Henry'ego Roadesa** i jego żonę **Abigail**. W **Blackwater Creek** rozmawiali z **Dickiem Sproustonem**, który subtelnie sugerował sprawstwo braci Carmody; **West** odkupił od dzieciaków **słój, w którym rozpuszczały dżdżownice** — woda **trawi mięso, ale nie kości**. Tropem profesora dotarli na **Farmę Jarveyów**.
+Akademików z **Boston University** (zlecenie dziekana) wysłano po zaginionego profesora archeologii **Henry'ego Roadesa** i jego żonę **Abigail**. W **Blackwater Creek** rozmawiali z **Dickiem Sproustonem**, który subtelnie sugerował sprawstwo braci Carmody; **West** odkupił od dzieciaków **słój, w którym rozpuszczały dżdżownice** — woda **trawi mięso, ale nie kości**. Tropem profesora dotarli na **Farmę Jarveyów**.
 
 ![Farma Jarveyów](/img/ug2/farm_jarvey.jpg)
 *Farma Jarveyów — z bajorem, przy którym siedział Stary Pete.*
@@ -96,7 +97,7 @@ Negocjacje pękają i krater zamienia się w jatkę: **granaty** {sesja:ug2#2a8b
 
 ### Zawalenie jaskini
 
-> ⚠ **Środek walki w jaskini — poza nagraniem (z relacji MG).** Do jaskini (w górę rzeki, u źródła tamy zasilającej pola) idzie pieszo mieszana grupa; **Joseph** niesie ciało brata. Roades namawia, by wrzucić Jamesa do źródła — ale Joseph postanawia **pozwolić bratu odejść** i **strzela Roadesowi w głowę**. To budzi **Matkę (Abigail)**: masa mięsa z rozłupaną twarzą. Cios w psychikę jest potężny (**Eleine mdleje**), a **Mortimer** — bo pił skażoną whiskey — **na moment staje się wyznawcą Matki** i przeszkadza. Matka chwyta mackami; ciało Jamesa wpada do wody (powstaje **zombie-James**).
+Do jaskini (w górę rzeki, u źródła tamy zasilającej pola) idzie pieszo mieszana grupa; **Joseph** niesie ciało brata. Roades namawia, by wrzucić Jamesa do źródła — ale Joseph postanawia **pozwolić bratu odejść** i **strzela Roadesowi w głowę**. To budzi **Matkę (Abigail)**: masa mięsa z rozłupaną twarzą. Cios w psychikę jest potężny (**Eleine mdleje**), a **Mortimer** — bo pił skażoną whiskey — **na moment staje się wyznawcą Matki** i przeszkadza. Matka chwyta mackami; ciało Jamesa wpada do wody (powstaje **zombie-James**).
 
 ![Matka — Abigail Roades](/img/ug2/mother.jpg)
 *Matka — Abigail Roades, awatar w jaskinnym jeziorze.*
@@ -109,8 +110,8 @@ W jaskini drużyna **wysadza ładunek**. Eksplozja **wstrząsa wodą i rozrywa i
 
 Dwie sceny domykają sesję:
 
-- **Joseph** — ocalały, lecz **sam, bez brata Jamesa** — siedzi w mieszkaniu i patrzy w sufit; w oknie staje postać o **rozbitej, pokrytej bliznami głowie i rozdwojonym oku**. (MG zostawia tę scenę celowo niejednoznaczną — sen, halucynacja, „mogło się nie wydarzyć".)
-- Tygodnie później **dr Eleine Howard** wraca do mieszkania i zastaje w swoim fotelu nieznajomego z zaproszeniem: reprezentuje pewien progresywny klub dżentelmenów z wieloma damami w składzie. **„Czy słyszała pani kiedykolwiek o klubie Cassandy?"** {sesja:ug2#a37238c0d8c5}
+- **Joseph** — ocalały, lecz **sam, bez brata Jamesa** — siedzi w mieszkaniu i patrzy w sufit; w oknie staje postać o **rozbitej, pokrytej bliznami głowie i rozdwojonym oku**. To **Brock** — informator dobity łomem i utopiony na początku sprawy — który „przeżył" egzekucję dzięki **darowi Matki** (pił skażony trunek, który sam rozprowadzał) i wrócił po Josepha. (Realny powrót czy wyrzut sumienia — MG zostawia niejednoznacznie.)
+- Tygodnie później **dr Eleine Howard** wraca do mieszkania i zastaje w swoim fotelu nieznajomego z zaproszeniem: reprezentuje pewien progresywny klub dżentelmenów z wieloma damami w składzie. **„Czy słyszała pani kiedykolwiek o klubie Cassandry?"** {sesja:ug2#a37238c0d8c5}
 
 Tak **Urodzaj Grozy** — podobnie jak Sól w Ranach — wpina się w **Akta / Klub Kasandry**.
 
@@ -123,7 +124,7 @@ Tak **Urodzaj Grozy** — podobnie jak Sól w Ranach — wpina się w **Akta / K
 - **Profesora Roadesa nie uratowano** — Joseph zastrzelił go w jaskini. **Pastora Dicka Sproustona** nie rozliczono.
 - **Straty gangsterów:** **James Kelly** rozerwany przez Brendana na farmie (ginie). **Mortimer** przygnieciony w zawalonej jaskini — **przeżył dzięki regeneracji z daru Matki, ale jest kompletnie niepoczytalny**. **Joseph Kelly** i **Fritz** przeżyli. **Cormac McMiller** popada w **obłęd i ucieka** (przeżył, znika z rozgrywki — pewnie wróci do gangu).
 - **Akademicy przeżyli wszyscy** — z różnie naruszoną psychiką.
-- **Hak na przyszłość:** zjawa w oknie Jamesa; werbunek **dr Eleine Howard** do **Klubu Cassandry**.
+- **Hak na przyszłość:** Brock — ożywiony darem Matki — w oknie Josepha; werbunek **dr Eleine Howard** do **Klubu Cassandry**.
 
 ---
 
@@ -135,7 +136,7 @@ Tak **Urodzaj Grozy** — podobnie jak Sól w Ranach — wpina się w **Akta / K
 - **Dwie grupy, dwie połowy prawdy** — gangsterzy (cel: bracia) i akademicy (cel: Roades) składają historię z dwóch stron.
 - **Klub Cassandry** — spinka z resztą kampanii i z **Aktami Kasandry**.
 
-> _Wersja robocza, odtworzona z nagrania i uzupełniona o relację MG w dwóch lukach off-mic (noc na farmie + środek walki w jaskini). Daj znać, co poprawić: imiona, kolejność, akcenty — i czy dorobić osobną stronę „śmieszne i epickie momenty"._
+> _Wersja robocza. Daj znać, co poprawić: imiona, kolejność, akcenty — i czy dorobić osobną stronę „śmieszne i epickie momenty"._
 `
 
 export function UG2Summary() {

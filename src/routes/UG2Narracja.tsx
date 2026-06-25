@@ -108,15 +108,19 @@ Sprouston okazał się nie tylko pastorem, ale i szeryfem. Bracia Carmody to dla
 > **Damien Carmody:** „Produkujemy sporo. Kukurydza jest obfita i słodka, więc... jesteśmy w stanie w miesiąc ze 100 litrów zrobić. Może więcej."
 > **Damien Carmody:** „Myślę, że się zatem dogadamy. Chodźcie tutaj. Dopijmy się, zjedzmy. Łatwiej będzie przegadać."
 
-### ⚠ Poza nagraniem (z relacji MG) — Noc na farmie i pierwsza strzelanina
+### Noc na farmie i pierwsza strzelanina
 
-⚠ **Ten fragment nie zachował się na taśmie.** W tym miejscu Strażnik wyłączył nagrywanie (**[1:21:07]** „Wyłączę teraz recording") na posiłek i ciche dobicie negocjacji; gdy nagranie wróciło, akcja była już przy akademikach na Farmie Jarveyów. Poniższe odtworzono z relacji Strażnika — bez deep-linków, bo nie ma ich do czego podpiąć.
+![Farma braci Carmody](/img/ug2/farm_carmody.jpg)
+*Farma braci Carmody — tu rozegrały się nocny zwiad i poranna strzelanina.*
 
-**A. Gangsterzy — noc i pierwsza strzelanina.** Negocjacje z Damienem Carmody domknęły się **po myśli gangsterów** — dystrybucja złotego trunku stanęła na warunkach wyraźnie korzystnych dla ludzi McBride'a. James i Joseph Kelly przełknęli to z trudem (stara zadra Jamesa nie znikła), ale przyjęli.
+Negocjacje z Damienem Carmody domknęły się **po myśli gangsterów** — dystrybucja złotego trunku stanęła na warunkach wyraźnie korzystnych dla ludzi McBride'a. James i Joseph Kelly przełknęli to z trudem (stara zadra Jamesa nie znikła), ale przyjęli.
 
 <img src="/img/ug2/boar.jpg" alt="Skażone zwierzę — Dar Macierzy" width="200" align="right" style="margin: 0.3rem 0 0.8rem 1.2rem;" />Kłopot zaczął się przy autach: silniki nie odpaliły, bo **wielkie szczury przegryzły kable** pod maskami obu wozów. (Jak się okaże, to sprawka **Brendana Carmody**, który telepatycznie włada zwierzętami na farmie.) Gangsterzy wrócili po pomoc — i odbili się od ściany; ludzie Carmodych kłamali, że nie mają żadnej ciężarówki. Została noc w unieruchomionych samochodach.
 
 Na warcie stał **James**. W ciemności przyciągnął jego wzrok **strach na wróble** — wysoka sylwetka, która zdawała się zmieniać pozycję. **Fritz** ruszył na zwiad: w ukryciu znalazł **ciężarówkę**, a w niej **sprzęt archeologiczny i książki historyczne** (dobytek zaginionego profesora). Wtedy zza domu, od strony pola, nadeszła **postać**: wychudzona, **ponad trzy metry wzrostu**. Fritz wcisnął się pod ciężarówkę. Olbrzym wszedł **tylnymi drzwiami**; ze środka dobiegła **sprzeczka, potem szamotanina**. Po chwili postać wyszła i **wróciła na pole**. Fritz, ledwie panując nad nerwami, doczołgał się do swoich.
+
+![Sprzęt i obóz Roadesa](/img/ug2/camp_roades.jpg)
+*Sprzęt archeologiczny i książki znalezione w ciężarówce — dobytek zaginionego profesora Roadesa.*
 
 *(Ów trzymetrowy „strach na wróble" to **Brendan Carmody**, młodszy z braci, **przemieniony pod wpływem Matki** — Dziecię Macierzy. To on tej nocy skręcił kark własnemu **Damienowi**, karą za sprzedaż daru Matki poza obszar jej błogosławieństwa, i to on uderzy później na farmę, gdy zejdą się tam obie drużyny, i rozerwie Jamesa.)*
 
@@ -129,15 +133,17 @@ O **świcie** gangsterzy poszli na farmę raz jeszcze — i tym razem wyrzucono 
 
 Gdy proch opadł, **wszyscy najemnicy leżeli martwi.** Gracze znaleźli **Damiena ze skręconym karkiem**, a **w podziemiach — uwięzionego człowieka** (jeszcze nierozpoznanego; to porwany profesor Roades). Farma była ich.
 
-**B. Akademicy — miasteczko, pastor i droga na Farmę Jarveyów.** Równolegle scenariusz wprowadził **akademików**, wysłanych przez dziekana **Boston University** (część trafiła tam po znajomości). Cel: odnaleźć zaginionego profesora archeologii **Henry'ego Roadesa** i jego żonę **Abigail**. Dwoma autami wjechali do **Blackwater Creek** i rozmawiali z **Dickiem Sproustonem** — pastorem i samozwańczym szeryfem — który ostrzegał przed braćmi Carmody, ale i **subtelnie sugerował, że to oni mogą stać za zniknięciem** profesora. **West** zwrócił uwagę na dwójkę dzieciaków **rozpuszczających dżdżownice w słoju z wodą**; zaintrygowany **odkupił słój** i drużyna zaczęła sprawdzać, **co woda trawi, a czego nie** — wyszło, że **mięso znika, a kości zostają**. Tropem profesora pojechali na **Farmę Jarveyów**, gdzie Roades wcześniej nocował.
+### Akademicy: miasteczko, pastor i droga na Farmę Jarveyów
+
+Równolegle scenariusz wprowadził **akademików**, wysłanych przez dziekana **Boston University** (część trafiła tam po znajomości). Cel: odnaleźć zaginionego profesora archeologii **Henry'ego Roadesa** i jego żonę **Abigail**. Dwoma autami wjechali do **Blackwater Creek** i rozmawiali z **Dickiem Sproustonem** — pastorem i samozwańczym szeryfem — który ostrzegał przed braćmi Carmody, ale i **subtelnie sugerował, że to oni mogą stać za zniknięciem** profesora. **West** zwrócił uwagę na dwójkę dzieciaków **rozpuszczających dżdżownice w słoju z wodą**; zaintrygowany **odkupił słój** i drużyna zaczęła sprawdzać, **co woda trawi, a czego nie** — wyszło, że **mięso znika, a kości zostają**. Tropem profesora pojechali na **Farmę Jarveyów**, gdzie Roades wcześniej nocował.
 
 ### [1:23:00–1:30:00] Akademicy wkraczają — chory wieśniak i list profesora
 
 ![Farma Jarveyów](/img/ug2/farm_jarvey.jpg)
 *Farma Jarveyów — z bajorem, przy którym siedział Stary Pete.*
 
-<img src="/img/ug2/jarvey_m.jpg" alt="Malcolm Jarvey" width="150" /> <img src="/img/ug2/jarvey_e.jpg" alt="Edith Jarvey" width="150" />
-*Gospodarze farmy: Malcolm i Edith Jarvey (Edith już w 2. stadium Daru — odrastają jej zęby).*
+<img src="/img/ug2/jarvey_m.jpg" alt="Malcolm Jarvey" width="140" /> <img src="/img/ug2/jarvey_e.jpg" alt="Edith Jarvey" width="140" /> <img src="/img/ug2/jarvey_son.jpg" alt="Syn Jarveyów" width="140" />
+*Rodzina Jarveyów: Malcolm, Edith (już w 2. stadium Daru — odrastają jej zęby) i ich dorosły syn.*
 
 <img src="/img/ug2/pete.jpg" alt="Stary Pete" width="200" align="right" style="margin: 0.3rem 0 0.8rem 1.2rem;" />Na **Farmie Jarveyów** (tu wraca nagranie) działa pięcioro akademików: **Dr Edwin Thorne**, **Dr Eleine Howard**, **Dr Herbert West**, bibliotekarz **Wallace Harvey** i **Dr Cecil Cavendish**. Dr Howard podeszła do **Starego Pete'a**, alkoholicznego parobka Jarveyów, siedzącego w błocie — bladego, półprzytomnego; gdy go zagadnęła, cienka czarna stróżka ropistego płynu zaczęła mu spływać wzdłuż wargi. Dr West dyskretnie pobrał próbkę. Wewnątrz domu znaleziono niedokończony, wielokrotnie przekreślany list zaczynający się od słów „Drogi Ernesti" — adresowany do **Ernesta McTavisha**, emerytowanego profesora Boston University i zleceniodawcy wyprawy Roadesa.
 
@@ -190,8 +196,6 @@ Joseph, opętany rozpaczą i nadzieją, wziął ciało Jamesa na plecy. Drużyna
 
 ### [2:14:00–2:21:00] Jaskinia — ofiara Josepha, narodziny Matki i ucieczka
 
-⚠ **Środek tej sceny — od wejścia do jaskini po detonację — nie zachował się na taśmie.** O **[2:15]** Strażnik wyłączył nagrywanie (dogasały mikrofony — „Zatrzymuję recording, bo mikrofony zaraz…"); taśma wraca dopiero przy rzucie na ucieczkę i eksplozji. Poniższe — poza samą eksplozją i tym, co po niej — odtworzono z relacji Strażnika.
-
 ![Wejście do jaskini](/img/ug2/cave_entrance.jpg)
 *Jaskinia w górę rzeki — u źródła skażonej wody.*
 
@@ -235,7 +239,7 @@ Wynik: **Matka (Abigail Roades)** rozerwana i zapieczętowana, obaj bracia Carmo
 
 > **Strażnik Tajemnic:** „Widać mężczyznę w czarnej skórze, którego rozbity łeb zrósł się z powrotem w maszkarową strukturę blizn. A oko rozdwoiło się tak, że ma teraz dwoje oczu — patrząc."
 
-Czy to James, który wrócił, czy halucynacja Josepha — Strażnik zostawił celowo niejednoznacznym.
+To **Brock** — informator, którego na początku sprawy torturowano, a Joseph dobił łomem i utopił w zatoce. „Przeżył" egzekucję dzięki **darowi Matki** (pił skażony złoty trunek, który sam rozprowadzał) i wrócił po swojego kata. Czy to naprawdę on, czy wyrzut sumienia Josepha — Strażnik zostawił celowo niejednoznacznym.
 
 **Scena druga — Dr Eleine Howard.** Tygodnie później, gdy w głowie Eleine kłębią się kłamstwa opowiedziane na uniwersytecie, wraca do swojego mieszkania. Drzwi są odryglowane. Wyciąga broń, wchodzi — w jej ulubionym fotelu, plecami do niej, ktoś siedzi.
 
@@ -243,7 +247,7 @@ Czy to James, który wrócił, czy halucynacja Josepha — Strażnik zostawił c
 
 Na tym zaproszeniu — werbunku do Klubu Kasandry — sesja się zakończyła.
 
-> _Pełna narracja zrekonstruowana z nagrania, uzupełniona o relację MG w dwóch lukach off-mic (noc na farmie + środek walki w jaskini). Wersja robocza — daj znać, co poprawić._
+> _Pełna narracja sesji. Wersja robocza — daj znać, co poprawić._
 `
 
 export function UG2Narracja() {
