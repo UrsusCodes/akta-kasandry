@@ -4,6 +4,7 @@ import rehypeRaw from 'rehype-raw'
 import { Link } from 'react-router-dom'
 import { remarkWikilinks } from '@/lib/remarkWikilinks'
 import { remarkTranscriptAnchors } from '@/lib/remarkTranscriptAnchors'
+import { remarkBlockIds } from '@/lib/remarkBlockIds'
 import { withBase } from '@/lib/withBase'
 
 type Props = {
@@ -24,7 +25,7 @@ export function Markdown({ children }: Props) {
   return (
     <div className="prose-cthulhu bg-parchment p-4 sm:p-8">
       <ReactMarkdown
-        remarkPlugins={[remarkGfm, remarkWikilinks, remarkTranscriptAnchors]}
+        remarkPlugins={[remarkGfm, remarkWikilinks, remarkTranscriptAnchors, remarkBlockIds]}
         rehypePlugins={[rehypeRaw]}
         components={{
           a({ href, children: linkChildren, ...rest }) {
