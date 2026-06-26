@@ -158,13 +158,23 @@ Player-facing session summaries authored from transcript + GM memory, in the "Zn
 - [ ] (Optional) switch the `/sesje` viewer to the `concat` variant for sane real-time timestamps — would require re-anchoring all markers to concat ids
 - [ ] (Optional) audio — fill `audio-links.json` with Drive links so chunk ▶ links work
 
+### Stage L — Player margin-comments `#stage/l` `#dep/coc-creator`
+
+Players leave IC/OOC comments anchored to text fragments of summary pages, in a right rail; main content untouched. **Design-only so far** (2026-06-26): mockup validated (`.superpowers/brainstorm/v3.html`), spec + plan written. See [[work/2026-06-26-player-comments-design]] and `docs/superpowers/plans/2026-06-26-player-comments.md`.
+
+- [x] ✅ Brainstorm + mockup (v1→v3), spec, 24-task implementation plan — 2026-06-26
+- [x] ✅ coc-creator coordination + auth-model correction (no SSO) + email-leak fix (migration 013) — 2026-06-26
+- [ ] **MG actions (blockers):** invite players (coc-creator emails) in Supabase; run migrations 009–013; assign colours + character owners + investigation cast in `/admin`
+- [ ] Execute the plan in a fresh session (Phase 0–1 = anchorer/colours/UI on mocks can start before MG actions)
+- [ ] Deferred polish: realtime comments; per-author fragment tint; inline dot markers; move summaries to vault under the same `page_key`
+
 ## Out of scope (do not pick up)
 
 - Player image uploads
 - In-browser Excalidraw editor
 - Mobile-first responsive
 - Audio / video embeds
-- Per-page comments
+- ~~Per-page comments~~ — **reopened 2026-06-26** as Stage L, scoped to summary pages, fragment-anchored, never editing main content (see [[work/2026-06-26-player-comments-design]])
 
 ## DONE
 

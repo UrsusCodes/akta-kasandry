@@ -34,6 +34,9 @@ pnpm-debug.log*
 # Claude Code (local preview / launch config)
 .claude/
 
+# Superpowers brainstorm companion (local mockups / scratch — keep out of repo)
+.superpowers/
+
 # OS
 .DS_Store
 Thumbs.db

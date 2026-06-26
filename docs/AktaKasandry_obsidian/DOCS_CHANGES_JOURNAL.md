@@ -11,6 +11,24 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-06-26 — Player margin-comments: brainstorm → spec → plan (Stage L, design-only)
+
+Design session for a new feature: **player comments on summary pages**. Players log in and leave comments anchored to selected text fragments, shown in a right rail, **in-character (IC)** or **out-of-character (OOC)** — main content never modified. No code shipped; this session produced a validated mockup, a spec, and a full implementation plan. Mockups built with the Superpowers brainstorm visual companion (`v3.html` = target look).
+
+**Validated UX (mockup v3).** Right rail of comment cards anchored to highlighted fragments. Speaker = a **rectangular character photo** (IC) or a **round initial tile** for "Ja" (OOC). Player identity = a colour from a **16-option palette** (rings the portrait, tints the fragment). Dense sections collapse into **one grouped thread** (stacked portraits + count) — the density solution. Single-level replies.
+
+**Decisions (locked).** (1) Content stays in `.tsx`, comments anchor to a stable `page_key` (`streszczenie/ug2`) decoupled from the route — avoids identity migration when summaries later move to the vault. (2) Comments **public** (anon read). (3) **Homegrown anchorer**, no new dep — block-id (hash) + quote + offset + fuzzy fallback, with an "unanchored" safety group. (4) Full v1: threads + replies + cast-filtered speaker picker. (5) **Vitest + Testing Library** added (approved — first test framework in the project). (6) Realtime deferred.
+
+**Auth correction + coordination.** Original assumption "shared Supabase Auth = SSO with coc-creator" was **wrong** — confirmed by a coc-creator code review: coc-creator is NOT on Supabase Auth (players in `public.players`, bcrypt + custom JWT; `auth.users` empty; no `on_auth_user_created` trigger), and SSO was declined 2026-05-21. Corrected the stale claim in `memories/project.md`. **Accounts decision:** Path 1 + credential parity — MG provisions separate Supabase Auth accounts using each player's **coc-creator email** (familiar login); player sets their own password via the dashboard "Invite" flow (passwords can't be copied — bcrypt). No coc-creator migration; we don't depend on their accounts. coc-creator review also caught a real **email-leak**: migration-002 trigger put `email` into `display_name` while we open anon read → fixed by **migration 013** (harden trigger to drop the email fallback + sanitize existing rows).
+
+**Plan.** 24 TDD tasks, 7 phases: vitest harness → pure logic (anchor/colours/grouping) → migrations 009–013 (coordinated) → comments store → UI components (Portrait/SpeakerPicker/CommentCard/CommentRail/ComposeBubble/AnnotatableArticle + CSS Custom Highlight binding) → UG2 wire-in → admin owner/cast → docs. Execution deferred to a **fresh session** (heavy context here; coordination gate + migrations + account invites need the user/MG first).
+
+**Files (docs only):** `docs/AktaKasandry_obsidian/work/2026-06-26-player-comments-design.md` (spec, NEW), `docs/superpowers/plans/2026-06-26-player-comments.md` (plan, NEW), `work/Index.md`, `memories/project.md` (auth correction), `.gitignore` (ignore `.superpowers/`). No `src/` changes.
+
+**Open / next:** MG actions before execution — invite players (coc-creator emails), run migrations 009–013, assign colours + character owners + investigation cast in `/admin`. During execution confirm: PostgREST FK embed hint names, global CSS path + `text-patina` token, final 16-colour hex set. Then update `SUPABASE_AND_SYNC.md` + reverse the "per-page comments" out-of-scope exclusion (Task 24).
+
+---
+
 ## 2026-06-22 — Transcript viewer simplified to read-only + first session summaries (Sól w Ranach, UG 2)
 
 Long session continuing the `/sesje` work. Outcome: read-only viewer on the production variant, plus two full session summaries with transcript deep-links.
