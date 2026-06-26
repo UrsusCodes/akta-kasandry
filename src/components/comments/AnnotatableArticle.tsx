@@ -21,6 +21,9 @@ export function AnnotatableArticle({ pageKey, children, speakerOptions = [] }: P
   const containerRef = useRef<HTMLDivElement>(null)
   const [pending, setPending] = useState<{ anchor: CommentAnchor; quote: string } | null>(null)
   const [activeBlockId, setActiveBlockId] = useState<string | null>(null)
+  const [activeThreadId, setActiveThreadId] = useState<string | null>(null)
+  // Force the rail to re-measure once the article container has mounted.
+  const [, forceUpdate] = useState(0)
 
   const comments = useCommentsStore((s) => s.comments)
   const load = useCommentsStore((s) => s.load)
@@ -31,6 +34,8 @@ export function AnnotatableArticle({ pageKey, children, speakerOptions = [] }: P
   const role = useAuthStore((s) => s.role)
 
   useEffect(() => { void load(pageKey) }, [pageKey, load])
+  // Bump after mount so the rail can measure against the real container element.
+  useEffect(() => { forceUpdate(1) }, [])
   useHighlights(containerRef.current, comments, activeBlockId)
 
   const onMouseUp = () => {
@@ -49,8 +54,9 @@ export function AnnotatableArticle({ pageKey, children, speakerOptions = [] }: P
     if (anchor && anchor.quote.trim()) setPending({ anchor, quote: anchor.quote })
   }
 
-  const focusAnchor = (blockId: string) => {
+  const focusAnchor = (blockId: string, rootId?: string) => {
     setActiveBlockId(blockId)
+    if (rootId !== undefined) setActiveThreadId(rootId)
     const el = containerRef.current?.querySelector<HTMLElement>(`[data-block-id="${CSS.escape(blockId)}"]`)
     el?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
@@ -79,9 +85,10 @@ export function AnnotatableArticle({ pageKey, children, speakerOptions = [] }: P
       <aside className="w-full shrink-0 lg:w-[330px]">
         <CommentRail
           comments={comments}
-          activeThreadId={null}
+          activeThreadId={activeThreadId}
           canModerate={role === 'mg'}
-          onFocusAnchor={(blockId) => focusAnchor(blockId)}
+          onFocusAnchor={(blockId, rootId) => focusAnchor(blockId, rootId)}
+          containerEl={containerRef.current}
         />
       </aside>
     </div>
