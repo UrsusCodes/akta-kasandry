@@ -41,6 +41,7 @@ function useAnchorPositions(
   anchorMap: Map<string, { blockId: string; quote: string }>,
   cardRefs: React.MutableRefObject<Map<string, HTMLDivElement | null>>,
   railRef: React.RefObject<HTMLDivElement | null>,
+  headerRef: React.RefObject<HTMLDivElement | null>,
   enabled: boolean,
   // re-run when these change
   _comments: Comment[],
@@ -54,14 +55,17 @@ function useAnchorPositions(
       return
     }
 
-    const containerRect = containerEl.getBoundingClientRect()
+    const railRect = railRef.current.getBoundingClientRect()
+    // Floor: no card should sit above the header inside the rail.
+    const floor = headerRef.current ? headerRef.current.getBoundingClientRect().height : 0
 
+    let prevBottom = floor
     const items = anchorKeys.map((key) => {
       const anchor = anchorMap.get(key)
       const card = cardRefs.current.get(key)
       const height = card ? card.getBoundingClientRect().height : 0
 
-      let desiredTop = 0
+      let desiredTop = prevBottom
       if (anchor) {
         const range = resolveAnchor(
           {
@@ -76,9 +80,11 @@ function useAnchorPositions(
         )
         if (range) {
           const r = range.getBoundingClientRect()
-          desiredTop = r.top - containerRect.top
+          // Offset relative to the rail container, clamped below the header.
+          desiredTop = Math.max(r.top - railRect.top, floor)
         }
       }
+      prevBottom = desiredTop + height
       return { key, desiredTop, height }
     })
 
@@ -125,7 +131,7 @@ function useAnchorPositions(
       imgs.forEach((img) => img.removeEventListener('load', compute))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enabled, containerEl, anchorKeys.join(','), _comments, _activeThreadId])
+  }, [enabled, containerEl, anchorKeys.join(' '), _comments, _activeThreadId])
 
   return tops
 }
@@ -166,6 +172,7 @@ export function CommentRail({
   // Refs for measuring card heights.
   const cardRefs = useRef<Map<string, HTMLDivElement | null>>(new Map)
   const railRef = useRef<HTMLDivElement | null>(null)
+  const headerRef = useRef<HTMLDivElement | null>(null)
 
   // Desktop breakpoint — reactive.
   const [desktop, setDesktop] = useState<boolean>(isDesktop)
@@ -186,6 +193,7 @@ export function CommentRail({
     anchorMap,
     cardRefs,
     railRef,
+    headerRef,
     positioningEnabled,
     comments,
     activeThreadId,
@@ -212,6 +220,7 @@ export function CommentRail({
     >
       {/* Header always at the top of the rail */}
       <div
+        ref={headerRef}
         className={[
           'font-display flex justify-between text-[0.68rem] uppercase tracking-widest text-gold',
           positioningEnabled ? 'mb-3' : '',
@@ -241,7 +250,6 @@ export function CommentRail({
             className={[
               'rounded-md border p-2',
               active ? 'border-gold shadow' : 'border-gold-muted',
-              positioningEnabled ? '' : '',
             ].join(' ')}
           >
             <button
