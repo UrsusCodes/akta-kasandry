@@ -280,3 +280,37 @@ body {
   color: var(--color-teal-deep);
   border-color: var(--color-gold);
 }
+
+/* ============================================================
+   Player margin-comment fragment highlights (CSS Custom Highlight API).
+   useHighlights.ts (Task 19) registers one Highlight per author colour named
+   `ak-comment-<hex>` (hex without the leading #), plus `ak-comment-active` for
+   the focused fragment. `::highlight()` pseudos cannot be wildcarded or read a
+   variable for their own name, so we emit one rule per palette colour. The
+   palette is the fixed 16-set in src/lib/playerColors.ts — keep these in sync.
+   A non-palette author colour simply paints no fragment tint (rail still works).
+   ============================================================ */
+
+/* Focused fragment: strong gold wash + underline (overrides the author tint). */
+::highlight(ak-comment-active) {
+  background-color: color-mix(in srgb, var(--color-gold) 30%, transparent);
+  text-decoration: underline 2px var(--color-gold);
+}
+
+/* Per-author subtle tint — one rule per playerColors.ts hex. */
+::highlight(ak-comment-b5472d) { background-color: color-mix(in srgb, #b5472d 22%, transparent); }
+::highlight(ak-comment-c97f2e) { background-color: color-mix(in srgb, #c97f2e 22%, transparent); }
+::highlight(ak-comment-c8a23c) { background-color: color-mix(in srgb, #c8a23c 22%, transparent); }
+::highlight(ak-comment-7d8c3a) { background-color: color-mix(in srgb, #7d8c3a 22%, transparent); }
+::highlight(ak-comment-3f8c6e) { background-color: color-mix(in srgb, #3f8c6e 22%, transparent); }
+::highlight(ak-comment-2f7d8a) { background-color: color-mix(in srgb, #2f7d8a 22%, transparent); }
+::highlight(ak-comment-3a6ea5) { background-color: color-mix(in srgb, #3a6ea5 22%, transparent); }
+::highlight(ak-comment-5a5aa5) { background-color: color-mix(in srgb, #5a5aa5 22%, transparent); }
+::highlight(ak-comment-8a4fa5) { background-color: color-mix(in srgb, #8a4fa5 22%, transparent); }
+::highlight(ak-comment-a5417e) { background-color: color-mix(in srgb, #a5417e 22%, transparent); }
+::highlight(ak-comment-9c5a3c) { background-color: color-mix(in srgb, #9c5a3c 22%, transparent); }
+::highlight(ak-comment-6b6b6b) { background-color: color-mix(in srgb, #6b6b6b 22%, transparent); }
+::highlight(ak-comment-a08947) { background-color: color-mix(in srgb, #a08947 22%, transparent); }
+::highlight(ak-comment-4f7a4f) { background-color: color-mix(in srgb, #4f7a4f 22%, transparent); }
+::highlight(ak-comment-3a5566) { background-color: color-mix(in srgb, #3a5566 22%, transparent); }
+::highlight(ak-comment-7a3a3a) { background-color: color-mix(in srgb, #7a3a3a 22%, transparent); }
