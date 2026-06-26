@@ -12,6 +12,7 @@ type AuthState = {
   user: User | null
   role: Role
   displayName: string | null
+  color: string | null
 
   init: () => void
   signIn: (email: string, password: string) => Promise<{ error?: string }>
@@ -34,6 +35,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   role: null,
   displayName: null,
+  color: null,
 
   init: () => {
     if (initialized) return
@@ -48,18 +50,19 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
     const loadProfile = async (user: User | null) => {
       if (!user) {
-        set({ user: null, role: null, displayName: null })
+        set({ user: null, role: null, displayName: null, color: null })
         return
       }
       const { data } = await supabase
         .from('profiles')
-        .select('role, display_name')
+        .select('role, display_name, color')
         .eq('id', user.id)
         .single()
       set({
         user,
         role: (data?.role as Role) ?? 'gracz',
         displayName: (data?.display_name as string | null) ?? user.email ?? null,
+        color: (data?.color as string | null) ?? null,
       })
     }
 
@@ -86,7 +89,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   signOut: async () => {
     if (!get().enabled) return
     await getSupabase().auth.signOut()
-    set({ user: null, role: null, displayName: null })
+    set({ user: null, role: null, displayName: null, color: null })
   },
 }))
 
