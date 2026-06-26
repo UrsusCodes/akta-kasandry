@@ -977,39 +977,57 @@ git commit -m "db: migration 012 — investigation_cast + anon profile read"
   dashboard access). Record completion in the journal. Until run, the store's
   mock fallback (Task 13) keeps the UI working without a backend.
 
-### Task 11b: Migration 013 — backfill `wiki.profiles` for existing accounts
+### Task 11b: Migration 013 — close the email-leak in `wiki.profiles`
 
-Players reuse their existing coc-creator accounts (shared Supabase Auth). The
-migration-002 trigger only creates a `wiki.profiles` row on *new* signups, so
-already-existing `auth.users` have no profile yet. Backfill them once.
+Security fix flagged by coc-creator review (2026-06-26). Migration 002's trigger
+sets `display_name = coalesce(meta.display_name, email)`, and migration 012 opens
+anon SELECT on `wiki.profiles`. So any profile whose `display_name` defaulted to
+the email would leak that email to anonymous readers via public comments. Harden
+the trigger (no email fallback) and sanitize existing rows. The store/UI already
+fall back to "Gracz" when `display_name` is null.
+
+> Accounts note: players use **separate Supabase Auth accounts** (MG-provisioned;
+> coc-creator is not on Supabase Auth — see the spec's accounts decision). No
+> backfill from coc-creator is possible or needed.
 
 **Files:**
-- Create: `supabase/migrations/013_profiles_backfill.sql`
+- Create: `supabase/migrations/013_profiles_email_hardening.sql`
 
 - [ ] **Step 1: Write the migration**
 
 ```sql
--- 013 — backfill wiki.profiles for auth.users that predate our trigger.
--- Idempotent: inserts only the missing ones, default role 'gracz'.
--- We read auth.users and write ONLY wiki.profiles (never public.*). Future
--- signups are handled by wiki_on_auth_user_created (migration 002).
-insert into wiki.profiles (id, display_name)
-select u.id, coalesce(u.raw_user_meta_data->>'display_name', u.email)
-from auth.users u
-left join wiki.profiles p on p.id = u.id
-where p.id is null;
+-- 013 — never expose emails through the anon-readable wiki.profiles.
+-- (a) Recreate the first-login trigger WITHOUT the email fallback: leave
+--     display_name NULL when no metadata is supplied. MG sets a real name in
+--     /admin (or passes display_name in user metadata at account creation).
+create or replace function wiki.handle_new_user()
+returns trigger
+language plpgsql
+security definer
+set search_path = wiki, public, pg_temp
+as $$
+begin
+  insert into wiki.profiles (id, display_name)
+  values (new.id, new.raw_user_meta_data->>'display_name');
+  return new;
+end;
+$$;
+
+-- (b) Sanitize any existing rows where display_name looks like an email.
+update wiki.profiles set display_name = null
+where display_name like '%@%.%';
 ```
 
 - [ ] **Step 2: Commit**
 
 ```bash
-git add supabase/migrations/013_profiles_backfill.sql
-git commit -m "db: migration 013 — backfill profiles for existing shared accounts"
+git add supabase/migrations/013_profiles_email_hardening.sql
+git commit -m "db: migration 013 — stop email leaking via anon-read profiles"
 ```
 
-- [ ] **Step 3:** Run together with 009–012 in the dashboard (MG action). After it,
-  every existing player has a `gracz` profile; MG sets each player's colour and
-  assigns character ownership in `/admin` (Task 23).
+- [ ] **Step 3:** Run together with 009–012 in the dashboard (MG action). Confirm
+  no `display_name` contains an email, then verify anon comment rendering shows
+  real names (or "Gracz"), never an address.
 
 ---
 

@@ -46,7 +46,7 @@ Rationale: coc-creator (sister project) is already on this stack and shares the 
 
 - Same project URL + ANON_KEY as coc-creator (user supplies via `.env`)
 - **Isolation via schema `wiki`** — all our tables live there (`wiki.pages`, `wiki.revisions`, `wiki.pins`, `wiki.profiles`)
-- Auth is shared — coc-creator account = SSO into akta-kasandry
+- **Auth: NOT shared / no SSO** (corrected 2026-06-26 after coc-creator code review). coc-creator is not on Supabase Auth — its players live in `public.players` (bcrypt + custom JWT), `auth.users` is empty. Akta Kasandry uses Supabase Auth independently; MG provisions player accounts. SSO was declined 2026-05-21 (option #1). The earlier "shared SSO" line was an unrealised assumption.
 - Storage: dedicated bucket `wiki-attachments` (GM uploads image library, players read-only)
 - Free tier — watch egress (especially realtime channels on map pins)
 - Coordination doc: `coc-creator/docs/CoCCreator_obsidian/TECHNOLOGY_MASTERMIND.md`, section **"Shared Supabase with akta-kasandry"** — read before touching any shared schema/auth/storage

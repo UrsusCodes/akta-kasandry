@@ -35,7 +35,7 @@ content is never modified — comments augment it. Brainstormed + mockup-validat
 | Topic | Decision |
 |---|---|
 | Content location | **Stable `page_key`, content stays in `.tsx` for now.** Comments anchor to a durable key (`streszczenie/ug2`) independent of route. Content may later move to the vault under the same key; quote-anchors re-match. |
-| Accounts | **Reuse shared coc-creator accounts** (shared Supabase Auth = SSO). Players already have accounts there and log into Akta Kasandry with the same credentials. No signup UI. One-time **backfill** of `wiki.profiles` for existing `auth.users` (our migration-002 trigger only fires on *new* signups); MG then assigns colour + character ownership in `/admin`. |
+| Accounts | **Open — Path 1 (separate logins, default) vs Path 2 (coc-creator Auth migration).** Correction 2026-06-26: coc-creator is **not** on Supabase Auth (`auth.users` empty; players in `public.players` + custom JWT) and SSO was declined 2026-05-21, so reusing coc-creator accounts is impossible today. **Path 1 (default):** separate Supabase Auth accounts, MG-provisioned; migration-002 trigger creates `wiki.profiles`; MG assigns colour + ownership. **Path 2:** migrate coc-creator to Supabase Auth first (unifies logins; their decision + ~2h service window). |
 | Visibility | **All comments public** (read = anon). Simple RLS. |
 | Anchoring | **Homegrown anchorer, no new dependency** (stack is locked). ~Block-id + text-quote + offset + fuzzy fallback. |
 | v1 scope | **Full**: anchor-grouped threads + single-level replies + cast-filtered speaker picker. |
@@ -174,7 +174,7 @@ of bare `<Markdown>`. `page_key` is a deliberate constant, decoupled from the ro
 ## Out of scope (v1)
 
 - Realtime live updates (refetch on entry instead).
-- Signup / invite-link flows (accounts are reused from coc-creator via shared Auth; existing users get a one-time `wiki.profiles` backfill, new ones via the migration-002 trigger).
+- Signup / invite-link flows (Path 1: MG provisions separate Supabase Auth accounts in the dashboard; migration-002 trigger creates the profile; logins independent of coc-creator).
 - Multi-level reply nesting (single level only).
 - Moving summary content to the vault (separate pipeline work; same `page_key` will carry over).
 - Comments on arbitrary wiki pages (summary pages first; "potencjalnie inne sekcje" later —
