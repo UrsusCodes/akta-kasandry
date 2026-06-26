@@ -53,3 +53,13 @@ export type Pin = {
   label: string
   color: string
 }
+
+/** A comment's pin into the rendered article text. */
+export type CommentAnchor = {
+  blockId: string
+  quote: string
+  prefix: string
+  suffix: string
+  startOffset: number
+  endOffset: number
+}
