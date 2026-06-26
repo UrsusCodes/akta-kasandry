@@ -63,3 +63,32 @@ export type CommentAnchor = {
   startOffset: number
   endOffset: number
 }
+
+export type CommentMode = 'ic' | 'ooc'
+
+export type Comment = {
+  id: string
+  pageKey: string
+  anchor: CommentAnchor
+  authorProfileId: string
+  authorName: string
+  authorColor: string
+  speakerCharacterId: string | null
+  speakerName: string | null
+  speakerPortraitUrl: string | null
+  body: string
+  parentId: string | null
+  createdAt: string
+  edited: boolean
+}
+
+/** A top-level comment plus its replies, all sharing one anchor. */
+export type CommentThread = {
+  anchor: CommentAnchor
+  root: Comment
+  replies: Comment[]
+}
+
+export function commentMode(c: Comment): CommentMode {
+  return c.speakerCharacterId ? 'ic' : 'ooc'
+}
