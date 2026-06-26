@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useIsMG, useAuthStore } from '@/stores/auth'
 import { useCharactersStore, type SourceCharacter } from '@/stores/characters'
 import { useContentStore } from '@/stores/content'
+import { useCastStore, MANAGED_PAGE_KEYS } from '@/stores/cast'
 
 const PLAYER_NAMES_KEY = 'akta-player-names'
 
@@ -27,6 +28,13 @@ export function AdminImport() {
   const { loading, error, sources, imported, load, importOne, remove, stateFor } =
     useCharactersStore()
 
+  const castProfiles = useCastStore((s) => s.profiles)
+  const castChars = useCastStore((s) => s.chars)
+  const castRows = useCastStore((s) => s.cast)
+  const loadCast = useCastStore((s) => s.load)
+  const setOwner = useCastStore((s) => s.setOwner)
+  const toggleCast = useCastStore((s) => s.toggleCast)
+
   const [playerNames, setPlayerNames] = useState<Record<string, string>>(loadPlayerNames)
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [busy, setBusy] = useState(false)
@@ -35,6 +43,10 @@ export function AdminImport() {
   useEffect(() => {
     if (isMG) void load()
   }, [isMG, load])
+
+  useEffect(() => {
+    if (isMG) void loadCast()
+  }, [isMG, loadCast])
 
   // Seed player-name inputs from already-imported rows (so re-opening shows them).
   useEffect(() => {
@@ -194,7 +206,7 @@ export function AdminImport() {
                   return (
                     <li
                       key={c.id}
-                      className="flex items-center gap-3 border-l-2 border-transparent py-1 pl-2 hover:border-gold-muted"
+                      className="flex flex-wrap items-center gap-3 border-l-2 border-transparent py-1 pl-2 hover:border-gold-muted"
                     >
                       <input
                         type="checkbox"
@@ -227,6 +239,34 @@ export function AdminImport() {
                           </button>
                         )}
                       </span>
+                      {st !== 'not-imported' && (
+                        <div className="mt-1 flex w-full flex-wrap items-center gap-3 pl-2">
+                          <label className="font-mono text-xs text-parchment/60">
+                            Właściciel:{' '}
+                            <select
+                              value={castChars.find((cc) => cc.sourceId === c.id)?.ownerProfileId ?? ''}
+                              onChange={(e) => void setOwner(c.id, e.target.value || null)}
+                              className="font-body border border-gold-muted bg-parchment-warm px-1 py-0.5 text-ink"
+                            >
+                              <option value="">— nikt —</option>
+                              {castProfiles.map((p) => (
+                                <option key={p.id} value={p.id}>{p.displayName ?? p.id.slice(0, 8)}</option>
+                              ))}
+                            </select>
+                          </label>
+                          {MANAGED_PAGE_KEYS.map((pk) => (
+                            <label key={pk} className="font-mono text-xs text-parchment/60">
+                              <input
+                                type="checkbox"
+                                checked={castRows.some((r) => r.pageKey === pk && r.characterId === c.id)}
+                                onChange={() => void toggleCast(pk, c.id)}
+                                className="mr-1 accent-gold"
+                              />
+                              obsada: {pk}
+                            </label>
+                          ))}
+                        </div>
+                      )}
                     </li>
                   )
                 })}

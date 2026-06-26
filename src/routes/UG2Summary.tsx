@@ -1,4 +1,7 @@
+import { useEffect, useMemo } from 'react'
 import { AnnotatableArticle } from '@/components/comments/AnnotatableArticle'
+import { useAuthStore } from '@/stores/auth'
+import { useCastStore } from '@/stores/cast'
 
 /**
  * Session summary — "Urodzaj Grozy" (UG 2) — authored from the (fully recorded)
@@ -168,9 +171,22 @@ Tak **Urodzaj Grozy** — podobnie jak Sól w Ranach — wpina się w **Akta / K
 `
 
 export function UG2Summary() {
+  const user = useAuthStore((s) => s.user)
+  const loadCast = useCastStore((s) => s.load)
+  const chars = useCastStore((s) => s.chars)
+  const cast = useCastStore((s) => s.cast)
+  useEffect(() => {
+    if (user) void loadCast()
+  }, [user, loadCast])
+  const speakerOptions = useMemo(
+    () => useCastStore.getState().speakerOptionsForPlayer('streszczenie/ug2'),
+    // recompute when identity or loaded data changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [user, chars, cast],
+  )
   return (
     <article>
-      <AnnotatableArticle pageKey="streszczenie/ug2">{SUMMARY}</AnnotatableArticle>
+      <AnnotatableArticle pageKey="streszczenie/ug2" speakerOptions={speakerOptions}>{SUMMARY}</AnnotatableArticle>
     </article>
   )
 }
