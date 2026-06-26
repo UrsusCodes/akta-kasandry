@@ -70,3 +70,53 @@ describe('createAnchor', () => {
     expect(anchor.suffix).toBe('.')
   })
 })
+
+import { resolveAnchor } from './anchor'
+import type { CommentAnchor } from '@/types'
+
+function container(...blocks: Array<[string, string]>): HTMLElement {
+  const root = document.createElement('div')
+  for (const [id, html] of blocks) {
+    const p = document.createElement('p')
+    p.setAttribute('data-block-id', id)
+    p.innerHTML = html
+    root.appendChild(p)
+  }
+  document.body.appendChild(root)
+  return root
+}
+
+const base: CommentAnchor = {
+  blockId: 'b1',
+  quote: 'pierwsza strzelanina',
+  prefix: 'się ',
+  suffix: '.',
+  startOffset: 9,
+  endOffset: 29,
+}
+
+describe('resolveAnchor', () => {
+  it('resolves by exact offset when the block is unchanged', () => {
+    const root = container(['b1', 'O świcie wywiązała się pierwsza strzelanina.'])
+    const range = resolveAnchor(base, root)!
+    expect(range).not.toBeNull()
+    expect(range.toString()).toBe('pierwsza strzelanina')
+  })
+
+  it('falls back to indexOf when offsets shifted', () => {
+    const root = container(['b1', 'Tej nocy wreszcie wywiązała się pierwsza strzelanina na farmie.'])
+    const range = resolveAnchor(base, root)!
+    expect(range.toString()).toBe('pierwsza strzelanina')
+  })
+
+  it('finds the quote in another block when the block id changed (fuzzy)', () => {
+    const root = container(['CHANGED', 'O świcie wywiązała się pierwsza strzelanina.'])
+    const range = resolveAnchor(base, root)!
+    expect(range.toString()).toBe('pierwsza strzelanina')
+  })
+
+  it('returns null (orphan) when the quote is gone entirely', () => {
+    const root = container(['b1', 'Zupełnie inny tekst bez tej frazy.'])
+    expect(resolveAnchor(base, root)).toBeNull()
+  })
+})

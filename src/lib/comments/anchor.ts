@@ -59,3 +59,64 @@ export function createAnchor(range: Range, blockEl: HTMLElement): CommentAnchor 
     endOffset: hi,
   }
 }
+
+/** Inverse of pointToOffset: map a char offset back to a (node, offset). */
+function offsetToPoint(el: HTMLElement, offset: number): { node: Text; offset: number } | null {
+  const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT)
+  let acc = 0
+  let n = walker.nextNode() as Text | null
+  let last: Text | null = null
+  while (n) {
+    const len = n.data.length
+    if (offset <= acc + len) return { node: n, offset: offset - acc }
+    acc += len
+    last = n
+    n = walker.nextNode() as Text | null
+  }
+  return last ? { node: last, offset: last.data.length } : null
+}
+
+function rangeFor(el: HTMLElement, start: number, end: number): Range | null {
+  const a = offsetToPoint(el, start)
+  const b = offsetToPoint(el, end)
+  if (!a || !b) return null
+  const r = document.createRange()
+  r.setStart(a.node, a.offset)
+  r.setEnd(b.node, b.offset)
+  return r
+}
+
+/**
+ * Re-locate an anchor inside `container`. Resolution order:
+ *   1. block by id, exact offset slice === quote
+ *   2. block by id, indexOf(quote)
+ *   3. any block whose normalized text contains the quote (fuzzy block move)
+ * Returns null when the quote is gone — caller treats that as an orphan.
+ */
+export function resolveAnchor(anchor: CommentAnchor, container: HTMLElement): Range | null {
+  const byId = container.querySelector<HTMLElement>(`[data-block-id="${CSS.escape(anchor.blockId)}"]`)
+  const tryBlock = (el: HTMLElement): Range | null => {
+    const text = el.textContent ?? ''
+    if (text.slice(anchor.startOffset, anchor.endOffset) === anchor.quote) {
+      return rangeFor(el, anchor.startOffset, anchor.endOffset)
+    }
+    const idx = text.indexOf(anchor.quote)
+    if (idx >= 0) return rangeFor(el, idx, idx + anchor.quote.length)
+    return null
+  }
+
+  if (byId) {
+    const r = tryBlock(byId)
+    if (r) return r
+  }
+  // Fuzzy: scan every block for the quote (block id may have changed).
+  const wantedNorm = normalizeText(anchor.quote)
+  for (const el of Array.from(container.querySelectorAll<HTMLElement>('[data-block-id]'))) {
+    if (el === byId) continue
+    if (normalizeText(el.textContent ?? '').includes(wantedNorm)) {
+      const r = tryBlock(el)
+      if (r) return r
+    }
+  }
+  return null
+}
