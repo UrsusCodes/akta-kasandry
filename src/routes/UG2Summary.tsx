@@ -1,4 +1,4 @@
-import { Markdown } from '@/components/Markdown'
+import { AnnotatableArticle } from '@/components/comments/AnnotatableArticle'
 
 /**
  * Session summary — "Urodzaj Grozy" (UG 2) — authored from the (fully recorded)
@@ -170,7 +170,7 @@ Tak **Urodzaj Grozy** — podobnie jak Sól w Ranach — wpina się w **Akta / K
 export function UG2Summary() {
   return (
     <article>
-      <Markdown>{SUMMARY}</Markdown>
+      <AnnotatableArticle pageKey="streszczenie/ug2">{SUMMARY}</AnnotatableArticle>
     </article>
   )
 }
