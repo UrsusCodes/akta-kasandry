@@ -24,6 +24,7 @@ Map of decision notes, explorations, and dated working memos. Each entry links t
 
 ## Decisions made
 
+- 2026-06-26 — [[work/2026-06-26-player-comments-design|Player margin-comments]] — annotation layer on summary pages; stable `page_key` + content stays in `.tsx`; MG-provisioned accounts; public comments; homegrown anchorer (no new dep); full v1 (anchor-grouped threads + replies + cast-filtered speaker picker). Reopens the scoped-out "per-page comments" exclusion (now scoped to summaries). **Status: spec written, plan + implementation pending.**
 - 2026-05-19 — [[work/2026-05-19-wikilink-plugin|Wikilink resolution]] — hybrid: remark plugin for render (AST-safe), string preprocess for sync (C1/C2). Shared parser+resolver in `src/lib/wikilinks.ts`.
 - 2026-05-19 — [[work/2026-05-19-editor-choice|Markdown editor]] — `@uiw/react-md-editor`. Preview reuses our react-markdown + remarkWikilinks pipeline; plain textarea = no IME pitfalls with Polish diacritics.
 - 2026-05-20 — [[work/2026-05-20-recursive-content-tree|Content model: recursive tree]] — dropped Shelf/Book/Chapter (BookStack artifact). Single `ContentNode` with `kind: 'folder' \| 'page'` + arbitrary nesting. Routing collapsed to `/p/*` catch-all.
