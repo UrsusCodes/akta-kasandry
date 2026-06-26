@@ -35,7 +35,7 @@ content is never modified — comments augment it. Brainstormed + mockup-validat
 | Topic | Decision |
 |---|---|
 | Content location | **Stable `page_key`, content stays in `.tsx` for now.** Comments anchor to a durable key (`streszczenie/ug2`) independent of route. Content may later move to the vault under the same key; quote-anchors re-match. |
-| Accounts | **Open — Path 1 (separate logins, default) vs Path 2 (coc-creator Auth migration).** Correction 2026-06-26: coc-creator is **not** on Supabase Auth (`auth.users` empty; players in `public.players` + custom JWT) and SSO was declined 2026-05-21, so reusing coc-creator accounts is impossible today. **Path 1 (default):** separate Supabase Auth accounts, MG-provisioned; migration-002 trigger creates `wiki.profiles`; MG assigns colour + ownership. **Path 2:** migrate coc-creator to Supabase Auth first (unifies logins; their decision + ~2h service window). |
+| Accounts | **Path 1 + credential parity** (decided 2026-06-26). Separate Supabase Auth accounts, MG-provisioned using each player's **coc-creator email** as the Akta Kasandry login (familiar). Passwords cannot be copied — coc-creator stores a one-way bcrypt hash in `public.players` — so each player **sets their own** via the Supabase dashboard **"Invite user"** flow (encouraged to reuse their coc-creator password for identical credentials). No SSO, no coc-creator migration, no custom signup UI. The migration-002 trigger creates `wiki.profiles`; MG assigns colour + ownership in `/admin`. Email never lands in `display_name` (migration 013). Resolves the coc-creator review blocker: we no longer depend on their accounts. |
 | Visibility | **All comments public** (read = anon). Simple RLS. |
 | Anchoring | **Homegrown anchorer, no new dependency** (stack is locked). ~Block-id + text-quote + offset + fuzzy fallback. |
 | v1 scope | **Full**: anchor-grouped threads + single-level replies + cast-filtered speaker picker. |
@@ -174,7 +174,7 @@ of bare `<Markdown>`. `page_key` is a deliberate constant, decoupled from the ro
 ## Out of scope (v1)
 
 - Realtime live updates (refetch on entry instead).
-- Signup / invite-link flows (Path 1: MG provisions separate Supabase Auth accounts in the dashboard; migration-002 trigger creates the profile; logins independent of coc-creator).
+- Custom signup UI (MG uses the Supabase dashboard "Invite user" flow with each player's coc-creator email; the player sets their own password; migration-002 trigger creates the profile; logins independent of coc-creator).
 - Multi-level reply nesting (single level only).
 - Moving summary content to the vault (separate pipeline work; same `page_key` will carry over).
 - Comments on arbitrary wiki pages (summary pages first; "potencjalnie inne sekcje" later —
