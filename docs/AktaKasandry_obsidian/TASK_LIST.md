@@ -11,7 +11,7 @@ Staged plan mirrors the project spec (a-g). Active stage at top of "In progress"
 
 ## In progress
 
-Stages A, B, E, G, H, **I**, **J**: **complete**. **K (session summaries): in progress** — Sól w Ranach + UG 2 summaries live, but **UG 2 is missing the off-mic night-recon + first shootout** (see Stage K). C (dry-run only), D1 (editor live, no persistence yet), F (dry-run only).
+Stages A, B, E, G, H, **I**, **J**, **L (code + migrations)**: **complete**. **K (session summaries): in progress** — Sól w Ranach + UG 2 summaries live, but **UG 2 is missing the off-mic night-recon + first shootout** (see Stage K). C (dry-run only), D1 (editor live, no persistence yet), F (dry-run only).
 
 > [!important] NEXT SESSION — first task
 > Get from the GM the beats of UG 2's **nocny zwiad + pierwsza strzelanina z ludźmi Carmodych** (off-mic, between negotiations and the academics) and insert a flagged "⚠ poza nagraniem" section into both `/streszczenie-ug2` and `/streszczenie-ug2/narracja`. Then optionally: UG 2 quotes page; fold the narrative's extra details into the short summary.
@@ -160,13 +160,25 @@ Player-facing session summaries authored from transcript + GM memory, in the "Zn
 
 ### Stage L — Player margin-comments `#stage/l` `#dep/coc-creator`
 
-Players leave IC/OOC comments anchored to text fragments of summary pages, in a right rail; main content untouched. **Design-only so far** (2026-06-26): mockup validated (`.superpowers/brainstorm/v3.html`), spec + plan written. See [[work/2026-06-26-player-comments-design]] and `docs/superpowers/plans/2026-06-26-player-comments.md`.
+Players leave IC/OOC comments anchored to text fragments of summary pages, in a right rail; main content untouched. Full implementation shipped 2026-06-26 (24 tasks, 7 phases, TDD with two-stage review). See [[work/2026-06-26-player-comments-design]] and `docs/superpowers/plans/2026-06-26-player-comments.md`.
 
 - [x] ✅ Brainstorm + mockup (v1→v3), spec, 24-task implementation plan — 2026-06-26
 - [x] ✅ coc-creator coordination + auth-model correction (no SSO) + email-leak fix (migration 013) — 2026-06-26
-- [ ] **MG actions (blockers):** invite players (coc-creator emails) in Supabase; run migrations 009–013; assign colours + character owners + investigation cast in `/admin`
-- [ ] Execute the plan in a fresh session (Phase 0–1 = anchorer/colours/UI on mocks can start before MG actions)
-- [ ] Deferred polish: realtime comments; per-author fragment tint; inline dot markers; move summaries to vault under the same `page_key`
+- [x] ✅ Vitest + Testing Library harness (first test framework, approved) — 28 tests green — 2026-06-26
+- [x] ✅ Pure logic: `playerColors.ts`, `anchor.ts` (createAnchor/resolveAnchor/shortHash/normalizeText/fuzzy/orphan), `group.ts` (groupThreads), `speakerOptions.ts` (speakerOptionsFor) — 2026-06-26
+- [x] ✅ Migrations 009–013 run (one transaction, verified) — `wiki.profiles.color`, `imported_characters.owner_profile_id`, `wiki.comments`, `wiki.investigation_cast`, email-hardening + anon profiles read — 2026-06-26
+- [x] ✅ `useCommentsStore` (load/add/edit/remove, mock fallback), `useCastStore` (owner/cast/profiles) — 2026-06-26
+- [x] ✅ UI components: Portrait, SpeakerPicker, CommentCard, CommentRail, ComposeBubble, useHighlights (CSS Custom Highlight API), AnnotatableArticle — 2026-06-26
+- [x] ✅ `remarkBlockIds` plugin; 16 `::highlight` rules in `index.css` — 2026-06-26
+- [x] ✅ Wire-in on `/streszczenie-ug2` via AnnotatableArticle + cast-filtered speakerOptions — 2026-06-26
+- [x] ✅ Admin owner/cast UI in `/admin/import` (owner dropdown + investigation-cast checkbox) — 2026-06-26
+- [x] ✅ `tsc -b` clean; `src/**/*.ts` removed from `tsconfig.node.json` include — 2026-06-26
+- [x] ✅ Docs (Task 24): journal, TASK_LIST, memories/project.md, SUPABASE_AND_SYNC, INTEGRATIONS — 2026-06-26
+- [ ] **MG pending:** invite players (coc-creator emails) in Supabase Auth dashboard; assign colours + character owners + investigation cast in `/admin`; logged-in browser test of compose flow + admin assignment
+- [ ] **Deferred polish:** realtime comment updates; inline dot markers on text; multi-level replies; comments on non-summary pages
+- [ ] Move summaries from demo routes into the vault under their final `page_key` (unblocks comments persisting across route changes)
+
+**STAGE L COMPLETE** (code + migrations). Pending: MG-provisioned player accounts + live write-path smoke test.
 
 ## Out of scope (do not pick up)
 

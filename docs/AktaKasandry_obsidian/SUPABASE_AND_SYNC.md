@@ -116,6 +116,80 @@ create index on wiki.imported_characters (source_updated_at);
 
 ---
 
+## Schema additions — migrations 009–013 (2026-06-26, Stage L)
+
+Run 2026-06-26 in a single transaction. Verified by post-migration audit.
+
+> [!warning] KEY: source_id, not id
+> `wiki.comments.speaker_character_id` and `wiki.investigation_cast.character_id` reference `wiki.imported_characters.source_id` (uuid natural key), NOT the bigserial `id`. The plan originally referenced `(id)` which would have failed (uuid column vs bigint PK). The frontend keys characters by `source_id` (stable across re-imports).
+
+```sql
+-- 009: player identity colour (one of 16 palette values from src/lib/playerColors.ts)
+alter table wiki.profiles add column color text;
+
+-- 010: owner link — which profile owns a given imported character
+alter table wiki.imported_characters
+  add column owner_profile_id uuid references wiki.profiles(id) on delete set null;
+create index on wiki.imported_characters (owner_profile_id);
+
+-- 011: player margin-comments
+create table wiki.comments (
+  id                   uuid primary key default gen_random_uuid(),
+  page_key             text not null,                        -- e.g. 'streszczenie/ug2'
+  anchor               jsonb not null,                       -- CommentAnchor JSON (blockId, quote, offset)
+  author_profile_id    uuid not null references wiki.profiles(id) on delete cascade,
+  speaker_character_id uuid references wiki.imported_characters(source_id) on delete set null,
+  body                 text not null,
+  parent_id            uuid references wiki.comments(id) on delete cascade,
+  created_at           timestamptz not null default now(),
+  updated_at           timestamptz not null default now(),
+  edited               boolean not null default false
+);
+create index on wiki.comments (page_key, created_at);
+
+-- RLS on wiki.comments
+alter table wiki.comments enable row level security;
+-- public read (comments are public)
+create policy comments_anon_read on wiki.comments for select using (true);
+-- author inserts as self only
+create policy comments_author_insert on wiki.comments for insert
+  with check (author_profile_id = auth.uid());
+-- author or MG can update/delete
+create policy comments_author_update on wiki.comments for update
+  using (author_profile_id = auth.uid()
+    or exists (select 1 from wiki.profiles p where p.id = auth.uid() and p.role = 'mg'));
+create policy comments_author_delete on wiki.comments for delete
+  using (author_profile_id = auth.uid()
+    or exists (select 1 from wiki.profiles p where p.id = auth.uid() and p.role = 'mg'));
+
+-- grants
+grant select on wiki.comments to anon, authenticated;
+grant insert, update, delete on wiki.comments to authenticated;
+
+-- 012: which characters appear in the cast of a given summary page
+create table wiki.investigation_cast (
+  page_key     text not null,
+  character_id uuid not null references wiki.imported_characters(source_id) on delete cascade,
+  primary key (page_key, character_id)
+);
+alter table wiki.investigation_cast enable row level security;
+create policy cast_anon_read on wiki.investigation_cast for select using (true);
+create policy cast_mg_write on wiki.investigation_cast for all
+  using (exists (select 1 from wiki.profiles p where p.id = auth.uid() and p.role = 'mg'));
+
+-- anon read on wiki.profiles so public comment cards can show author display_name + color
+create policy profiles_anon_read on wiki.profiles for select using (true);
+
+-- 013: email-hardening — close the leak opened by 012's anon profiles read
+-- Recreated wiki.handle_new_user WITHOUT the email fallback (display_name is now NULL
+-- when no metadata.full_name). Existing email-like display_names nulled out.
+-- (Implementation is a function replacement + UPDATE — see migration file for full DDL.)
+```
+
+**Known accepted limitation:** the MG branch of `comments_author_update` passes regardless of the new `author_profile_id` value — the app never sends `author_profile_id` on edit, so this is safe in practice. Tighten to a `with check` constraint if ever needed.
+
+---
+
 ## RLS policies
 
 Decisions reflected in the matrix below. Anon = unauthenticated visitor (anyone with the URL). Auth = signed-in via Supabase Auth.
@@ -125,8 +199,10 @@ Decisions reflected in the matrix below. Anon = unauthenticated visitor (anyone 
 | `wiki.pages` | ✓ (read-only site) | ✓ | role `mg` or author (`updated_by`) |
 | `wiki.revisions` | ✗ | ✓ | trigger-written only; no manual writes |
 | `wiki.pins` | ✓ | ✓ | role `mg` |
-| `wiki.profiles` | ✗ | own row + display_name of others | own row UPDATE only; INSERT via first-login trigger |
+| `wiki.profiles` | ✓ (`profiles_anon_read`, added migration 012 for comment cards) | ✓ | own row UPDATE only; INSERT via first-login trigger |
 | `wiki.imported_characters` | ✓ (open per user decision 2026-05-20) | ✓ | role `mg` |
+| `wiki.comments` | ✓ (comments are public) | ✓ | INSERT as self; UPDATE/DELETE as author or MG |
+| `wiki.investigation_cast` | ✓ | ✓ | role `mg` |
 
 Sketch policies (full migration writes them out):
 

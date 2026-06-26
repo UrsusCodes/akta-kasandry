@@ -37,6 +37,7 @@ The full system has three audiences. This project (the web app) addresses tiers 
 - react-router-dom v7
 - Markdown: react-markdown + remark-gfm + plugins for wikilink conversion
 - Map: react-leaflet (imageOverlay for Boston map)
+- **Testing (devDependencies, approved 2026-06-26):** Vitest + jsdom + @testing-library/react + @testing-library/jest-dom + @testing-library/user-event + @testing-library/dom
 
 Rationale: coc-creator (sister project) is already on this stack and shares the Supabase project. No deviation without explicit user approval.
 
@@ -45,7 +46,7 @@ Rationale: coc-creator (sister project) is already on this stack and shares the 
 ### Shared Supabase project (with coc-creator)
 
 - Same project URL + ANON_KEY as coc-creator (user supplies via `.env`)
-- **Isolation via schema `wiki`** — all our tables live there (`wiki.pages`, `wiki.revisions`, `wiki.pins`, `wiki.profiles`)
+- **Isolation via schema `wiki`** — all our tables live there (`wiki.pages`, `wiki.revisions`, `wiki.pins`, `wiki.profiles`, `wiki.imported_characters`, `wiki.comments`, `wiki.investigation_cast`)
 - **Auth: NOT shared / no SSO** (corrected 2026-06-26 after coc-creator code review). coc-creator is not on Supabase Auth — its players live in `public.players` (bcrypt + custom JWT), `auth.users` is empty. Akta Kasandry uses Supabase Auth independently; MG provisions player accounts. SSO was declined 2026-05-21 (option #1). The earlier "shared SSO" line was an unrealised assumption.
 - Storage: dedicated bucket `wiki-attachments` (GM uploads image library, players read-only)
 - Free tier — watch egress (especially realtime channels on map pins)
@@ -102,7 +103,7 @@ Older BookStack PoC. Salvage these assets:
 ### Auth + edit
 
 - Supabase Auth (email/pass + Google OAuth)
-- Profile per player in `wiki.profiles` (`role: 'mg' | 'gracz'`)
+- Profile per player in `wiki.profiles` (`role: 'mg' | 'gracz'`, `color text` — one of 16 palette hex values, added migration 009)
 - RLS: read for authenticated, edit per page (author + MG)
 - Inline markdown editor (candidates: `react-markdown-editor-lite`, `milkdown` — decision open, see `[[work/Index]]`)
 - Revision tracking in `wiki.revisions` + diff view + rollback button
@@ -176,7 +177,7 @@ See `[[TASK_LIST]]` for the live checkbox state, `[[DOCS_CHANGES_JOURNAL]]` for 
 - In-browser Excalidraw editor
 - Mobile-first responsive (desktop priority)
 - Audio / video embeds
-- Per-page comments
+- ~~Per-page comments~~ — **scoped-in 2026-06-26 as Stage L**: fragment-anchored IC/OOC comments on summary pages, right rail, public read, never editing main content. Non-summary pages and realtime remain deferred.
 - AI-generated content (portraits, handouts, summaries) — separate tooling, not this project
 
 ## Conventions

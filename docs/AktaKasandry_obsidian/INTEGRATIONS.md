@@ -20,7 +20,7 @@ External systems and sibling projects this app coordinates with. Cross-project c
 
 - coc-creator owns `public.*` (and any schema it defines)
 - akta-kasandry owns `wiki.*` and the bucket `wiki-attachments`
-- Auth users are shared — coc-creator account = SSO into akta-kasandry
+- **Auth: NOT shared / no SSO** (corrected 2026-06-26). coc-creator is NOT on Supabase Auth — its players live in `public.players` (bcrypt + custom JWT); `auth.users` is empty on their side. Akta Kasandry uses Supabase Auth independently: MG provisions separate player accounts (Path 1, using each player's coc-creator email as the login). No account migration from coc-creator; we do not depend on their accounts. SSO was declined 2026-05-21.
 - Free-tier egress is shared — be mindful (especially on map realtime channels)
 
 **Before changing anything that crosses the boundary:**

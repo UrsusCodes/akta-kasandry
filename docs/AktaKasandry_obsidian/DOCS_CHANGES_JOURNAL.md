@@ -11,6 +11,53 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-06-26 — Player margin-comments: full implementation (Stage L, Task 24 / 24 — COMPLETE)
+
+Full implementation of the player margin-comments feature for session-summary pages, executed as 24 TDD tasks across 7 phases from plan `docs/superpowers/plans/2026-06-26-player-comments.md`. All source code shipped, 28 unit tests green, `tsc -b` clean, migrations 009–013 run.
+
+**What shipped.** Logged-in players select text on a summary page → compose an in-character (IC, as one of their investigation characters) or out-of-character (OOC, "Ja") comment, anchored to a text fragment, shown in a right rail with threads + replies + cast filter. Comments are **public** (anon read). The feature is live on `/streszczenie-ug2` via `<AnnotatableArticle>`.
+
+**New dev dependency (first test framework — approved by user):** Vitest + jsdom + @testing-library/react + @testing-library/jest-dom + @testing-library/user-event + @testing-library/dom (all devDependencies). No new runtime deps.
+
+**New source files.**
+- `src/lib/playerColors.ts` — 16-colour palette
+- `src/lib/comments/anchor.ts` — homegrown text anchorer: `createAnchor` / `resolveAnchor` / `shortHash` / `normalizeText` — block-id hash + quote + offset + fuzzy fallback + orphan group
+- `src/lib/remarkBlockIds.ts` — remark plugin; attaches `data-block-id` to block-level nodes
+- `src/lib/comments/group.ts` — `groupThreads`
+- `src/lib/comments/speakerOptions.ts` — `speakerOptionsFor` (cast-filtered speaker options helper)
+- `src/stores/comments.ts` — load/add/edit/remove, mock fallback
+- `src/stores/cast.ts` — owner/cast/profiles + `speakerOptionsForPlayer`
+- `src/mocks/comments.ts`
+- `src/components/comments/*` — Portrait, SpeakerPicker, CommentCard, CommentRail, ComposeBubble, useHighlights, AnnotatableArticle
+- `src/types.ts` — extended with `CommentAnchor`, `Comment`, `CommentThread`, `CommentMode`, `commentMode()`
+
+**Modified source.** `Markdown.tsx` (+remarkBlockIds), `stores/auth.ts` (+color on profile), `routes/UG2Summary.tsx` (renders via AnnotatableArticle + cast-filtered speakerOptions), `routes/AdminImport.tsx` (owner dropdown + investigation-cast checkbox per character), `src/index.css` (16 `::highlight` rules, one per palette hex), `tsconfig.node.json` (dropped `src/**/*.ts` from include — those are covered by tsconfig.app.json with DOM lib).
+
+**Migrations 009–013 run 2026-06-26, one transaction, verified by post-migration audit.**
+- 009 — `wiki.profiles.color text` (player identity colour)
+- 010 — `wiki.imported_characters.owner_profile_id uuid references wiki.profiles(id) ON DELETE SET NULL` + index
+- 011 — `wiki.comments` table (full schema — see [[SUPABASE_AND_SYNC]])
+- 012 — `wiki.investigation_cast (page_key, character_id)` + `profiles_anon_read` policy (anon read on `wiki.profiles` so public comment cards can show author display_name + color)
+- 013 — email hardening: recreated `wiki.handle_new_user` WITHOUT the email fallback; nulled existing email-like display_names (closes the leak migration 012's anon profiles read opened)
+
+**KEY SCHEMA DECISION.** `comments.speaker_character_id` and `investigation_cast.character_id` reference `imported_characters.source_id` (the uuid natural key), NOT the bigserial `id`. The plan originally referenced `(id)` — that would have failed (uuid column vs bigint PK). The frontend keys characters by `source_id` (stable across re-imports).
+
+**Coordination.** Checked coc-creator before migrations — repo unchanged since 2026-06-04; all new tables + columns strictly within `wiki.*`; one new RLS policy (`profiles_anon_read`) on `wiki.profiles` only; zero `public.*` writes — no conflicts.
+
+**Accepted v1 limitations (recorded as known follow-ups).**
+- MG's `comments_author_update` RLS branch passes regardless of new `author_profile_id` — MG is trusted; the app never sends `author_profile_id` on edit. Tighten later if needed.
+- `resolveAnchor` fuzzy tier normalizes whitespace on gate but matches with raw `indexOf` — whitespace divergence could falsely orphan. Low probability with deterministic markdown; accepted.
+- `unist-util-visit`, `mdast-util-to-string`, `unified`, `remark-parse` used as transitive deps of react-markdown (not added as top-level deps). Fragile if a future react-markdown major drops them.
+- `::highlight()` pseudos can't be wildcarded — 16 static rules in `index.css`, one per palette colour. Non-palette author colour paints no fragment tint (rail still works).
+
+**Deferred.** Realtime updates, inline dot markers, multi-level replies, comments on non-summary pages.
+
+**Files (docs):** this journal entry, `TASK_LIST.md` (Stage L completion), `memories/project.md` (schema + dev-dep + accounts model), `SUPABASE_AND_SYNC.md` (migrations 009–013), `INTEGRATIONS.md` (fix stale SSO line).
+
+**Open / pending.** Compose flow, admin owner/cast UI, and IC speaker options were preview-verified for the read path (comments embed-SELECT 200, RLS anon-read works, 84 block-ids, rail renders) but the login-gated write paths (compose, admin assignment) await the MG's logged-in browser test. Players not yet invited (owner assignment needs player profiles to exist).
+
+---
+
 ## 2026-06-26 — Player margin-comments: brainstorm → spec → plan (Stage L, design-only)
 
 Design session for a new feature: **player comments on summary pages**. Players log in and leave comments anchored to selected text fragments, shown in a right rail, **in-character (IC)** or **out-of-character (OOC)** — main content never modified. No code shipped; this session produced a validated mockup, a spec, and a full implementation plan. Mockups built with the Superpowers brainstorm visual companion (`v3.html` = target look).
