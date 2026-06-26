@@ -38,7 +38,12 @@ export function AnnotatableArticle({ pageKey, children, speakerOptions = [] }: P
     const sel = window.getSelection()
     if (!sel || sel.isCollapsed || !containerRef.current) return
     const range = sel.getRangeAt(0)
-    let block = range.startContainer.parentElement?.closest('[data-block-id]') as HTMLElement | null
+    // startContainer is usually a text node (use its parent), but a triple-click
+    // / boundary selection can hand back the element itself — handle both so the
+    // block-id lookup never silently misses the clicked block.
+    const start = range.startContainer
+    const from = start instanceof Element ? start : start.parentElement
+    const block = from?.closest('[data-block-id]') as HTMLElement | null
     if (!block || !containerRef.current.contains(block)) return
     const anchor = createAnchor(range, block)
     if (anchor && anchor.quote.trim()) setPending({ anchor, quote: anchor.quote })
