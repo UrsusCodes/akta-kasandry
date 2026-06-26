@@ -977,6 +977,40 @@ git commit -m "db: migration 012 — investigation_cast + anon profile read"
   dashboard access). Record completion in the journal. Until run, the store's
   mock fallback (Task 13) keeps the UI working without a backend.
 
+### Task 11b: Migration 013 — backfill `wiki.profiles` for existing accounts
+
+Players reuse their existing coc-creator accounts (shared Supabase Auth). The
+migration-002 trigger only creates a `wiki.profiles` row on *new* signups, so
+already-existing `auth.users` have no profile yet. Backfill them once.
+
+**Files:**
+- Create: `supabase/migrations/013_profiles_backfill.sql`
+
+- [ ] **Step 1: Write the migration**
+
+```sql
+-- 013 — backfill wiki.profiles for auth.users that predate our trigger.
+-- Idempotent: inserts only the missing ones, default role 'gracz'.
+-- We read auth.users and write ONLY wiki.profiles (never public.*). Future
+-- signups are handled by wiki_on_auth_user_created (migration 002).
+insert into wiki.profiles (id, display_name)
+select u.id, coalesce(u.raw_user_meta_data->>'display_name', u.email)
+from auth.users u
+left join wiki.profiles p on p.id = u.id
+where p.id is null;
+```
+
+- [ ] **Step 2: Commit**
+
+```bash
+git add supabase/migrations/013_profiles_backfill.sql
+git commit -m "db: migration 013 — backfill profiles for existing shared accounts"
+```
+
+- [ ] **Step 3:** Run together with 009–012 in the dashboard (MG action). After it,
+  every existing player has a `gracz` profile; MG sets each player's colour and
+  assigns character ownership in `/admin` (Task 23).
+
 ---
 
 ## Phase 3 — Data layer (store + auth colour)
