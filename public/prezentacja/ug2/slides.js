@@ -82,7 +82,7 @@ const SLIDES = [
   // ─────────────────────── AKT IV — przybycie i śledztwo ────────────────────────
   { kind:'cast', track:'orchard', dur:9500, act:'Akt IV', title:'Akademicy z Boston University',
     cast:[
-      {img:CAST+'corwin.jpg', name:'Arthur Henry Corwin', player:'Jakub'},
+      {img:CAST+'corwin.jpg', name:'Dr Arthur Henry Corwin', player:'Jakub'},
       {img:CAST+'eleine.jpg', name:'Dr Elaine Howard', player:'Nika'},
       {img:CAST+'west.jpg', name:'Dr Herbert West', player:'Rafał'},
       {img:CAST+'wallace.jpg', name:'Wallace Harvey', player:'Kamil'},

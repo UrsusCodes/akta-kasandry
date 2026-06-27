@@ -28,7 +28,7 @@ const SUMMARY = `# Urodzaj Grozy (UG 2) — streszczenie
 
 | Gracz | Gangster | Akademik |
 |---|---|---|
-| Jakub | **Mortimer „Mort" Flannery** — gruby, siostrzeniec szefa, prawa ręka | **Dr Edwin Thorne** |
+| Jakub | **Mortimer „Mort" Flannery** — gruby, siostrzeniec szefa, prawa ręka | **Dr Arthur Henry Corwin** |
 | Nika | **James Kelly** — bokser (z bratem) | **Dr Elaine Howard** |
 | Rafał | **Joseph Kelly** — silny, brat Jamesa | **Dr Herbert West** |
 | Kamil | **Friedrich „Fritz" Mueller** — Niemiec, kierowca/ochroniarz | **Wallace Harvey** — bibliotekarz (magister) |

@@ -16,7 +16,10 @@ export function Sessions() {
     void initManifest()
   }, [initManifest])
 
-  const sessions = manifest ? Object.entries(manifest.sessions) : []
+  // Sól w Ranach is hidden from players for now (still reachable by direct URL).
+  const sessions = manifest
+    ? Object.entries(manifest.sessions).filter(([slug]) => slug !== 'sol-w-ranach')
+    : []
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 md:px-6">
@@ -30,12 +33,6 @@ export function Sessions() {
       </p>
 
       <div className="mt-4 flex flex-wrap gap-3">
-        <Link
-          to="/streszczenie-demo"
-          className="font-display inline-block border border-gold-muted/60 px-3 py-1.5 text-xs uppercase tracking-wider text-gold hover:border-gold hover:bg-gold/10"
-        >
-          ↪ Streszczenie: Sól w Ranach
-        </Link>
         <Link
           to="/streszczenie-ug2"
           className="font-display inline-block border border-gold-muted/60 px-3 py-1.5 text-xs uppercase tracking-wider text-gold hover:border-gold hover:bg-gold/10"
