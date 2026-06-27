@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { Markdown } from '@/components/Markdown'
 import { CommentRail } from './CommentRail'
-import { ComposeBubble } from './ComposeBubble'
+import { CommentComposer, type ComposerMode } from './CommentComposer'
+import { useIsDesktop } from './useIsDesktop'
 import { useHighlights } from './useHighlights'
 import { createAnchor } from '@/lib/comments/anchor'
 import type { CommentAnchor } from '@/types'
@@ -24,6 +25,8 @@ export function AnnotatableArticle({ pageKey, children, speakerOptions = [] }: P
   const [activeThreadId, setActiveThreadId] = useState<string | null>(null)
   // Force the rail to re-measure once the article container has mounted.
   const [, forceUpdate] = useState(0)
+  const [mode, setMode] = useState<ComposerMode>('idle')
+  const isDesktop = useIsDesktop()
 
   const comments = useCommentsStore((s) => s.comments)
   const load = useCommentsStore((s) => s.load)
@@ -39,13 +42,10 @@ export function AnnotatableArticle({ pageKey, children, speakerOptions = [] }: P
   useHighlights(containerRef.current, comments, activeBlockId)
 
   const onMouseUp = () => {
-    if (!user) return // only logged-in players can comment
+    if (!user || mode !== 'selecting') return
     const sel = window.getSelection()
     if (!sel || sel.isCollapsed || !containerRef.current) return
     const range = sel.getRangeAt(0)
-    // startContainer is usually a text node (use its parent), but a triple-click
-    // / boundary selection can hand back the element itself — handle both so the
-    // block-id lookup never silently misses the clicked block.
     const start = range.startContainer
     const from = start instanceof Element ? start : start.parentElement
     const block = from?.closest('[data-block-id]') as HTMLElement | null
@@ -61,28 +61,37 @@ export function AnnotatableArticle({ pageKey, children, speakerOptions = [] }: P
     el?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
 
+  const resetComposer = () => {
+    setMode('idle')
+    setPending(null)
+    window.getSelection()?.removeAllRanges()
+  }
+
   return (
     <div className="flex flex-col gap-4 lg:flex-row">
       <div ref={containerRef} onMouseUp={onMouseUp} className="min-w-0 flex-1">
         <Markdown>{children}</Markdown>
-        {pending && (
-          <div className="sticky bottom-4 z-20 mx-auto max-w-xl">
-            <ComposeBubble
-              quote={pending.quote}
-              speakerOptions={speakerOptions}
-              selfName={displayName ?? 'Ja'}
-              color={color}
-              onSubmit={async ({ speakerCharacterId, body }) => {
-                const res = await add({ pageKey, anchor: pending.anchor, speakerCharacterId, body, parentId: null })
-                if (!res.error) { setPending(null); window.getSelection()?.removeAllRanges() }
-                return res
-              }}
-              onCancel={() => setPending(null)}
-            />
-          </div>
-        )}
       </div>
       <aside className="w-full shrink-0 lg:w-[330px]">
+        {user && (
+          <CommentComposer
+            mode={mode}
+            quote={pending?.quote ?? null}
+            hasFragment={!!pending}
+            speakerOptions={speakerOptions}
+            selfName={displayName ?? 'Ja'}
+            color={color}
+            variant={isDesktop ? 'rail' : 'bottom'}
+            onStart={() => setMode('selecting')}
+            onConfirmFragment={() => setMode('composing')}
+            onCancel={resetComposer}
+            onSubmit={async ({ speakerCharacterId, body }) => {
+              const res = await add({ pageKey, anchor: pending!.anchor, speakerCharacterId, body, parentId: null })
+              if (!res.error) resetComposer()
+              return res
+            }}
+          />
+        )}
         <CommentRail
           comments={comments}
           activeThreadId={activeThreadId}
