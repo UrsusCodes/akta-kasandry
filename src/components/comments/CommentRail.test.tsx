@@ -16,7 +16,7 @@ describe('CommentRail', () => {
       base({ id: '1', createdAt: '2026-01-01T00:00:00Z' }),
       base({ id: '2', createdAt: '2026-01-02T00:00:00Z' }),
     ]
-    render(<CommentRail comments={comments} activeThreadId={null} canModerate={false} onFocusAnchor={() => {}} />)
+    render(<CommentRail comments={comments} activeThreadId={null} currentUserId={null} isMG={false} onFocusAnchor={() => {}} />)
     // Quote shown once as the thread header.
     expect(screen.getAllByText(/pierwsza strzelanina/).length).toBe(1)
   })

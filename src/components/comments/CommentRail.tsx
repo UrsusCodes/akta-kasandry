@@ -8,10 +8,11 @@ import { CommentCard } from './CommentCard'
 type Props = {
   comments: Comment[]
   activeThreadId: string | null
-  canModerate: boolean
+  currentUserId: string | null
+  isMG: boolean
   onFocusAnchor: (anchorBlockId: string, rootId: string) => void
-  onEdit?: (id: string) => void
-  onDelete?: (id: string) => void
+  onEdit?: (id: string, body: string) => void | Promise<{ error?: string }>
+  onDelete?: (id: string) => void | Promise<{ error?: string }>
   /** The article element to measure anchors against. Only used on lg+ screens. */
   containerEl?: HTMLElement | null
 }
@@ -142,7 +143,8 @@ function useAnchorPositions(
 export function CommentRail({
   comments,
   activeThreadId,
-  canModerate,
+  currentUserId,
+  isMG,
   onFocusAnchor,
   onEdit,
   onDelete,
@@ -260,7 +262,7 @@ export function CommentRail({
               „{anchor.quote}"
             </button>
             {group.map((t) => (
-              <Thread key={t.root.id} thread={t} canModerate={canModerate} onEdit={onEdit} onDelete={onDelete} />
+              <Thread key={t.root.id} thread={t} currentUserId={currentUserId} isMG={isMG} onEdit={onEdit} onDelete={onDelete} />
             ))}
           </div>
         )
@@ -273,20 +275,22 @@ export function CommentRail({
 
 function Thread({
   thread,
-  canModerate,
+  currentUserId,
+  isMG,
   onEdit,
   onDelete,
 }: {
   thread: ReturnType<typeof groupThreads>[number]
-  canModerate: boolean
-  onEdit?: (id: string) => void
-  onDelete?: (id: string) => void
+  currentUserId: string | null
+  isMG: boolean
+  onEdit?: (id: string, body: string) => void | Promise<{ error?: string }>
+  onDelete?: (id: string) => void | Promise<{ error?: string }>
 }) {
   const [open, setOpen] = useState(false)
   const replies = thread.replies
   return (
     <div className="mt-2 first:mt-0">
-      <CommentCard comment={thread.root} canModerate={canModerate} onEdit={onEdit} onDelete={onDelete} />
+      <CommentCard comment={thread.root} currentUserId={currentUserId} isMG={isMG} onEdit={onEdit} onDelete={onDelete} />
       {replies.length > 0 && !open && (
         <button
           type="button"
@@ -299,7 +303,7 @@ function Thread({
       {open && (
         <div className="mt-2 space-y-2 border-t border-dashed border-gold-muted/40 pt-2">
           {replies.map((r) => (
-            <CommentCard key={r.id} comment={r} canModerate={canModerate} onEdit={onEdit} onDelete={onDelete} />
+            <CommentCard key={r.id} comment={r} currentUserId={currentUserId} isMG={isMG} onEdit={onEdit} onDelete={onDelete} />
           ))}
         </div>
       )}

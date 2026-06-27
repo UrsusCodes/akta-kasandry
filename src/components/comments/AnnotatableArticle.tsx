@@ -31,6 +31,8 @@ export function AnnotatableArticle({ pageKey, children, speakerOptions = [] }: P
   const comments = useCommentsStore((s) => s.comments)
   const load = useCommentsStore((s) => s.load)
   const add = useCommentsStore((s) => s.add)
+  const editComment = useCommentsStore((s) => s.edit)
+  const removeComment = useCommentsStore((s) => s.remove)
   const user = useAuthStore((s) => s.user)
   const displayName = useAuthStore((s) => s.displayName)
   const color = useAuthStore((s) => s.color) ?? DEFAULT_PLAYER_COLOR
@@ -95,7 +97,10 @@ export function AnnotatableArticle({ pageKey, children, speakerOptions = [] }: P
         <CommentRail
           comments={comments}
           activeThreadId={activeThreadId}
-          canModerate={role === 'mg'}
+          currentUserId={user?.id ?? null}
+          isMG={role === 'mg'}
+          onEdit={(id, body) => editComment(id, body)}
+          onDelete={(id) => removeComment(id)}
           onFocusAnchor={(blockId, rootId) => focusAnchor(blockId, rootId)}
           containerEl={containerRef.current}
         />
