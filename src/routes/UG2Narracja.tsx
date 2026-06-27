@@ -13,6 +13,8 @@ const NARRACJA = `# Urodzaj Grozy — pełna narracja
 
 → **[Krótkie streszczenie z deep-linkami](/streszczenie-ug2)**
 
+→ **[▶ Prezentacja filmowa (slajdy + muzyka)](/prezentacja/ug2)**
+
 ---
 
 ### [00:00–10:00] Meta-zapowiedź i wieczór u McBride'a
@@ -145,7 +147,7 @@ Równolegle scenariusz wprowadził **akademików**, wysłanych przez dziekana **
 <img src="/img/ug2/jarvey_m.jpg" alt="Malcolm Jarvey" width="140" /> <img src="/img/ug2/jarvey_e.jpg" alt="Edith Jarvey" width="140" /> <img src="/img/ug2/jarvey_son.jpg" alt="Syn Jarveyów" width="140" />
 *Rodzina Jarveyów: Malcolm, Edith (już w 2. stadium Daru — odrastają jej zęby) i ich dorosły syn.*
 
-<img src="/img/ug2/pete.jpg" alt="Stary Pete" width="200" align="right" style="margin: 0.3rem 0 0.8rem 1.2rem;" />Na **Farmie Jarveyów** (tu wraca nagranie) działa pięcioro akademików: **Dr Edwin Thorne**, **Dr Eleine Howard**, **Dr Herbert West**, bibliotekarz **Wallace Harvey** i **Dr Cecil Cavendish**. Dr Howard podeszła do **Starego Pete'a**, alkoholicznego parobka Jarveyów, siedzącego w błocie — bladego, półprzytomnego; gdy go zagadnęła, cienka czarna stróżka ropistego płynu zaczęła mu spływać wzdłuż wargi. Dr West dyskretnie pobrał próbkę. Wewnątrz domu znaleziono niedokończony, wielokrotnie przekreślany list zaczynający się od słów „Drogi Ernesti" — adresowany do **Ernesta McTavisha**, emerytowanego profesora Boston University i zleceniodawcy wyprawy Roadesa.
+<img src="/img/ug2/pete.jpg" alt="Stary Pete" width="200" align="right" style="margin: 0.3rem 0 0.8rem 1.2rem;" />Na **Farmie Jarveyów** (tu wraca nagranie) działa pięcioro akademików: **Dr Edwin Thorne**, **Dr Elaine Howard**, **Dr Herbert West**, bibliotekarz **Wallace Harvey** i **Dr Cecil Cavendish**. Dr Howard podeszła do **Starego Pete'a**, alkoholicznego parobka Jarveyów, siedzącego w błocie — bladego, półprzytomnego; gdy go zagadnęła, cienka czarna stróżka ropistego płynu zaczęła mu spływać wzdłuż wargi. Dr West dyskretnie pobrał próbkę. Wewnątrz domu znaleziono niedokończony, wielokrotnie przekreślany list zaczynający się od słów „Drogi Ernesti" — adresowany do **Ernesta McTavisha**, emerytowanego profesora Boston University i zleceniodawcy wyprawy Roadesa.
 
 > **List (czyta dr Thorne):** „Blackwater Creek rzeczywiście zostało zbudowane w miejscu, gdzie niegdyś stała przystań Cayda. Odkryłem wiele artefaktów wczesnego osadnictwa, a także szczątki... Jest tu tak wiele, że czasami słyszę głos swojej matki. Znam ten głos. Jaskinia nie jest mitem. Cayda próbował ją zawalić, ale ona tam jest, jakby nigdy nie umarła. Postarałem się o dynamit. Muszę ją uwolnić. Boże, bądź miłościw mnie grzesznemu."
 
@@ -169,7 +171,7 @@ Datowanie wskazało koniec XVII wieku — pozostałość po zaginionej sekcie. W
 
 Scenę zdominowały tarcia w grupie — kłótnia o słoik, spory o decyzyjność, narastająca frustracja dr Howard. Ostatecznie padł pomysł, by sprawdzić tę jedną farmę, której wszyscy kazali unikać — farmę Carmodych.
 
-> **Dr Eleine Howard:** „Konkretnie jedna jedyna farma, gdzie mówią, że nie — spośród dwudziestu, pięćdziesięciu. No i my tam pójdziemy."
+> **Dr Elaine Howard:** „Konkretnie jedna jedyna farma, gdzie mówią, że nie — spośród dwudziestu, pięćdziesięciu. No i my tam pójdziemy."
 
 ### [1:48:00–2:01:00] Wspólna bitwa na farmie i śmierć Jamesa
 
@@ -180,7 +182,7 @@ W tym momencie obie drużyny znalazły się razem na farmie, gdy z bimbrowni wy�
 
 > **Strażnik Tajemnic:** „Ona bierze, i ta ręka wydłuża się w ten sposób. Przebija cię na wylot, podnosi do góry — rozpadasz się na dwa kawałki obok."
 > **Joseph Kelly:** „Mój James."
-> **Dr Eleine Howard (do istoty):** „Zapłacisz mi za to."
+> **Dr Elaine Howard (do istoty):** „Zapłacisz mi za to."
 
 ### [2:01:00–2:14:00] Ogień kładzie istotę z farmy, pojawia się Roades
 
@@ -199,7 +201,7 @@ Joseph, opętany rozpaczą i nadzieją, wziął ciało Jamesa na plecy. Drużyna
 ![Wejście do jaskini](/img/ug2/cave_entrance.jpg)
 *Jaskinia w górę rzeki — u źródła skażonej wody.*
 
-Do jaskini ruszyła pieszo **mieszana grupa ocalałych** — gangsterzy i akademicy (bez **McMillera**, który uciekł autem). **Joseph** niósł na plecach **ciało brata**. Jaskinia leży **w górę rzeki**: to z niej wypływa strumień, na którym bracia postawili **tamę** zasilającą skażone pola kukurydzy. Trzeba było wspiąć się **po mokrych kamieniach** — zeszło chwilę, ale bez większych strat (**Eleine** znów żałowała, że nie zapisała się na kurs wspinaczki). W środku ciągnęło się **wypłukane koryto** między **stromymi skarpami**, a na końcu czekało **głębokie jezioro**.
+Do jaskini ruszyła pieszo **mieszana grupa ocalałych** — gangsterzy i akademicy (bez **McMillera**, który uciekł autem). **Joseph** niósł na plecach **ciało brata**. Jaskinia leży **w górę rzeki**: to z niej wypływa strumień, na którym bracia postawili **tamę** zasilającą skażone pola kukurydzy. Trzeba było wspiąć się **po mokrych kamieniach** — zeszło chwilę, ale bez większych strat (**Elaine** znów żałowała, że nie zapisała się na kurs wspinaczki). W środku ciągnęło się **wypłukane koryto** między **stromymi skarpami**, a na końcu czekało **głębokie jezioro**.
 
 Przy wodzie **Roades** zachęcał, by **wrzucić ciało Jamesa** do źródła — Matka go wskrzesi. Joseph stanął przed wyborem i ostatecznie postanowił **pozwolić bratu odejść w spokoju** — po czym **strzelił Roadesowi w głowę**. Profesor runął do wody.
 
@@ -210,7 +212,7 @@ To **sprowokowało Matkę.** Na powierzchnię wynurzyła się **Abigail Roades**
 
 *(Tylko na poziomie „meta" gracze poznają jej historię: Abigail upadła tu kiedyś, roztrzaskała sobie głowę i wpadła do wody — tak narodziła się Matka. Roades przez całą sprawę szukał właśnie jej, swojej żony.)*
 
-Widok uderzył w psychikę wszystkich — **Eleine na moment straciła przytomność**, reszta była mocno rozbita. Najgorzej wyszło na **Mortimerze**: ponieważ wcześniej **pił skażoną whiskey**, na oczach drużyny **stał się — tymczasowo — wyznawcą Matki.**
+Widok uderzył w psychikę wszystkich — **Elaine na moment straciła przytomność**, reszta była mocno rozbita. Najgorzej wyszło na **Mortimerze**: ponieważ wcześniej **pił skażoną whiskey**, na oczach drużyny **stał się — tymczasowo — wyznawcą Matki.**
 
 ![Wnętrze jaskini](/img/ug2/cave_interior.jpg)
 *Wnętrze jaskini — wypłukane koryto między skarpami, w głębi jezioro.*
@@ -229,7 +231,7 @@ Wybudzony z transu Mortimer też rzucił się do wyjścia — ale drogę zastąp
 
 Po wyjściu z jaskini ocaleni dostrzegli grupę ludzi z latarniami nadciągających lasem od zachodu i wybrali wschodnią ścieżkę do ciężarówki. Na farmie postanowili zniszczyć wszelki ślad: podpalili bimbrownię z setkami butelek oraz oblane alkoholem pole dojrzałej kukurydzy — by skażony trunek nigdy więcej nie popłynął. Pastora Sprouston świadomie zostawili na później.
 
-> **Dr Eleine Howard (o pastorze):** „Ja go kiedyś dopadnę."
+> **Dr Elaine Howard (o pastorze):** „Ja go kiedyś dopadnę."
 
 Wynik: **Matka (Abigail Roades)** rozerwana i zapieczętowana, obaj bracia Carmody martwi (**Damien** — kark skręcony przez brata; **Brendan** — istota z farmy, spalony), bimbrownia i kukurydza spalone. **Roadesa nie uratowano** (Joseph zastrzelił go w jaskini), pastora **Dicka Sproustona** nie rozliczono. Zginął **James Kelly** (farma). **Mortimer Flannery** przeżył, lecz został w zawalonej jaskini **kompletnie niepoczytalny** — uratowała go regeneracja z daru Matki; **Cormac McMiller** w obłędzie uciekł. Przeżyli: **Joseph Kelly**, **Fritz Mueller** oraz wszyscy akademicy.
 
@@ -241,7 +243,7 @@ Wynik: **Matka (Abigail Roades)** rozerwana i zapieczętowana, obaj bracia Carmo
 
 To **Brock** — informator, którego na początku sprawy torturowano, a Joseph dobił łomem i utopił w zatoce. „Przeżył" egzekucję dzięki **darowi Matki** (pił skażony złoty trunek, który sam rozprowadzał) i wrócił po swojego kata. Czy to naprawdę on, czy wyrzut sumienia Josepha — Strażnik zostawił celowo niejednoznacznym.
 
-**Scena druga — Dr Eleine Howard.** Tygodnie później, gdy w głowie Eleine kłębią się kłamstwa opowiedziane na uniwersytecie, wraca do swojego mieszkania. Drzwi są odryglowane. Wyciąga broń, wchodzi — w jej ulubionym fotelu, plecami do niej, ktoś siedzi.
+**Scena druga — Dr Elaine Howard.** Tygodnie później, gdy w głowie Elaine kłębią się kłamstwa opowiedziane na uniwersytecie, wraca do swojego mieszkania. Drzwi są odryglowane. Wyciąga broń, wchodzi — w jej ulubionym fotelu, plecami do niej, ktoś siedzi.
 
 > **Nieznajomy (werbownik):** „Cieszę się, że już pani wróciła. Mam olbrzymią przyjemność przynieść pani szczególne zaproszenie. Reprezentuję pewien klub dżentelmenów — choć dla ścisłości jesteśmy progresywni i mamy wiele dam wśród naszych członków. Czy słyszała pani kiedykolwiek o klubie Kasandry?"
 

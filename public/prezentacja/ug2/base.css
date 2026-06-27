@@ -1,0 +1,140 @@
+/* Cinematic slideshow — THEME-AGNOSTIC base (layout + animation).
+   All colours/fonts come from a theme.css loaded BEFORE this file, via CSS vars:
+   --bg --panel-1 --panel-2 --panel-3 --text --text-soft --muted --accent --frame
+   --display --serif --fx-flash --fx-pulse --grain --img-filter --portrait-filter */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg,#000);overflow:hidden;
+  font-family:var(--serif,Georgia,serif);color:var(--text,#eee)}
+#show{position:fixed;inset:0;background:var(--bg,#000);cursor:default}
+#show.idle{cursor:none}
+
+/* ── stage / layers ─────────────────────────────────────────── */
+#stage{position:absolute;inset:0;overflow:hidden}
+.layer{position:absolute;inset:0;opacity:0;transition:opacity 1.3s ease}
+.layer.active{opacity:1}
+.bg{position:absolute;inset:-6%;background-size:cover;background-position:center;
+    will-change:transform;filter:var(--img-filter,none)}
+.bg.night{filter:saturate(.5) brightness(.45) contrast(1.05) hue-rotate(-10deg)}
+.layer .veil{position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(120% 90% at 50% 35%, transparent 35%, rgba(0,0,0,.55) 100%),
+    linear-gradient(to top, var(--veil-bottom,rgba(5,15,15,.92)) 0%, rgba(5,15,15,.25) 38%, transparent 60%)}
+
+/* Ken Burns (duration set inline per slide) */
+@keyframes kb-in   {from{transform:scale(1.0)}   to{transform:scale(1.14)}}
+@keyframes kb-out  {from{transform:scale(1.14)}  to{transform:scale(1.0)}}
+@keyframes kb-left {from{transform:scale(1.12) translateX(3%)} to{transform:scale(1.12) translateX(-3%)}}
+@keyframes kb-right{from{transform:scale(1.12) translateX(-3%)}to{transform:scale(1.12) translateX(3%)}}
+.bg.kb-in{animation:kb-in linear forwards}
+.bg.kb-out{animation:kb-out linear forwards}
+.bg.kb-left{animation:kb-left linear forwards}
+.bg.kb-right{animation:kb-right linear forwards}
+
+/* ── content ────────────────────────────────────────────────── */
+.content{position:absolute;left:0;right:0;bottom:0;padding:6vh 8vw 9vh;
+  display:flex;flex-direction:column;gap:.6rem;align-items:flex-start;text-align:left}
+.content.center{inset:0;justify-content:center;align-items:center;text-align:center;padding:8vh 10vw}
+.act{font-family:var(--display);font-size:clamp(.7rem,1.4vw,1rem);letter-spacing:.32em;
+  text-transform:uppercase;color:var(--accent);opacity:.9}
+.title{font-family:var(--display);font-weight:700;line-height:1.05;
+  font-size:clamp(1.9rem,5vw,4rem);color:var(--text);text-shadow:0 2px 18px rgba(0,0,0,.7)}
+.title.huge{font-size:clamp(2.6rem,8vw,6rem)}
+.text{font-size:clamp(1.15rem,2.4vw,1.9rem);line-height:1.4;max-width:46ch;
+  color:var(--text-soft,var(--text));text-shadow:0 2px 14px rgba(0,0,0,.75)}
+.content.center .text{max-width:34ch}
+.gold-rule{width:64px;height:2px;background:var(--accent);opacity:.85;margin:.3rem 0}
+
+/* reveal animations (paused with the show) */
+@keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+.reveal{opacity:0;animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards}
+
+/* ── framed character/creature portrait(s) over a location bg ──── */
+.portrait-inset{position:absolute;right:7vw;bottom:13vh;z-index:2;margin:0;
+  width:clamp(150px,19vw,290px);text-align:center}
+.portrait-inset img{width:100%;aspect-ratio:3/4;object-fit:cover;
+  border:3px solid var(--frame,var(--accent));border-radius:6px;background:var(--panel-2);
+  box-shadow:0 14px 44px rgba(0,0,0,.7);filter:var(--portrait-filter,none)}
+.portrait-inset figcaption{font-family:var(--display);font-size:clamp(.8rem,1.2vw,1.05rem);
+  color:var(--text);margin-top:.5rem;letter-spacing:.02em;text-shadow:0 2px 10px rgba(0,0,0,.8)}
+.pcluster{position:absolute;right:4vw;top:50%;transform:translateY(-50%);z-index:2;
+  display:flex;flex-wrap:wrap;gap:.7rem;justify-content:flex-end;align-content:center;
+  max-width:48vw;max-height:80vh}
+.pf{margin:0;width:clamp(78px,9vw,128px);text-align:center}
+.pf img{width:100%;aspect-ratio:3/4;object-fit:cover;border:2px solid var(--frame,var(--accent));
+  border-radius:5px;box-shadow:0 6px 20px rgba(0,0,0,.6);filter:var(--portrait-filter,none)}
+.pf figcaption{font-family:var(--display);font-size:clamp(.55rem,.85vw,.8rem);
+  color:var(--text-soft);margin-top:.25rem;line-height:1.05}
+/* stylized "?" frame (unknown character) */
+.qmark{width:100%;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;
+  border:3px solid var(--frame,var(--accent));border-radius:6px;background:var(--panel-2);
+  font-family:var(--display);font-weight:700;color:var(--accent);
+  font-size:clamp(2.4rem,6vw,5rem);text-shadow:0 2px 14px rgba(0,0,0,.6);
+  box-shadow:0 10px 30px rgba(0,0,0,.6)}
+.pf .qmark{border-width:2px;border-radius:5px}
+@media (max-width:760px){ .portrait-inset{right:5vw;bottom:auto;top:7vh;width:32vw} .pcluster{right:3vw;max-width:60vw} }
+
+/* ── cast slide ─────────────────────────────────────────────── */
+.cast-wrap{position:absolute;inset:0;display:flex;flex-direction:column;
+  justify-content:center;align-items:center;gap:2.2rem;padding:6vh 4vw}
+.cast-row{display:flex;gap:clamp(.8rem,2.2vw,2.2rem);justify-content:center;flex-wrap:wrap}
+.cast-card{width:clamp(120px,15vw,210px);text-align:center}
+.cast-card img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:6px;
+  border:2px solid var(--frame,var(--accent));box-shadow:0 8px 30px rgba(0,0,0,.6);
+  filter:var(--portrait-filter,none)}
+.cast-card .cn{font-family:var(--display);font-size:clamp(.8rem,1.2vw,1.05rem);
+  margin-top:.5rem;color:var(--text);line-height:1.15}
+.cast-card .cp{font-size:.95rem;color:var(--accent);opacity:.85}
+
+/* ── card (text-only) slide ─────────────────────────────────── */
+.card-bg{position:absolute;inset:0;
+  background:radial-gradient(130% 100% at 50% 40%, var(--panel-1) 0%, var(--panel-2) 70%, var(--panel-3) 100%)}
+.card-bg::after{content:"";position:absolute;inset:0;opacity:.06;
+  background-image:radial-gradient(var(--grain,rgba(255,255,255,.4)) 1px,transparent 1px);background-size:4px 4px}
+
+/* ── fx accents ─────────────────────────────────────────────── */
+@keyframes flash{0%,100%{opacity:0}6%{opacity:.0}8%{opacity:.85}12%{opacity:0}20%{opacity:.6}24%{opacity:0}}
+@keyframes pulse{0%,100%{opacity:0}50%{opacity:.30}}
+.fx{position:absolute;inset:0;pointer-events:none;opacity:0}
+.fx.flash{background:radial-gradient(60% 50% at 50% 60%,var(--fx-flash,rgba(255,220,150,.9)),transparent 70%);
+  animation:flash 2.6s ease-in-out forwards}
+.fx.pulse{background:radial-gradient(70% 60% at 50% 50%,var(--fx-pulse,rgba(150,20,20,.55)),transparent 70%);
+  animation:pulse 4s ease-in-out infinite}
+#show.paused .bg,#show.paused .reveal,#show.paused .fx{animation-play-state:paused}
+
+/* ── start overlay ──────────────────────────────────────────── */
+#start{position:absolute;inset:0;z-index:30;display:flex;flex-direction:column;
+  justify-content:center;align-items:center;gap:1.4rem;
+  background:radial-gradient(120% 100% at 50% 40%,var(--panel-1),var(--panel-3))}
+#start h1{font-family:var(--display);font-size:clamp(2rem,6vw,4.5rem);color:var(--text);letter-spacing:.04em}
+#start p{color:var(--muted);font-size:1.1rem;letter-spacing:.1em}
+#start button{font-family:var(--display);font-size:1.3rem;letter-spacing:.12em;
+  color:var(--panel-1);background:var(--accent);border:none;border-radius:999px;
+  padding:.8rem 2.4rem;cursor:pointer;box-shadow:0 6px 26px rgba(0,0,0,.4);transition:transform .15s}
+#start button:hover{transform:translateY(-2px) scale(1.03)}
+#start.hidden{opacity:0;pointer-events:none;transition:opacity .8s}
+
+/* ── UI / controls ──────────────────────────────────────────── */
+#ui{position:absolute;inset:0;z-index:20;pointer-events:none;transition:opacity .4s}
+#show.idle #ui{opacity:0}
+#progress{position:absolute;left:0;right:0;bottom:0;height:4px;background:rgba(255,255,255,.12)}
+#fill{height:100%;width:0;background:var(--accent)}
+#segs{position:absolute;left:0;right:0;bottom:5px;display:flex;gap:2px;padding:0 6px}
+#segs .seg{flex:1;height:3px;background:rgba(255,255,255,.16);border-radius:2px}
+#segs .seg.done{background:var(--accent);opacity:.55}
+#segs .seg.cur{background:var(--accent)}
+#bar{position:absolute;left:0;right:0;bottom:16px;display:flex;align-items:center;
+  justify-content:center;gap:.5rem;pointer-events:auto}
+#bar button{pointer-events:auto;font-family:var(--serif);font-size:1.2rem;line-height:1;
+  color:var(--text);background:rgba(0,0,0,.45);border:1px solid var(--frame,var(--accent));
+  width:44px;height:44px;border-radius:50%;cursor:pointer;transition:background .15s;
+  display:inline-flex;align-items:center;justify-content:center;padding:0;text-align:center}
+#bar button#prev,#bar button#next{padding-bottom:2px}  /* optical: ‹ › sit a hair low */
+#bar button:hover{background:rgba(0,0,0,.7)}
+#counter{font-family:var(--display);font-size:.9rem;color:var(--muted);letter-spacing:.15em;
+  background:rgba(0,0,0,.4);padding:.4rem .7rem;border-radius:999px}
+#acttag{position:absolute;top:18px;left:24px;font-family:var(--display);letter-spacing:.3em;
+  text-transform:uppercase;font-size:.8rem;color:var(--accent);opacity:.8}
+#zones{position:absolute;inset:0;z-index:10;display:flex}
+#zones .z{flex:1;cursor:pointer}
+#zones .zc{flex:1.4}
+@media (max-width:640px){ .content{padding:5vh 6vw 12vh} .cast-card{width:34vw} }

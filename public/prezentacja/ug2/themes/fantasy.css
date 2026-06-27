@@ -1,0 +1,15 @@
+/* THEME: High fantasy — warm parchment, burgundy & gold, ornate. */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap');
+:root{
+  --bg:#1a120a;
+  --panel-1:#3a2415; --panel-2:#241509; --panel-3:#140c05;
+  --text:#f6ead0; --text-soft:#ecdcbd; --muted:#c2a578;
+  --accent:#d9a441; --frame:#9c6b2f;            /* gold accent, bronze frames */
+  --display:'Cinzel',serif; --serif:'Crimson Pro',Georgia,serif;
+  --fx-flash:rgba(255,235,170,.9);              /* arcane/torchlight */
+  --fx-pulse:rgba(120,30,40,.5);                /* burgundy */
+  --grain:rgba(217,164,65,.5);
+  --img-filter:saturate(1) contrast(1.02) sepia(.08);
+  --portrait-filter:sepia(.15) saturate(1);
+  --veil-bottom:rgba(20,12,5,.92);
+}

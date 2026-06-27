@@ -11,6 +11,7 @@ import { SummaryDemo } from './routes/SummaryDemo'
 import { QuotesDemo } from './routes/QuotesDemo'
 import { UG2Summary } from './routes/UG2Summary'
 import { UG2Narracja } from './routes/UG2Narracja'
+import { UG2Presentation } from './routes/UG2Presentation'
 
 // Match the Vite base so deep links work under the GitHub Pages subpath
 // (/akta-kasandry/…) in prod and at root (/) in dev.
@@ -30,6 +31,7 @@ export const router = createBrowserRouter(
         { path: 'streszczenie-demo/cytaty', element: <QuotesDemo /> },
         { path: 'streszczenie-ug2', element: <UG2Summary /> },
         { path: 'streszczenie-ug2/narracja', element: <UG2Narracja /> },
+        { path: 'prezentacja/ug2', element: <UG2Presentation /> },
         { path: 'draft', element: <DraftView /> },
         { path: 'login', element: <Login /> },
         { path: 'admin/import-characters', element: <AdminImport /> },

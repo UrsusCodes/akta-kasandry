@@ -20,6 +20,8 @@ const SUMMARY = `# Urodzaj Grozy (UG 2) — streszczenie
 
 → **[Pełna narracja (ciągiem, z cytatami)](/streszczenie-ug2/narracja)**
 
+→ **[▶ Prezentacja filmowa (slajdy + muzyka)](/prezentacja/ug2)**
+
 > Na wstępie MG — **poza fikcją, na „meta" poziomie** — wylicza, czego oczekiwać po sesji (głównie pod kątem pewnego „wewnętrznego" zagrożenia), po czym dodaje: **„jedna z tych rzeczy nie jest prawdą; rozkmińcie która, zanim będzie za późno."** {sesja:ug2#00d78428ad8e} Nieprawdą okazuje się **pierwsze zdanie** — że grają „swoją dziarską, gangsterską grupą". Bo zagrają **też akademikami**. To właśnie jest twist: **dwie drużyny, nie jedna.**
 
 ### Obsada (każdy gra dwie postacie)
@@ -27,7 +29,7 @@ const SUMMARY = `# Urodzaj Grozy (UG 2) — streszczenie
 | Gracz | Gangster | Akademik |
 |---|---|---|
 | Jakub | **Mortimer „Mort" Flannery** — gruby, siostrzeniec szefa, prawa ręka | **Dr Edwin Thorne** |
-| Nika | **James Kelly** — bokser (z bratem) | **Dr Eleine Howard** |
+| Nika | **James Kelly** — bokser (z bratem) | **Dr Elaine Howard** |
 | Rafał | **Joseph Kelly** — silny, brat Jamesa | **Dr Herbert West** |
 | Kamil | **Friedrich „Fritz" Mueller** — Niemiec, kierowca/ochroniarz | **Wallace Harvey** — bibliotekarz (magister) |
 | Piotr | **Cormac McMiller** — księgowy | **Dr Cecil Cavendish** |
@@ -94,7 +96,7 @@ Akademików z **Boston University** (zlecenie dziekana) wysłano po zaginionego 
 ![Brendan Carmody — istota z kukurydzy](/img/ug2/brendan.jpg)
 *Brendan Carmody — Dziecię Macierzy, „strach na wróble".*
 
-Negocjacje pękają i krater zamienia się w jatkę: **granaty** {sesja:ug2#2a8b3928b40e}, **lampa naftowa** Fritza, strzelby i karabiny. W środku pojawia się **Brendan Carmody** — przemieniony młodszy brat (Dziecię Macierzy), ten sam „strach na wróble": potworna istota z wydłużającą się ręką. {sesja:ug2#46f5864b8941} **James Kelly** zostaje **przebity na wylot i rozerwany na pół** — a wstrząśnięta **Eleine** rzuca istocie w twarz: „**Zapłacisz mi, kurwo, za to**". {sesja:ug2#7f976a645714} **Cormac McMiller popada w obłęd i ucieka** jednym z aut — z rozgrywki znika (przeżył, pewnie wróci do gangu). Istotę kładzie w końcu **ogień** — płonące cielsko, a koktajl Mołotowa i wybuch odrywają jej głowę.
+Negocjacje pękają i krater zamienia się w jatkę: **granaty** {sesja:ug2#2a8b3928b40e}, **lampa naftowa** Fritza, strzelby i karabiny. W środku pojawia się **Brendan Carmody** — przemieniony młodszy brat (Dziecię Macierzy), ten sam „strach na wróble": potworna istota z wydłużającą się ręką. {sesja:ug2#46f5864b8941} **James Kelly** zostaje **przebity na wylot i rozerwany na pół** — a wstrząśnięta **Elaine** rzuca istocie w twarz: „**Zapłacisz mi, kurwo, za to**". {sesja:ug2#7f976a645714} **Cormac McMiller popada w obłęd i ucieka** jednym z aut — z rozgrywki znika (przeżył, pewnie wróci do gangu). Istotę kładzie w końcu **ogień** — płonące cielsko, a koktajl Mołotowa i wybuch odrywają jej głowę.
 
 ### Roades i „święte źródło Matki"
 
@@ -102,7 +104,7 @@ Negocjacje pękają i krater zamienia się w jatkę: **granaty** {sesja:ug2#2a8b
 
 ### Zawalenie jaskini
 
-Do jaskini (w górę rzeki, u źródła tamy zasilającej pola) idzie pieszo mieszana grupa; **Joseph** niesie ciało brata. Roades namawia, by wrzucić Jamesa do źródła — ale Joseph postanawia **pozwolić bratu odejść** i **strzela Roadesowi w głowę**. To budzi **Matkę (Abigail)**: masa mięsa z rozłupaną twarzą. Cios w psychikę jest potężny (**Eleine mdleje**), a **Mortimer** — bo pił skażoną whiskey — **na moment staje się wyznawcą Matki** i przeszkadza. Matka chwyta mackami; ciało Jamesa wpada do wody (powstaje **zombie-James**).
+Do jaskini (w górę rzeki, u źródła tamy zasilającej pola) idzie pieszo mieszana grupa; **Joseph** niesie ciało brata. Roades namawia, by wrzucić Jamesa do źródła — ale Joseph postanawia **pozwolić bratu odejść** i **strzela Roadesowi w głowę**. To budzi **Matkę (Abigail)**: masa mięsa z rozłupaną twarzą. Cios w psychikę jest potężny (**Elaine mdleje**), a **Mortimer** — bo pił skażoną whiskey — **na moment staje się wyznawcą Matki** i przeszkadza. Matka chwyta mackami; ciało Jamesa wpada do wody (powstaje **zombie-James**).
 
 ![Matka — Abigail Roades](/img/ug2/mother.jpg)
 *Matka — Abigail Roades, awatar w jaskinnym jeziorze.*
@@ -116,7 +118,7 @@ W jaskini drużyna **wysadza ładunek**. Eksplozja **wstrząsa wodą i rozrywa i
 Dwie sceny domykają sesję:
 
 - **Joseph** — ocalały, lecz **sam, bez brata Jamesa** — siedzi w mieszkaniu i patrzy w sufit; w oknie staje postać o **rozbitej, pokrytej bliznami głowie i rozdwojonym oku**. To **Brock** — informator dobity łomem i utopiony na początku sprawy — który „przeżył" egzekucję dzięki **darowi Matki** (pił skażony trunek, który sam rozprowadzał) i wrócił po Josepha. (Realny powrót czy wyrzut sumienia — MG zostawia niejednoznacznie.)
-- Tygodnie później **dr Eleine Howard** wraca do mieszkania i zastaje w swoim fotelu nieznajomego z zaproszeniem: reprezentuje pewien progresywny klub dżentelmenów z wieloma damami w składzie. **„Czy słyszała pani kiedykolwiek o klubie Kasandry?"** {sesja:ug2#a37238c0d8c5}
+- Tygodnie później **dr Elaine Howard** wraca do mieszkania i zastaje w swoim fotelu nieznajomego z zaproszeniem: reprezentuje pewien progresywny klub dżentelmenów z wieloma damami w składzie. **„Czy słyszała pani kiedykolwiek o klubie Kasandry?"** {sesja:ug2#a37238c0d8c5}
 
 Tak **Urodzaj Grozy** — podobnie jak Sól w Ranach — wpina się w **Akta / Klub Kasandry**.
 
@@ -129,7 +131,7 @@ Tak **Urodzaj Grozy** — podobnie jak Sól w Ranach — wpina się w **Akta / K
 - **Profesora Roadesa nie uratowano** — Joseph zastrzelił go w jaskini. **Pastora Dicka Sproustona** nie rozliczono.
 - **Straty gangsterów:** **James Kelly** rozerwany przez Brendana na farmie (ginie). **Mortimer** przygnieciony w zawalonej jaskini — **przeżył dzięki regeneracji z daru Matki, ale jest kompletnie niepoczytalny**. **Joseph Kelly** i **Fritz** przeżyli. **Cormac McMiller** popada w **obłęd i ucieka** (przeżył, znika z rozgrywki — pewnie wróci do gangu).
 - **Akademicy przeżyli wszyscy** — z różnie naruszoną psychiką.
-- **Hak na przyszłość:** Brock — ożywiony darem Matki — w oknie Josepha; werbunek **dr Eleine Howard** do **Klubu Kasandry**.
+- **Hak na przyszłość:** Brock — ożywiony darem Matki — w oknie Josepha; werbunek **dr Elaine Howard** do **Klubu Kasandry**.
 
 ---
 
@@ -151,9 +153,9 @@ Tak **Urodzaj Grozy** — podobnie jak Sól w Ranach — wpina się w **Akta / K
 
 - **James** do Brocka: „Nie jestem twoim szefem. Jestem twoim katem." {sesja:ug2#48a9f61b45ef}
 - **McBride** wydaje rozkaz, który zemści się ironią: „Nie chcę, żeby jakaś losowa salwa albo niepoważnie rzucona laska dynamitu zakończyła istnienie tego przybytku." {sesja:ug2#7375e02727ca} — kilka godzin później **McMiller** strzela w środku bimbrowni i jest **o jeden pechowy rzut** od wysadzenia wszystkiego.
-- **Eleine** nad ciałem Jamesa, prosto do Matki: „Zapłacisz mi, kurwo, za to." {sesja:ug2#7f976a645714}
+- **Elaine** nad ciałem Jamesa, prosto do Matki: „Zapłacisz mi, kurwo, za to." {sesja:ug2#7f976a645714}
 - **Joseph** dobija płonącą istotę — MG: „…głowa odrywa się w końcu od płonącego ciała i odlatuje w bok." {sesja:ug2#9d718d4382fa}
-- **Eleine** o pastorze Sproustonie (którego świadomie zostawiono na później): „Ja go kiedyś dopadnę, kurwa." {sesja:ug2#bb3e7f79e3db}
+- **Elaine** o pastorze Sproustonie (którego świadomie zostawiono na później): „Ja go kiedyś dopadnę, kurwa." {sesja:ug2#bb3e7f79e3db}
 
 **Śmieszne**
 

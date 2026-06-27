@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Urodzaj Grozy — prezentacja</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- THEME first (defines CSS vars + imports its fonts), then theme-agnostic layout. -->
+  <!-- Swap the theme by pointing this at themes/{cthulhu,strahd,fantasy,neon}.css -->
+  <link rel="stylesheet" href="themes/cthulhu.css">
+  <link rel="stylesheet" href="base.css">
+</head>
+<body>
+  <div id="show">
+    <div id="stage">
+      <div class="layer" id="L0"></div>
+      <div class="layer" id="L1"></div>
+    </div>
+
+    <div id="zones">
+      <div class="z" id="zL"></div>
+      <div class="z zc" id="zC"></div>
+      <div class="z" id="zR"></div>
+    </div>
+
+    <div id="ui">
+      <div id="acttag"></div>
+      <div id="segs"></div>
+      <div id="progress"><div id="fill"></div></div>
+      <div id="bar">
+        <button id="prev" title="Poprzedni (←)">‹</button>
+        <button id="playpause" title="Pauza / wznów (spacja)">⏸</button>
+        <button id="next" title="Następny (→)">›</button>
+        <button id="mute" title="Wycisz (M)">♪</button>
+        <button id="full" title="Pełny ekran (F)">⛶</button>
+        <span id="counter">1 / 1</span>
+      </div>
+    </div>
+
+    <div id="start">
+      <h1>Urodzaj Grozy</h1>
+      <p>Prezentacja sesji · z muzyką</p>
+      <button id="btn-start">▶ Rozpocznij</button>
+    </div>
+  </div>
+
+  <script src="slides.js"></script>
+  <script src="engine.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+/* THEME: Cthulhu — parchment / deep teal / gold, 1920s sepia horror. */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+:root{
+  --bg:#000;
+  --panel-1:#0d2828; --panel-2:#0a1f1f; --panel-3:#050d0d;
+  --text:#f5e6c8; --text-soft:#efe4cc; --muted:#b9a886;
+  --accent:#c89b3c; --frame:#c89b3c;
+  --display:'Cinzel',serif; --serif:'Cormorant Garamond',Georgia,serif;
+  --fx-flash:rgba(255,220,150,.9); --fx-pulse:rgba(150,20,20,.55);
+  --grain:rgba(200,155,60,.5);
+  --img-filter:saturate(.85) contrast(1.02);
+  --portrait-filter:sepia(.12) saturate(.92);
+  --veil-bottom:rgba(5,15,15,.92);
+}

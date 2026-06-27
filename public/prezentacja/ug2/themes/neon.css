@@ -1,0 +1,15 @@
+/* THEME: Sci-fi / neon — deep navy, cyan & magenta, geometric. */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Rajdhani:wght@400;600&display=swap');
+:root{
+  --bg:#04060f;
+  --panel-1:#0c1430; --panel-2:#070b1c; --panel-3:#02030a;
+  --text:#e6f3ff; --text-soft:#bcd6ee; --muted:#7d8fb3;
+  --accent:#27e1ff; --frame:#27e1ff;            /* cyan */
+  --display:'Orbitron',sans-serif; --serif:'Rajdhani',system-ui,sans-serif;
+  --fx-flash:rgba(120,240,255,.9);              /* cyan blast */
+  --fx-pulse:rgba(255,40,160,.5);               /* magenta */
+  --grain:rgba(39,225,255,.4);
+  --img-filter:saturate(1.1) contrast(1.05);
+  --portrait-filter:saturate(1.05) contrast(1.05);
+  --veil-bottom:rgba(2,4,12,.94);
+}

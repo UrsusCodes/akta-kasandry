@@ -1,0 +1,15 @@
+/* THEME: Gothic horror (Curse of Strahd / Ravenloft) — fog, crimson, cold silver. */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+:root{
+  --bg:#05060a;
+  --panel-1:#161420; --panel-2:#0e0c15; --panel-3:#05060a;
+  --text:#e9e6ef; --text-soft:#d6d1e0; --muted:#9a93ac;
+  --accent:#b22a36; --frame:#6e6a82;            /* blood red accent, pewter frames */
+  --display:'Cinzel Decorative',serif; --serif:'EB Garamond',Georgia,serif;
+  --fx-flash:rgba(220,225,255,.85);             /* lightning */
+  --fx-pulse:rgba(150,15,30,.6);                /* dread red */
+  --grain:rgba(180,180,210,.45);
+  --img-filter:saturate(.7) contrast(1.08) brightness(.92);
+  --portrait-filter:grayscale(.25) contrast(1.05);
+  --veil-bottom:rgba(7,7,12,.94);
+}
