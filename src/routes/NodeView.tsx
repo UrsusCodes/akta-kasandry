@@ -1,11 +1,34 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link, Navigate, useLocation } from 'react-router-dom'
+import type { ComponentType } from 'react'
 import { useContentStore } from '@/stores/content'
 import { findByPath } from '@/lib/tree'
 import { Markdown } from '@/components/Markdown'
 import { BostonMap } from '@/components/BostonMap'
 import { CharacterPage } from './CharacterPage'
 import { MAP_PAGE_PATH, stripLegacyMapEmbed } from '@/lib/specialPages'
+import { UG2Summary } from './UG2Summary'
+import { UG2Narracja } from './UG2Narracja'
+import { UG2Presentation } from './UG2Presentation'
+import { SummaryDemo } from './SummaryDemo'
+import { QuotesDemo } from './QuotesDemo'
 import type { ContentNode } from '@/types'
+
+/**
+ * Case sub-pages that are thin vault stubs (so they appear in the tree) but
+ * render a rich React component inline, keeping the URL inside the case.
+ */
+const INLINE_PAGES: Record<string, ComponentType> = {
+  'sprawy/02-urodzaj-grozy/01-streszczenie': UG2Summary,
+  'sprawy/02-urodzaj-grozy/02-narracja': UG2Narracja,
+  'sprawy/02-urodzaj-grozy/03-prezentacja': UG2Presentation,
+  'sprawy/04-sol-w-ranach/01-streszczenie': SummaryDemo,
+  'sprawy/04-sol-w-ranach/02-cytaty': QuotesDemo,
+}
+/** Sub-pages that jump to a full-bleed route (the transcript viewer). */
+const REDIRECT_PAGES: Record<string, string> = {
+  'sprawy/02-urodzaj-grozy/04-transkrypt': '/sesje/ug2',
+  'sprawy/04-sol-w-ranach/03-transkrypt': '/sesje/sol-w-ranach',
+}
 
 /**
  * `/p/*` catch-all view. Resolves the rest of the URL into a node and:
@@ -34,7 +57,11 @@ export function NodeView() {
   }
 
   if (node.kind === 'page') {
+    const redirect = REDIRECT_PAGES[node.path]
+    if (redirect) return <Navigate to={redirect} replace />
     const back = <BackButton path={node.path} />
+    const Inline = INLINE_PAGES[node.path]
+    if (Inline) return <>{back}<Inline /></>
     if (node.character) return <>{back}<CharacterPage character={node.character} /></>
     if (node.path === MAP_PAGE_PATH) return <>{back}<MapArticle node={node} /></>
     return <>{back}<Markdown>{node.body ?? ''}</Markdown></>

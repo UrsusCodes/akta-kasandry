@@ -30,7 +30,8 @@ function TreeItem({ node, depth }: { node: ContentNode; depth: number }) {
     if (isOnPath) setOpen(true)
   }, [isOnPath])
 
-  const indent = { paddingLeft: `${depth * 14}px` }
+  // Pages get an extra tab so leaf sub-pages stand out from the session folders.
+  const indent = { paddingLeft: `${depth * 16 + (node.kind === 'page' ? 12 : 0)}px` }
 
   if (node.kind === 'page') {
     return (
