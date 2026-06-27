@@ -1,4 +1,7 @@
-import { Markdown } from '@/components/Markdown'
+import { useEffect, useMemo } from 'react'
+import { AnnotatableArticle } from '@/components/comments/AnnotatableArticle'
+import { useAuthStore } from '@/stores/auth'
+import { useCastStore } from '@/stores/cast'
 
 /**
  * Long-form, continuous third-person narrative of "Urodzaj Grozy" (UG 2),
@@ -253,9 +256,22 @@ Na tym zaproszeniu — werbunku do Klubu Kasandry — sesja się zakończyła.
 `
 
 export function UG2Narracja() {
+  // Same UG2 investigation cast as the summary (cast keyed by 'streszczenie/ug2'),
+  // but comments live under their own page_key so they don't mix with the summary's.
+  const user = useAuthStore((s) => s.user)
+  const loadCast = useCastStore((s) => s.load)
+  const chars = useCastStore((s) => s.chars)
+  const cast = useCastStore((s) => s.cast)
+  useEffect(() => { if (user) void loadCast() }, [user, loadCast])
+  const speakerOptions = useMemo(
+    () => useCastStore.getState().speakerOptionsForPlayer('streszczenie/ug2'),
+    [user, chars, cast],
+  )
   return (
     <article>
-      <Markdown>{NARRACJA}</Markdown>
+      <AnnotatableArticle pageKey="streszczenie/ug2/narracja" speakerOptions={speakerOptions}>
+        {NARRACJA}
+      </AnnotatableArticle>
     </article>
   )
 }
