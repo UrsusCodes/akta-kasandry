@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuthStore } from '@/stores/auth'
 
 type FormValues = {
-  email: string
+  login: string
   password: string
 }
 
@@ -26,7 +26,7 @@ export function Login() {
 
   const onSubmit = async (values: FormValues) => {
     setServerError(null)
-    const { error } = await signIn(values.email, values.password)
+    const { error } = await signIn(values.login, values.password)
     if (error) {
       setServerError(error)
       return
@@ -50,20 +50,19 @@ export function Login() {
       <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4">
         <div>
           <label className="font-display block text-xs uppercase tracking-widest text-gold-muted">
-            Email
+            Login
           </label>
           <input
-            type="email"
+            type="text"
             autoComplete="username"
             disabled={!enabled}
-            {...register('email', {
-              required: 'Email jest wymagany',
-              pattern: { value: /^[^@\s]+@[^@\s]+\.[^@\s]+$/, message: 'Niepoprawny adres email' },
+            {...register('login', {
+              required: 'Login jest wymagany',
             })}
             className="font-body mt-1 w-full border border-gold-muted bg-parchment-warm px-3 py-2 text-ink outline-none focus:border-gold disabled:opacity-50"
           />
-          {errors.email && (
-            <p className="font-mono mt-1 text-xs text-gold-dark">{errors.email.message}</p>
+          {errors.login && (
+            <p className="font-mono mt-1 text-xs text-gold-dark">{errors.login.message}</p>
           )}
         </div>
 

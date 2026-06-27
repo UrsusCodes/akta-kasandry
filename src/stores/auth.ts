@@ -4,6 +4,15 @@ import { getSupabase, hasSupabaseCredentials } from '@/lib/supabase'
 
 export type Role = 'mg' | 'gracz' | null
 
+/** Players log in by name; akta's Supabase Auth uses synthetic emails under the hood. */
+const PLAYER_EMAIL_DOMAIN = 'kasandra.local'
+
+/** Map a typed login (a bare username, or already an email) to the Supabase Auth email. */
+export function loginToEmail(login: string): string {
+  const h = login.trim().toLowerCase()
+  return h.includes('@') ? h : `${h}@${PLAYER_EMAIL_DOMAIN}`
+}
+
 type AuthState = {
   /** True once the initial session check has finished. */
   ready: boolean
@@ -15,7 +24,7 @@ type AuthState = {
   color: string | null
 
   init: () => void
-  signIn: (email: string, password: string) => Promise<{ error?: string }>
+  signIn: (login: string, password: string) => Promise<{ error?: string }>
   signOut: () => Promise<void>
 }
 
@@ -78,11 +87,13 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     })
   },
 
-  signIn: async (email, password) => {
+  signIn: async (login, password) => {
     if (!hasSupabaseCredentials()) return { error: 'Supabase nie jest skonfigurowane.' }
     const supabase = getSupabase()
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
-    if (error) return { error: error.message }
+    const { error } = await supabase.auth.signInWithPassword({ email: loginToEmail(login), password })
+    if (error) {
+      return { error: error.message.includes('Invalid login credentials') ? 'Zła nazwa lub hasło.' : error.message }
+    }
     return {}
   },
 
