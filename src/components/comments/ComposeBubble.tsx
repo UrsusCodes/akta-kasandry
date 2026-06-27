@@ -28,7 +28,9 @@ export function ComposeBubble({ quote, speakerOptions, selfName, color, onSubmit
   return (
     <div className="rounded-lg border border-gold bg-teal-dark p-3 shadow-xl">
       <p className="mb-2 font-body italic text-[0.85rem] text-gold/80 border-l-2 border-gold-muted pl-2">„{quote}"</p>
-      <SpeakerPicker options={speakerOptions} selfName={selfName} color={color} value={speaker} onPick={setSpeaker} />
+      {speakerOptions.length > 0 && (
+        <SpeakerPicker options={speakerOptions} selfName={selfName} color={color} value={speaker} onPick={setSpeaker} />
+      )}
       <textarea
         value={body}
         onChange={(e) => setBody(e.target.value)}
