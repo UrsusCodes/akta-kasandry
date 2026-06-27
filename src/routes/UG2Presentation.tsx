@@ -52,8 +52,8 @@ export function UG2Presentation() {
         <a href={SRC} target="_blank" rel="noreferrer" className="text-gold-dark underline">
           Otwórz w nowej karcie ↗
         </a>
-        <Link to="/streszczenie-ug2" className="text-gold-dark underline">
-          ← Wróć do streszczenia
+        <Link to="/p/sprawy/02-urodzaj-grozy/00-hub" className="text-gold-dark underline">
+          ← Wróć do sprawy (Urodzaj Grozy)
         </Link>
       </div>
     </article>
