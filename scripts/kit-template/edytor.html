@@ -1,0 +1,1413 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- Suppress the automatic favicon.ico request browsers make under file:// —
+     keeps DevTools Network truly empty (K2 acceptance: zero requests). -->
+<link rel="icon" href="data:," />
+<title>__KIT_TITLE__</title>
+<style>
+  /* ==========================================================
+     Akta Kasandry — Presentation Kit editor (standalone, vanilla).
+     Self-contained: no CDN, no webfonts, no external requests.
+     Palette ported from scripts/package-template/template.html
+     (deep teal / parchment / gold), per
+     docs/AktaKasandry_obsidian/DESIGN_SYSTEM.md.
+     ========================================================== */
+  :root {
+    --bg: #0d2828;
+    --panel: #0a1f1f;
+    --panel-2: #123232;
+    --fg: #f5e6c8;
+    --fg-dim: rgba(245, 230, 200, 0.7);
+    --fg-faint: rgba(245, 230, 200, 0.4);
+    --gold: #c89b3c;
+    --gold-muted: rgba(200, 155, 60, 0.35);
+    --rule: rgba(245, 230, 200, 0.14);
+    --danger: #c9695a;
+    --danger-bg: rgba(179, 80, 63, 0.16);
+    --danger-muted: rgba(201, 105, 90, 0.45);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body { height: 100%; margin: 0; }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 15px;
+  }
+
+  h1, h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: normal;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  p { margin: 0 0 0.6em; line-height: 1.5; }
+
+  button {
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  code {
+    background: rgba(245, 230, 200, 0.08);
+    border-radius: 3px;
+    padding: 0.05em 0.35em;
+    font-size: 0.92em;
+  }
+
+  /* ---------- generic buttons ---------- */
+  .btn-primary, .btn-secondary, .btn-danger, .danger {
+    border-radius: 4px;
+    padding: 0.45em 0.9em;
+    font-size: 0.85em;
+    letter-spacing: 0.02em;
+    border: 1px solid var(--gold-muted);
+    background: transparent;
+    color: var(--gold);
+    transition: background 0.15s;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--panel-1, #0d2828);
+    border-color: var(--gold);
+    font-weight: bold;
+  }
+  .btn-primary:hover { background: #dcae4d; }
+  .btn-secondary:hover { background: rgba(200, 155, 60, 0.15); }
+  .btn-danger, .danger {
+    color: var(--danger);
+    border-color: var(--danger-muted);
+  }
+  .btn-danger:hover, .danger:hover { background: var(--danger-bg); }
+  button:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+  button:disabled:hover { background: transparent; }
+
+  /* ---------- empty state (raw, unbuilt template) ---------- */
+  #emptyState {
+    display: none;
+    margin: auto;
+    max-width: 32em;
+    padding: 2em;
+    text-align: center;
+    color: var(--fg-dim);
+  }
+  #emptyState h1 {
+    color: var(--gold);
+    font-size: 1.1em;
+    margin-bottom: 0.6em;
+  }
+
+  /* ---------- top bar ---------- */
+  #app { display: none; flex-direction: column; height: 100%; min-height: 0; }
+  #topbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.3em 1.2em;
+    background: var(--panel);
+    border-bottom: 1px solid var(--gold-muted);
+    padding: 0.7em 1em;
+  }
+  #topbar h1 {
+    font-size: 1.05em;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+  #metaLine {
+    color: var(--fg-faint);
+    font-size: 0.82em;
+  }
+
+  #storageWarning {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6em 1em;
+    background: var(--danger-bg);
+    border-bottom: 1px solid var(--danger-muted);
+    padding: 0.55em 1em;
+    font-size: 0.85em;
+    color: var(--fg);
+  }
+  #storageWarning[hidden] { display: none; }
+
+  /* ---------- layout ---------- */
+  #layout {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 300px 340px 1fr;
+  }
+  .panel {
+    min-height: 0;
+    overflow-y: auto;
+    padding: 0.9em 1em 1.6em;
+    border-right: 1px solid var(--gold-muted);
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold-muted) transparent;
+  }
+  .panel:last-child { border-right: none; }
+  .panel::-webkit-scrollbar { width: 9px; }
+  .panel::-webkit-scrollbar-thumb { background: var(--gold-muted); border-radius: 5px; }
+  .panel::-webkit-scrollbar-track { background: transparent; }
+
+  .panel-title {
+    font-size: 0.8em;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    margin: 0 0 0.6em;
+  }
+  .panel-title.spaced { margin-top: 1.3em; }
+
+  /* ---------- acts ---------- */
+  .acts-list { display: flex; flex-direction: column; gap: 0.5em; margin-bottom: 0.6em; }
+  .act-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4em;
+    align-items: center;
+    background: var(--panel-2);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 0.4em;
+  }
+  .act-row .act-name { flex: 1 1 8em; min-width: 6em; }
+  .act-row select { flex: 1 1 8em; min-width: 7em; }
+  .act-row .btn-listen { flex: 0 0 auto; padding: 0.35em 0.55em; }
+  .acts-empty, .fields-empty, .library-empty { color: var(--fg-faint); font-size: 0.85em; font-style: italic; }
+
+  /* ---------- slide list ---------- */
+  .slide-list { display: flex; flex-direction: column; gap: 0.35em; }
+  .slide-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+    border-left: 3px solid transparent;
+    background: var(--panel-2);
+    border-radius: 3px;
+    padding: 0.4em 0.5em;
+    cursor: pointer;
+  }
+  .slide-row:hover { background: rgba(245, 230, 200, 0.06); }
+  .slide-row.active {
+    border-left-color: var(--gold);
+    background: rgba(200, 155, 60, 0.14);
+  }
+  .slide-num {
+    flex-shrink: 0;
+    font-family: Consolas, monospace;
+    font-size: 0.75em;
+    color: var(--fg-faint);
+  }
+  .slide-label {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 0.85em;
+    line-height: 1.25;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .slide-row-controls { display: flex; gap: 0.2em; flex-shrink: 0; }
+  .slide-row-controls button {
+    font-size: 0.72em;
+    padding: 0.2em 0.4em;
+  }
+
+  /* ---------- fields ---------- */
+  .field-row { display: flex; flex-direction: column; gap: 0.3em; margin-bottom: 0.85em; }
+  .field-row > label {
+    font-size: 0.76em;
+    color: var(--fg-dim);
+    letter-spacing: 0.03em;
+  }
+  input[type="text"], textarea, select {
+    background: var(--bg);
+    border: 1px solid var(--gold-muted);
+    color: var(--fg);
+    border-radius: 3px;
+    padding: 0.4em 0.5em;
+    font-family: inherit;
+    font-size: 0.88em;
+    width: 100%;
+  }
+  input[type="text"]:focus, textarea:focus, select:focus { outline: 1px solid var(--gold); }
+  textarea { resize: vertical; }
+  .checkbox-row {
+    display: flex;
+    flex-direction: row !important;
+    align-items: center;
+    gap: 0.45em;
+    font-size: 0.85em;
+    color: var(--fg-dim);
+    cursor: pointer;
+  }
+  .checkbox-row input { width: auto; }
+  .range-row { display: flex; align-items: center; gap: 0.6em; }
+  .range-row input[type="range"] { flex: 1 1 auto; }
+  .range-out { font-size: 0.8em; color: var(--fg-dim); min-width: 3em; text-align: right; }
+
+  .image-field .image-preview {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    flex-wrap: wrap;
+  }
+  .image-preview img {
+    width: 76px;
+    height: 76px;
+    object-fit: cover;
+    border: 1px solid var(--gold-muted);
+    border-radius: 3px;
+    background: var(--panel-2);
+  }
+
+  /* ---------- preview ---------- */
+  .preview-frame {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 1px solid var(--gold-muted);
+    border-radius: 4px;
+    background: #000;
+    display: block;
+  }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 0.5em; margin-bottom: 0.6em; }
+  .export-note {
+    font-size: 0.78em;
+    color: var(--fg-faint);
+    font-style: italic;
+    margin-top: 0.6em;
+  }
+
+  /* ---------- modals ---------- */
+  .modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 1.5em;
+  }
+  .modal.open { display: flex; }
+  .modal-panel {
+    background: var(--panel);
+    border: 1px solid var(--gold-muted);
+    border-radius: 6px;
+    padding: 1.1em 1.3em 1.4em;
+    max-width: 42em;
+    max-height: 82vh;
+    overflow-y: auto;
+    width: 100%;
+  }
+  .modal-panel-wide { max-width: 52em; }
+  .modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.8em;
+  }
+  .modal-head h2 { font-size: 0.95em; color: var(--gold); }
+  .modal-close {
+    background: transparent;
+    border: none;
+    color: var(--fg-dim);
+    font-size: 1.1em;
+    line-height: 1;
+    padding: 0.2em 0.4em;
+  }
+  .modal-close:hover { color: var(--gold); }
+
+  .template-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.7em;
+  }
+  .template-btn {
+    background: var(--panel-2);
+    border: 1px solid var(--gold-muted);
+    color: var(--fg);
+    border-radius: 5px;
+    padding: 1.1em 0.8em;
+    font-size: 0.95em;
+    text-align: center;
+  }
+  .template-btn:hover { border-color: var(--gold); background: rgba(200, 155, 60, 0.12); }
+
+  .library-tabs { display: flex; gap: 0.4em; margin-bottom: 0.8em; }
+  .library-tab {
+    background: transparent;
+    border: 1px solid var(--gold-muted);
+    color: var(--fg-dim);
+    border-radius: 999px;
+    padding: 0.3em 0.9em;
+    font-size: 0.82em;
+  }
+  .library-tab.active { color: var(--panel-1, #0d2828); background: var(--gold); border-color: var(--gold); }
+  .library-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 0.6em;
+    min-height: 3em;
+  }
+  .library-thumb {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--panel-2);
+    border: 1px solid var(--gold-muted);
+    border-radius: 4px;
+    padding: 0.4em;
+  }
+  .library-thumb:hover { border-color: var(--gold); }
+  .library-thumb img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 3px;
+  }
+  .library-thumb span {
+    font-size: 0.68em;
+    color: var(--fg-dim);
+    margin-top: 0.35em;
+    text-align: center;
+    line-height: 1.2;
+  }
+  .library-upload { margin-top: 1em; border-top: 1px solid var(--rule); padding-top: 0.8em; }
+  .upload-label { font-size: 0.85em; color: var(--fg-dim); }
+
+  /* ---------- narrow screens ---------- */
+  @media (max-width: 1000px) {
+    #layout { grid-template-columns: 1fr; grid-auto-rows: min-content; overflow-y: auto; }
+    .panel { border-right: none; border-bottom: 1px solid var(--gold-muted); overflow-y: visible; max-height: none; }
+  }
+</style>
+</head>
+<body>
+
+  <div id="emptyState">
+    <h1>Brak danych zestawu</h1>
+    <p>
+      Ten plik to surowy szablon edytora (<code>window.__KIT__</code> jest puste).
+      Zbuduj zestaw prezentacji poleceniem
+      <code>npm run build-presentation-kit -- &lt;slug&gt;</code>, a wygenerowany
+      <code>edytor.html</code> będzie już zawierał bibliotekę obrazów i utworów.
+    </p>
+  </div>
+
+  <div id="app">
+    <header id="topbar">
+      <h1 id="titleEl">__KIT_TITLE__</h1>
+      <div id="metaLine"></div>
+    </header>
+
+    <div id="storageWarning" hidden>
+      <span id="storageWarningText"></span>
+      <button type="button" id="btnSaveDraftFromWarning" class="btn-secondary">Zapisz szkic (plik)</button>
+    </div>
+
+    <div id="layout">
+      <section id="slidesPanel" class="panel">
+        <h2 class="panel-title">Akty</h2>
+        <div id="actsList" class="acts-list"></div>
+        <button type="button" id="btnAddAct" class="btn-secondary">+ Dodaj akt</button>
+
+        <h2 class="panel-title spaced">Slajdy</h2>
+        <div id="slideList" class="slide-list"></div>
+        <button type="button" id="btnAddSlide" class="btn-primary" style="margin-top:.7em;width:100%;">+ Dodaj slajd</button>
+      </section>
+
+      <section class="panel">
+        <h2 class="panel-title">Pola szablonu</h2>
+        <div id="fieldsPanel"></div>
+      </section>
+
+      <section class="panel">
+        <h2 class="panel-title">Podgląd</h2>
+        <iframe id="previewFrame" class="preview-frame" title="Podgląd bieżącego slajdu" sandbox="allow-scripts"></iframe>
+
+        <h2 class="panel-title spaced">Szkic</h2>
+        <div class="btn-row">
+          <button type="button" id="btnSaveDraft" class="btn-secondary">Zapisz szkic (plik)</button>
+          <button type="button" id="btnLoadDraft" class="btn-secondary">Wczytaj szkic</button>
+          <input type="file" id="loadDraftInput" accept="application/json" hidden />
+          <button type="button" id="btnReset" class="btn-danger">Zacznij od nowa</button>
+        </div>
+
+        <h2 class="panel-title spaced">Eksport</h2>
+        <button type="button" id="btnExport" class="btn-primary" style="width:100%;">Eksportuj prezentację (HTML)</button>
+        <p id="exportNote" class="export-note"></p>
+      </section>
+    </div>
+  </div>
+
+  <!-- Template picker -->
+  <div class="modal" id="templatePicker">
+    <div class="modal-panel">
+      <div class="modal-head">
+        <h2>Wybierz szablon</h2>
+        <button type="button" class="modal-close" data-close="templatePicker">&#10005;</button>
+      </div>
+      <div class="template-grid" id="templateGrid"></div>
+    </div>
+  </div>
+
+  <!-- Image / portrait library -->
+  <div class="modal" id="libraryOverlay">
+    <div class="modal-panel modal-panel-wide">
+      <div class="modal-head">
+        <h2 id="libraryTitle">Wybierz obraz</h2>
+        <button type="button" class="modal-close" data-close="libraryOverlay">&#10005;</button>
+      </div>
+      <div class="library-tabs" id="libraryTabs"></div>
+      <div class="library-grid" id="libraryGrid"></div>
+      <div class="library-upload" id="libraryUpload"></div>
+    </div>
+  </div>
+
+  <!-- KitCore (globalThis.KitCore) — injected verbatim by
+       scripts/build-presentation-kit.ts at the KIT_CORE token below.
+       Raw (unbuilt) template: this is just a comment, so KitCore stays
+       undefined — safe, because the app below never calls it unless
+       window.__KIT__ is present (see the empty-state guard). -->
+  <script>
+/*__KIT_CORE__*/
+  </script>
+
+  <!-- Embedded asset library + engine sources — injected verbatim by the
+       same builder at the KIT_DATA token below. Raw template: this
+       stays literally null, which is what drives the empty state. -->
+  <script>window.__KIT__ = /*__KIT_DATA__*/null;</script>
+
+  <!-- Sibling script providing window.__KIT_TRACKS__ (basename -> data URI
+       for every manifest track) — written by the builder as
+       assets/tracks-data.js and referenced here so it loads via script-src
+       (works under file://, unlike fetch()). Raw (unbuilt) template: this
+       tag is stripped entirely (see __KIT_TRACKS_SCRIPT__ below), so there is
+       no dangling request for a file that doesn't exist. Used by
+       exportDeck() to inline the used tracks as base64 data URIs (making the
+       exported deck self-contained) and by the "Posłuchaj" preview button. -->
+  <!--__KIT_TRACKS_SCRIPT__-->
+
+  <script>
+  (function () {
+    'use strict';
+
+    // ------------------------------------------------------------------
+    // Bootstrapping — raw (unbuilt) template shows the empty state and
+    // touches nothing else (no KitCore calls, no DOM outside #emptyState).
+    // ------------------------------------------------------------------
+
+    var KIT = window.__KIT__ || null;
+
+    if (!KIT) {
+      document.getElementById('emptyState').style.display = 'block';
+      return;
+    }
+
+    document.getElementById('app').style.display = 'flex';
+    initEditor(KIT);
+
+    // ==================================================================
+    function initEditor(KIT) {
+      var STORAGE_KEY = 'akta-kasandry:prezentacja-kit:' + KIT.slug;
+      var MAX_BYTES = 4 * 1024 * 1024;
+
+      var TEMPLATES = [
+        { id: 'tytulowy', label: 'Tytułowy' },
+        { id: 'przerywnik', label: 'Przerywnik aktu' },
+        { id: 'obraz', label: 'Obraz + tekst' },
+        { id: 'cytat', label: 'Cytat' },
+        { id: 'final', label: 'Finał' },
+      ];
+      var KB_OPTIONS = [
+        { value: '', label: 'brak' },
+        { value: 'in', label: 'przybliżenie' },
+        { value: 'out', label: 'oddalenie' },
+        { value: 'left', label: 'w lewo' },
+        { value: 'right', label: 'w prawo' },
+      ];
+      var FX_OPTIONS = [
+        { value: '', label: 'brak' },
+        { value: 'flash', label: 'błysk' },
+        { value: 'pulse', label: 'pulsowanie' },
+      ];
+
+      var draft = loadDraft();
+      var selectedSlideId = draft.slides.length ? draft.slides[0].id : null;
+      var uploadedThisSession = []; // {dataUrl, name} — this-session custom uploads (not part of the draft schema)
+      var libraryContext = { field: null, tab: 'scene' };
+      var autosaveTimer = null;
+      var previewTimer = null;
+      var uidCounter = 0;
+      // Single shared transient <audio> element for the acts panel's
+      // "Posłuchaj" toggle (never more than one preview plays at once).
+      var trackPreview = { audio: null, btn: null };
+
+      function stopTrackPreview() {
+        if (trackPreview.audio) {
+          try { trackPreview.audio.pause(); } catch (e) { /* ignore */ }
+          trackPreview.audio = null;
+        }
+        if (trackPreview.btn) {
+          trackPreview.btn.textContent = '▶';
+          trackPreview.btn.title = 'Posłuchaj';
+          trackPreview.btn = null;
+        }
+      }
+
+      function toggleTrackPreview(file, btn) {
+        if (trackPreview.audio && trackPreview.btn === btn) { stopTrackPreview(); return; }
+        stopTrackPreview();
+        if (!file) return;
+        var uri = (window.__KIT_TRACKS__ || {})[file];
+        if (!uri) {
+          alert('Brak danych dźwiękowych dla tego utworu — przebuduj zestaw (npm run build-presentation-kit).');
+          return;
+        }
+        var audio = new Audio(uri);
+        trackPreview.audio = audio;
+        trackPreview.btn = btn;
+        btn.textContent = '⏸';
+        btn.title = 'Zatrzymaj podgląd';
+        audio.addEventListener('ended', function () {
+          if (trackPreview.audio === audio) stopTrackPreview();
+        });
+        audio.play().catch(function (e) {
+          console.warn('[edytor] nie udało się odtworzyć podglądu utworu:', e);
+          if (trackPreview.audio === audio) stopTrackPreview();
+        });
+      }
+
+      // ---------------------------------------------------------------
+      // Draft load / persistence
+      // ---------------------------------------------------------------
+
+      function loadDraft() {
+        try {
+          var raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            var parsed = JSON.parse(raw);
+            var result = KitCore.validateDraft(parsed);
+            if (result.ok) return parsed;
+            console.warn('[edytor] zapisany szkic nie przeszedł walidacji, zaczynam od nowa:', result.errors);
+          }
+        } catch (e) {
+          console.warn('[edytor] nie udało się wczytać szkicu z localStorage:', e);
+        }
+        return KitCore.newDraft(KIT.slug);
+      }
+
+      function scheduleAutosave() {
+        clearTimeout(autosaveTimer);
+        autosaveTimer = setTimeout(saveDraftNow, 500);
+      }
+
+      function saveDraftNow() {
+        // The actual write is attempted first, unconditionally — a failure
+        // in the (separate, best-effort) byte-size check below must never
+        // prevent the real persistence attempt.
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(draft));
+        } catch (e) {
+          console.warn('[edytor] zapis szkicu do localStorage nie powiódł się:', e);
+          setStorageWarning('quota');
+          return;
+        }
+        setStorageWarning(safeDraftByteSize() > MAX_BYTES ? 'size' : null);
+      }
+
+      function safeDraftByteSize() {
+        try {
+          return KitCore.draftByteSize(draft);
+        } catch (e) {
+          console.warn('[edytor] draftByteSize rzucił wyjątek:', e);
+          return 0;
+        }
+      }
+
+      function setStorageWarning(kind) {
+        var el = document.getElementById('storageWarning');
+        var textEl = document.getElementById('storageWarningText');
+        if (!kind) { el.hidden = true; return; }
+        el.hidden = false;
+        textEl.textContent = kind === 'quota'
+          ? 'Nie udało się zapisać automatycznie w przeglądarce (limit pamięci) — zapisz szkic jako plik, aby nie stracić zmian.'
+          : 'Szkic zajmuje więcej niż 4 MB — zapisz go jako plik (przycisk obok albo w panelu „Szkic”), aby mieć pewność, że nic się nie zgubi.';
+      }
+
+      function mutateDraft() {
+        draft.updatedAt = new Date().toISOString();
+        renderSlideList();
+        scheduleAutosave();
+        schedulePreview();
+      }
+
+      // ---------------------------------------------------------------
+      // Small id helper
+      // ---------------------------------------------------------------
+
+      function uid(prefix) {
+        uidCounter += 1;
+        return prefix + '-' + Date.now().toString(36) + '-' + uidCounter.toString(36);
+      }
+
+      // ---------------------------------------------------------------
+      // Slide model
+      // ---------------------------------------------------------------
+
+      function newSlide(template) {
+        var kbDefault = (template === 'tytulowy' || template === 'obraz' || template === 'cytat') ? 'in' : null;
+        return {
+          id: uid('s'),
+          template: template,
+          actId: null,
+          title: '',
+          text: '',
+          image: null,
+          portrait: null,
+          portraitName: '',
+          kb: kbDefault,
+          night: false,
+          fx: null,
+          dur: 6500,
+        };
+      }
+
+      function isImageTemplate(t) {
+        return t === 'tytulowy' || t === 'obraz' || t === 'cytat';
+      }
+
+      function templateLabel(id) {
+        for (var i = 0; i < TEMPLATES.length; i++) if (TEMPLATES[i].id === id) return TEMPLATES[i].label;
+        return id;
+      }
+
+      function slideDisplayLabel(slide, index) {
+        var name = slide.title || templateLabel(slide.template);
+        return (index + 1) + '. ' + name;
+      }
+
+      function getSelectedSlide() {
+        for (var i = 0; i < draft.slides.length; i++) if (draft.slides[i].id === selectedSlideId) return draft.slides[i];
+        return null;
+      }
+
+      // ---------------------------------------------------------------
+      // Slide list panel
+      // ---------------------------------------------------------------
+
+      function addSlide(template) {
+        var slide = newSlide(template);
+        draft.slides.push(slide);
+        selectedSlideId = slide.id;
+        mutateDraft();
+        renderFieldsPanel();
+      }
+
+      function moveSlide(i, dir) {
+        var j = i + dir;
+        if (j < 0 || j >= draft.slides.length) return;
+        var tmp = draft.slides[i];
+        draft.slides[i] = draft.slides[j];
+        draft.slides[j] = tmp;
+        mutateDraft();
+      }
+
+      function deleteSlide(id) {
+        if (!confirm('Usunąć ten slajd? Tej operacji nie można cofnąć.')) return;
+        var i = -1;
+        for (var k = 0; k < draft.slides.length; k++) if (draft.slides[k].id === id) { i = k; break; }
+        if (i === -1) return;
+        draft.slides.splice(i, 1);
+        if (selectedSlideId === id) {
+          var next = draft.slides[i] || draft.slides[i - 1] || null;
+          selectedSlideId = next ? next.id : null;
+        }
+        mutateDraft();
+        renderFieldsPanel();
+      }
+
+      function selectSlide(id) {
+        selectedSlideId = id;
+        renderSlideList();
+        renderFieldsPanel();
+        schedulePreview();
+      }
+
+      function renderSlideList() {
+        var listEl = document.getElementById('slideList');
+        listEl.innerHTML = '';
+        if (!draft.slides.length) {
+          var p = document.createElement('p');
+          p.className = 'acts-empty';
+          p.textContent = 'Brak slajdów — kliknij „+ Dodaj slajd”.';
+          listEl.appendChild(p);
+          return;
+        }
+        draft.slides.forEach(function (slide, i) {
+          var row = document.createElement('div');
+          row.className = 'slide-row' + (slide.id === selectedSlideId ? ' active' : '');
+
+          var label = document.createElement('span');
+          label.className = 'slide-label';
+          label.textContent = slideDisplayLabel(slide, i);
+
+          var controls = document.createElement('div');
+          controls.className = 'slide-row-controls';
+
+          var btnUp = document.createElement('button');
+          btnUp.type = 'button'; btnUp.textContent = '▲'; btnUp.title = 'Przenieś wyżej';
+          btnUp.disabled = i === 0;
+          btnUp.addEventListener('click', function (e) { e.stopPropagation(); moveSlide(i, -1); });
+
+          var btnDown = document.createElement('button');
+          btnDown.type = 'button'; btnDown.textContent = '▼'; btnDown.title = 'Przenieś niżej';
+          btnDown.disabled = i === draft.slides.length - 1;
+          btnDown.addEventListener('click', function (e) { e.stopPropagation(); moveSlide(i, 1); });
+
+          var btnDel = document.createElement('button');
+          btnDel.type = 'button'; btnDel.textContent = 'Usuń'; btnDel.className = 'danger';
+          btnDel.addEventListener('click', function (e) { e.stopPropagation(); deleteSlide(slide.id); });
+
+          controls.appendChild(btnUp);
+          controls.appendChild(btnDown);
+          controls.appendChild(btnDel);
+
+          row.appendChild(label);
+          row.appendChild(controls);
+          row.addEventListener('click', function () { selectSlide(slide.id); });
+          listEl.appendChild(row);
+        });
+      }
+
+      // ---------------------------------------------------------------
+      // Acts panel
+      // ---------------------------------------------------------------
+
+      function addAct() {
+        draft.acts.push({ id: uid('a'), name: 'Akt ' + (draft.acts.length + 1), track: null });
+        mutateDraft();
+        renderActsSection();
+        renderFieldsPanel();
+      }
+
+      function removeAct(actId) {
+        var usedBy = [];
+        draft.slides.forEach(function (s, i) { if (s.actId === actId) usedBy.push(slideDisplayLabel(s, i)); });
+        if (usedBy.length) {
+          alert('Nie można usunąć aktu — jest przypisany do slajdów: ' + usedBy.join(', ') + '. Najpierw zmień im akt.');
+          return;
+        }
+        draft.acts = draft.acts.filter(function (a) { return a.id !== actId; });
+        mutateDraft();
+        renderActsSection();
+        renderFieldsPanel();
+      }
+
+      function renderActsSection() {
+        stopTrackPreview();
+        var wrap = document.getElementById('actsList');
+        wrap.innerHTML = '';
+        if (!draft.acts.length) {
+          var p = document.createElement('p');
+          p.className = 'acts-empty';
+          p.textContent = 'Brak aktów — dodaj, aby przypisywać muzykę do slajdów.';
+          wrap.appendChild(p);
+        }
+        draft.acts.forEach(function (act) {
+          var row = document.createElement('div');
+          row.className = 'act-row';
+
+          var nameInput = document.createElement('input');
+          nameInput.type = 'text'; nameInput.className = 'act-name'; nameInput.value = act.name;
+          nameInput.addEventListener('input', function () { act.name = nameInput.value; mutateDraft(); });
+
+          var trackOptions = [{ value: '', label: '(bez muzyki)' }].concat(
+            (KIT.tracks || []).map(function (t) { return { value: t.file, label: t.label }; })
+          );
+
+          var btnListen = document.createElement('button');
+          btnListen.type = 'button'; btnListen.className = 'btn-secondary btn-listen';
+          btnListen.textContent = '▶';
+          btnListen.title = act.track ? 'Posłuchaj' : 'Wybierz utwór, aby posłuchać';
+          btnListen.disabled = !act.track;
+          btnListen.addEventListener('click', function () { toggleTrackPreview(act.track, btnListen); });
+
+          var trackSelect = selectInput(trackOptions, act.track || '', function (v) {
+            act.track = v || null;
+            if (trackPreview.btn === btnListen) stopTrackPreview();
+            btnListen.disabled = !act.track;
+            btnListen.title = act.track ? 'Posłuchaj' : 'Wybierz utwór, aby posłuchać';
+            mutateDraft();
+          });
+
+          var btnRemove = document.createElement('button');
+          btnRemove.type = 'button'; btnRemove.className = 'danger'; btnRemove.textContent = 'Usuń akt';
+          btnRemove.addEventListener('click', function () { removeAct(act.id); });
+
+          row.appendChild(nameInput);
+          row.appendChild(trackSelect);
+          row.appendChild(btnListen);
+          row.appendChild(btnRemove);
+          wrap.appendChild(row);
+        });
+      }
+
+      // ---------------------------------------------------------------
+      // Small form-field builders
+      // ---------------------------------------------------------------
+
+      function fieldRow(labelText, inputEl) {
+        var wrap = document.createElement('div');
+        wrap.className = 'field-row';
+        if (labelText) {
+          var label = document.createElement('label');
+          label.textContent = labelText;
+          wrap.appendChild(label);
+        }
+        wrap.appendChild(inputEl);
+        return wrap;
+      }
+
+      function textInput(value, onInput) {
+        var el = document.createElement('input');
+        el.type = 'text'; el.value = value || '';
+        el.addEventListener('input', function () { onInput(el.value); });
+        return el;
+      }
+
+      function textArea(value, onInput, rows) {
+        var el = document.createElement('textarea');
+        el.rows = rows || 3; el.value = value || '';
+        el.addEventListener('input', function () { onInput(el.value); });
+        return el;
+      }
+
+      function selectInput(options, value, onChange) {
+        var el = document.createElement('select');
+        options.forEach(function (o) {
+          var opt = document.createElement('option');
+          opt.value = o.value; opt.textContent = o.label;
+          el.appendChild(opt);
+        });
+        el.value = value == null ? '' : value;
+        el.addEventListener('change', function () { onChange(el.value); });
+        return el;
+      }
+
+      function checkboxInput(checked, onChange, labelText) {
+        var wrap = document.createElement('label');
+        wrap.className = 'checkbox-row';
+        var el = document.createElement('input');
+        el.type = 'checkbox'; el.checked = !!checked;
+        el.addEventListener('change', function () { onChange(el.checked); });
+        wrap.appendChild(el);
+        wrap.appendChild(document.createTextNode(labelText));
+        return wrap;
+      }
+
+      function rangeInput(valueSec, onChange) {
+        var wrap = document.createElement('div');
+        wrap.className = 'range-row';
+        var el = document.createElement('input');
+        el.type = 'range'; el.min = '4'; el.max = '12'; el.step = '0.5'; el.value = String(valueSec);
+        var out = document.createElement('span');
+        out.className = 'range-out'; out.textContent = valueSec + ' s';
+        el.addEventListener('input', function () {
+          out.textContent = el.value + ' s';
+          onChange(parseFloat(el.value));
+        });
+        wrap.appendChild(el);
+        wrap.appendChild(out);
+        return wrap;
+      }
+
+      function imagePickerField(labelText, slide, field, onOpen) {
+        var wrap = document.createElement('div');
+        wrap.className = 'field-row image-field';
+        var label = document.createElement('label');
+        label.textContent = labelText;
+        var preview = document.createElement('div');
+        preview.className = 'image-preview';
+        var ref = slide[field];
+        if (ref) {
+          var img = document.createElement('img');
+          img.src = resolveImage(ref);
+          img.alt = '';
+          var btnChange = document.createElement('button');
+          btnChange.type = 'button'; btnChange.className = 'btn-secondary'; btnChange.textContent = 'Zmień';
+          btnChange.addEventListener('click', onOpen);
+          var btnClear = document.createElement('button');
+          btnClear.type = 'button'; btnClear.className = 'danger'; btnClear.textContent = 'Usuń';
+          btnClear.addEventListener('click', function () {
+            slide[field] = null;
+            if (field === 'portrait') slide.portraitName = slide.portraitName; // keep caption text as-is
+            mutateDraft();
+            renderFieldsPanel();
+          });
+          preview.appendChild(img);
+          preview.appendChild(btnChange);
+          preview.appendChild(btnClear);
+        } else {
+          var btnPick = document.createElement('button');
+          btnPick.type = 'button'; btnPick.className = 'btn-secondary'; btnPick.textContent = 'Wybierz obraz';
+          btnPick.addEventListener('click', onOpen);
+          preview.appendChild(btnPick);
+        }
+        wrap.appendChild(label);
+        wrap.appendChild(preview);
+        return wrap;
+      }
+
+      // ---------------------------------------------------------------
+      // Fields panel (per template, per spec §3.2)
+      // ---------------------------------------------------------------
+
+      function renderFieldsPanel() {
+        var panel = document.getElementById('fieldsPanel');
+        panel.innerHTML = '';
+        var slide = getSelectedSlide();
+        if (!slide) {
+          var empty = document.createElement('p');
+          empty.className = 'fields-empty';
+          empty.textContent = 'Dodaj slajd z listy po lewej, aby edytować jego pola.';
+          panel.appendChild(empty);
+          return;
+        }
+
+        var heading = document.createElement('h2');
+        heading.className = 'panel-title';
+        heading.style.color = 'var(--fg)';
+        heading.textContent = templateLabel(slide.template);
+        panel.appendChild(heading);
+
+        var actOptions = [{ value: '', label: '(brak)' }].concat(
+          draft.acts.map(function (a) { return { value: a.id, label: a.name }; })
+        );
+        panel.appendChild(fieldRow('Akt (steruje muzyką)', selectInput(actOptions, slide.actId || '', function (v) {
+          slide.actId = v || null; mutateDraft();
+        })));
+
+        if (slide.template === 'tytulowy') {
+          panel.appendChild(imagePickerField('Tło', slide, 'image', function () { openLibrary('image'); }));
+          panel.appendChild(fieldRow('Tytuł', textInput(slide.title, function (v) { slide.title = v; mutateDraft(); })));
+          panel.appendChild(fieldRow('Podtytuł', textArea(slide.text, function (v) { slide.text = v; mutateDraft(); }, 2)));
+          panel.appendChild(fieldRow('Ken Burns', selectInput(KB_OPTIONS, slide.kb || '', function (v) { slide.kb = v || null; mutateDraft(); })));
+        } else if (slide.template === 'przerywnik') {
+          panel.appendChild(fieldRow('Tytuł', textInput(slide.title, function (v) { slide.title = v; mutateDraft(); })));
+          panel.appendChild(fieldRow('Tekst', textArea(slide.text, function (v) { slide.text = v; mutateDraft(); }, 4)));
+          panel.appendChild(fieldRow('Efekt', selectInput(FX_OPTIONS, slide.fx || '', function (v) { slide.fx = v || null; mutateDraft(); })));
+        } else if (slide.template === 'obraz') {
+          panel.appendChild(imagePickerField('Tło', slide, 'image', function () { openLibrary('image'); }));
+          panel.appendChild(fieldRow('Tytuł', textInput(slide.title, function (v) { slide.title = v; mutateDraft(); })));
+          panel.appendChild(fieldRow('Tekst', textArea(slide.text, function (v) { slide.text = v; mutateDraft(); }, 4)));
+          panel.appendChild(imagePickerField('Portret (opcjonalny)', slide, 'portrait', function () { openLibrary('portrait'); }));
+          panel.appendChild(fieldRow('Podpis portretu', textInput(slide.portraitName, function (v) { slide.portraitName = v; mutateDraft(); })));
+          panel.appendChild(fieldRow('Ken Burns', selectInput(KB_OPTIONS, slide.kb || '', function (v) { slide.kb = v || null; mutateDraft(); })));
+          panel.appendChild(fieldRow('', checkboxInput(slide.night, function (v) { slide.night = v; mutateDraft(); }, 'Scena nocna')));
+          panel.appendChild(fieldRow('Efekt', selectInput(FX_OPTIONS, slide.fx || '', function (v) { slide.fx = v || null; mutateDraft(); })));
+        } else if (slide.template === 'cytat') {
+          panel.appendChild(imagePickerField('Tło', slide, 'image', function () { openLibrary('image'); }));
+          panel.appendChild(imagePickerField('Portret mówiącego', slide, 'portrait', function () { openLibrary('portrait'); }));
+          panel.appendChild(fieldRow('Podpis (kto mówi)', textInput(slide.portraitName, function (v) { slide.portraitName = v; mutateDraft(); })));
+          panel.appendChild(fieldRow('Cytat', textArea(slide.text, function (v) { slide.text = v; mutateDraft(); }, 4)));
+          panel.appendChild(fieldRow('Ken Burns', selectInput(KB_OPTIONS, slide.kb || '', function (v) { slide.kb = v || null; mutateDraft(); })));
+        } else if (slide.template === 'final') {
+          panel.appendChild(fieldRow('Tytuł', textInput(slide.title, function (v) { slide.title = v; mutateDraft(); })));
+          panel.appendChild(fieldRow('Tekst', textArea(slide.text, function (v) { slide.text = v; mutateDraft(); }, 4)));
+        }
+
+        var durSec = Math.round(((slide.dur || 6500) / 1000) * 2) / 2;
+        panel.appendChild(fieldRow('Czas trwania', rangeInput(durSec, function (v) { slide.dur = Math.round(v * 1000); mutateDraft(); })));
+      }
+
+      // ---------------------------------------------------------------
+      // Image library overlay
+      // ---------------------------------------------------------------
+
+      function resolveImage(assetRef) {
+        if (!assetRef) return '';
+        if (assetRef.kind === 'custom') return assetRef.dataUrl || '';
+        if (assetRef.kind === 'library') {
+          var images = KIT.images || [];
+          for (var i = 0; i < images.length; i++) if (images[i].id === assetRef.id) return images[i].dataUrl;
+        }
+        return '';
+      }
+
+      function libraryPool(tab) {
+        if (tab === 'custom') {
+          var seen = {};
+          var pool = [];
+          uploadedThisSession.forEach(function (u) {
+            if (!seen[u.dataUrl]) { seen[u.dataUrl] = 1; pool.push({ dataUrl: u.dataUrl, label: u.name }); }
+          });
+          draft.slides.forEach(function (s) {
+            [s.image, s.portrait].forEach(function (ref) {
+              if (ref && ref.kind === 'custom' && ref.dataUrl && !seen[ref.dataUrl]) {
+                seen[ref.dataUrl] = 1;
+                pool.push({ dataUrl: ref.dataUrl, label: '(własny obraz)' });
+              }
+            });
+          });
+          return pool;
+        }
+        return (KIT.images || [])
+          .filter(function (img) { return img.group === tab; })
+          .map(function (img) { return { dataUrl: img.dataUrl, label: img.label, id: img.id }; });
+      }
+
+      function openLibrary(field) {
+        libraryContext.field = field;
+        libraryContext.tab = field === 'portrait' ? 'cast' : 'scene';
+        document.getElementById('libraryTitle').textContent = field === 'portrait' ? 'Wybierz portret' : 'Wybierz tło';
+        renderLibraryTabs();
+        renderLibraryGrid();
+        renderLibraryUpload();
+        openModal('libraryOverlay');
+      }
+
+      function renderLibraryTabs() {
+        var wrap = document.getElementById('libraryTabs');
+        wrap.innerHTML = '';
+        [['scene', 'Sceny'], ['cast', 'Portrety'], ['custom', 'Moje']].forEach(function (pair) {
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'library-tab' + (libraryContext.tab === pair[0] ? ' active' : '');
+          btn.textContent = pair[1];
+          btn.addEventListener('click', function () {
+            libraryContext.tab = pair[0];
+            renderLibraryTabs();
+            renderLibraryGrid();
+            renderLibraryUpload();
+          });
+          wrap.appendChild(btn);
+        });
+      }
+
+      function renderLibraryGrid() {
+        var grid = document.getElementById('libraryGrid');
+        grid.innerHTML = '';
+        var pool = libraryPool(libraryContext.tab);
+        if (!pool.length) {
+          var p = document.createElement('p');
+          p.className = 'library-empty';
+          p.textContent = libraryContext.tab === 'custom'
+            ? 'Brak własnych obrazów — dodaj poniżej.'
+            : 'Brak obrazów w tej kategorii.';
+          grid.appendChild(p);
+          return;
+        }
+        pool.forEach(function (item) {
+          var btn = document.createElement('button');
+          btn.type = 'button'; btn.className = 'library-thumb';
+          var img = document.createElement('img');
+          img.src = item.dataUrl; img.alt = '';
+          var cap = document.createElement('span');
+          cap.textContent = item.label || '';
+          btn.appendChild(img);
+          btn.appendChild(cap);
+          btn.addEventListener('click', function () {
+            var ref = item.id ? { kind: 'library', id: item.id } : { kind: 'custom', dataUrl: item.dataUrl };
+            var slide = getSelectedSlide();
+            if (!slide) return;
+            slide[libraryContext.field] = ref;
+            mutateDraft();
+            renderFieldsPanel();
+            closeModal('libraryOverlay');
+          });
+          grid.appendChild(btn);
+        });
+      }
+
+      function renderLibraryUpload() {
+        var wrap = document.getElementById('libraryUpload');
+        wrap.innerHTML = '';
+        if (libraryContext.tab !== 'custom') return;
+        var label = document.createElement('label');
+        label.className = 'upload-label';
+        label.appendChild(document.createTextNode('Dodaj własny obraz (JPG/PNG): '));
+        var input = document.createElement('input');
+        input.type = 'file'; input.accept = 'image/*'; input.multiple = true;
+        input.addEventListener('change', function () {
+          handleCustomUpload(input.files);
+          input.value = '';
+        });
+        label.appendChild(input);
+        wrap.appendChild(label);
+      }
+
+      function handleCustomUpload(fileList) {
+        Array.prototype.forEach.call(fileList, function (file) {
+          if (file.type.indexOf('image/') !== 0) return;
+          if (file.size > 1.5 * 1024 * 1024) {
+            alert('Duży plik (' + file.name + ') — szkic może przekroczyć limit autosave.');
+          }
+          var reader = new FileReader();
+          reader.onload = function () {
+            uploadedThisSession.push({ dataUrl: reader.result, name: file.name });
+            if (libraryContext.tab === 'custom') renderLibraryGrid();
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
+      // ---------------------------------------------------------------
+      // Modals (generic open/close)
+      // ---------------------------------------------------------------
+
+      function openModal(id) { document.getElementById(id).classList.add('open'); }
+      function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+      document.querySelectorAll('[data-close]').forEach(function (btn) {
+        btn.addEventListener('click', function () { closeModal(btn.dataset.close); });
+      });
+      document.querySelectorAll('.modal').forEach(function (modal) {
+        modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(modal.id); });
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key !== 'Escape') return;
+        document.querySelectorAll('.modal.open').forEach(function (m) { closeModal(m.id); });
+      });
+
+      // ---------------------------------------------------------------
+      // Engine document assembly (shared by preview + export — this is
+      // what guarantees no drift between the two: both call
+      // KitCore.draftToEngineData + KitCore.serializeSlidesJs, the exact
+      // functions the exported deck's data script is built from).
+      // ---------------------------------------------------------------
+
+      function engineShowMarkup() {
+        return '' +
+          '<div id="show">' +
+            '<div id="stage"><div class="layer" id="L0"></div><div class="layer" id="L1"></div></div>' +
+            '<div id="zones"><div class="z" id="zL"></div><div class="z zc" id="zC"></div><div class="z" id="zR"></div></div>' +
+            '<div id="ui">' +
+              '<div id="acttag"></div>' +
+              '<div id="segs"></div>' +
+              '<div id="progress"><div id="fill"></div></div>' +
+              '<div id="bar">' +
+                '<button id="prev" title="Poprzedni (←)">‹</button>' +
+                '<button id="playpause" title="Pauza / wznów (spacja)">⏸</button>' +
+                '<button id="next" title="Następny (→)">›</button>' +
+                '<button id="mute" title="Wycisz (M)">♪</button>' +
+                '<button id="full" title="Pełny ekran (F)">⛶</button>' +
+                '<span id="counter">1 / 1</span>' +
+              '</div>' +
+            '</div>' +
+            '<div id="start">' +
+              '<h1>' + KitCore.escapeHtml(KIT.title || '') + '</h1>' +
+              '<p>Prezentacja</p>' +
+              '<button id="btn-start">▶ Rozpocznij</button>' +
+            '</div>' +
+          '</div>';
+      }
+
+      // opts: { full: boolean (full themeCss w/ @import vs editor-stripped), autoStart: boolean }
+      function buildEngineDoc(dataScript, opts) {
+        var themeCss = opts.full ? KIT.themeCss : KIT.themeCssEditor;
+        var autoStart = opts.autoStart
+          ? '<script>document.addEventListener("DOMContentLoaded",function(){var b=document.getElementById("btn-start");if(b)b.click();});<\/script>'
+          : '';
+        return '' +
+          '<!doctype html><html lang="pl"><head><meta charset="utf-8">' +
+          '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">' +
+          '<title>' + KitCore.escapeHtml(KIT.title || '') + '</title>' +
+          '<style>' + themeCss + '</style>' +
+          '<style>' + KIT.baseCss + '</style>' +
+          '</head><body>' +
+          engineShowMarkup() +
+          '<script>' + dataScript + '<\/script>' +
+          '<script>' + KIT.engineJs + '<\/script>' +
+          autoStart +
+          '</body></html>';
+      }
+
+      function emptyPreviewDoc() {
+        return '<!doctype html><html><head><meta charset="utf-8"><style>' +
+          'html,body{margin:0;height:100%;display:flex;align-items:center;justify-content:center;' +
+          'background:#0a1f1f;color:#b9a886;font-family:Georgia,serif;font-size:14px;text-align:center;padding:2em;}' +
+          '</style></head><body>Dodaj slajd, aby zobaczyć podgląd.</body></html>';
+      }
+
+      // ---------------------------------------------------------------
+      // Preview (debounced, true-engine srcdoc; TRACKS={} so it never
+      // plays audio — per spec §3.1)
+      // ---------------------------------------------------------------
+
+      function schedulePreview() {
+        clearTimeout(previewTimer);
+        previewTimer = setTimeout(renderPreview, 300);
+      }
+
+      function renderPreview() {
+        var iframe = document.getElementById('previewFrame');
+        var slide = getSelectedSlide();
+        if (!slide) { iframe.srcdoc = emptyPreviewDoc(); return; }
+        var idx = -1;
+        for (var i = 0; i < draft.slides.length; i++) if (draft.slides[i].id === slide.id) { idx = i; break; }
+        var engineData = KitCore.draftToEngineData(draft, resolveImage);
+        var previewData = { slides: [engineData.slides[idx]], tracks: {} };
+        var dataScript = KitCore.serializeSlidesJs(previewData);
+        iframe.srcdoc = buildEngineDoc(dataScript, { full: false, autoStart: true });
+      }
+
+      // ---------------------------------------------------------------
+      // Szkic export / import / reset
+      // ---------------------------------------------------------------
+
+      function downloadBlob(content, filename, mime) {
+        var blob = new Blob([content], { type: mime });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url; a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+      }
+
+      function saveDraftFile() {
+        downloadBlob(JSON.stringify(draft, null, 2), 'szkic-' + KIT.slug + '.json', 'application/json');
+      }
+
+      function loadDraftFile(file) {
+        stopTrackPreview();
+        var reader = new FileReader();
+        reader.onload = function () {
+          var parsed;
+          try {
+            parsed = JSON.parse(String(reader.result));
+          } catch (e) {
+            alert('Nie udało się odczytać pliku — to nie jest poprawny JSON.');
+            return;
+          }
+          var result = KitCore.validateDraft(parsed);
+          if (!result.ok) {
+            alert('Plik szkicu zawiera błędy:\n' + result.errors.join('\n'));
+            return;
+          }
+          if (!confirm('Wczytać ten szkic? Zastąpi obecny stan edytora.')) return;
+          if (parsed.slug !== KIT.slug) {
+            alert('Uwaga: ten szkic pochodzi z innej sesji (' + parsed.slug + '). Wczytano mimo to.');
+          }
+          draft = parsed;
+          selectedSlideId = draft.slides.length ? draft.slides[0].id : null;
+          saveDraftNow();
+          renderAll();
+        };
+        reader.readAsText(file);
+      }
+
+      function resetDraft() {
+        if (!confirm('Zacząć od nowa? Obecny szkic w tym oknie zostanie utracony (chyba że zapisałeś/aś plik szkicu).')) return;
+        stopTrackPreview();
+        draft = KitCore.newDraft(KIT.slug);
+        selectedSlideId = null;
+        saveDraftNow();
+        renderAll();
+      }
+
+      // ---------------------------------------------------------------
+      // Export (prezentacja.html) — self-contained deck, full themeCss
+      // (with its @import), no autostart bootstrap (real start screen).
+      // ---------------------------------------------------------------
+
+      function exportDeck() {
+        stopTrackPreview();
+
+        var missingBg = [];
+        draft.slides.forEach(function (s, i) {
+          if (isImageTemplate(s.template) && !s.image) missingBg.push(slideDisplayLabel(s, i));
+        });
+        var usedRefs = KitCore.collectImageRefs(draft);
+        var broken = usedRefs.filter(function (ref) { return !resolveImage(ref); });
+
+        var engineData = KitCore.draftToEngineData(draft, resolveImage);
+        var availableTracks = window.__KIT_TRACKS__ || {};
+        var missingTracks = Object.keys(engineData.tracks).filter(function (file) {
+          return !Object.prototype.hasOwnProperty.call(availableTracks, file);
+        });
+
+        if (missingBg.length || broken.length || missingTracks.length) {
+          var msg = '';
+          if (missingBg.length) msg += 'Te slajdy nie mają wybranego tła: ' + missingBg.join(', ') + '.\n';
+          if (broken.length) msg += 'Część obrazów w szkicu jest uszkodzona lub nieznaleziona (' + broken.length + ').\n';
+          if (missingTracks.length) msg += 'Część muzyki nie zostanie zaszyta w prezentacji (' + missingTracks.length + ' utworów) — deck może nie mieć dźwięku.\n';
+          msg += 'Kontynuować eksport mimo to?';
+          if (!confirm(msg)) return;
+        }
+
+        // Inline every used track as a base64 data URI (window.__KIT_TRACKS__,
+        // loaded from the sibling assets/tracks-data.js — see its <script> tag
+        // near the top of this file) so the exported deck is fully
+        // self-contained: it plays from anywhere (e.g. a player's Downloads
+        // folder), not just next to the kit's own assets/ folder.
+        var dataScript = KitCore.serializeSlidesJs(engineData, window.__KIT_TRACKS__ || {});
+        var html = buildEngineDoc(dataScript, { full: true, autoStart: false });
+        downloadBlob(html, 'prezentacja.html', 'text/html');
+      }
+
+      // ---------------------------------------------------------------
+      // Wiring + initial render
+      // ---------------------------------------------------------------
+
+      function renderAll() {
+        renderActsSection();
+        renderSlideList();
+        renderFieldsPanel();
+        setStorageWarning(safeDraftByteSize() > MAX_BYTES ? 'size' : null);
+        renderPreview();
+      }
+
+      (function populateTemplateGrid() {
+        var grid = document.getElementById('templateGrid');
+        TEMPLATES.forEach(function (t) {
+          var btn = document.createElement('button');
+          btn.type = 'button'; btn.className = 'template-btn'; btn.textContent = t.label;
+          btn.addEventListener('click', function () { addSlide(t.id); closeModal('templatePicker'); });
+          grid.appendChild(btn);
+        });
+      })();
+
+      document.getElementById('metaLine').textContent =
+        'Zestaw: ' + KIT.slug + ' · ' + (KIT.images || []).length + ' obrazów · ' + (KIT.tracks || []).length + ' utworów';
+      document.getElementById('exportNote').textContent =
+        'Do MG odeślij plik szkic-' + KIT.slug + '.json — na jego podstawie MG opublikuje prezentację na stronie.';
+
+      document.getElementById('btnAddSlide').addEventListener('click', function () { openModal('templatePicker'); });
+      document.getElementById('btnAddAct').addEventListener('click', addAct);
+      document.getElementById('btnSaveDraft').addEventListener('click', saveDraftFile);
+      document.getElementById('btnSaveDraftFromWarning').addEventListener('click', saveDraftFile);
+      document.getElementById('btnExport').addEventListener('click', exportDeck);
+      document.getElementById('btnReset').addEventListener('click', resetDraft);
+      document.getElementById('btnLoadDraft').addEventListener('click', function () {
+        document.getElementById('loadDraftInput').click();
+      });
+      document.getElementById('loadDraftInput').addEventListener('change', function (e) {
+        if (e.target.files && e.target.files[0]) loadDraftFile(e.target.files[0]);
+        e.target.value = '';
+      });
+
+      renderAll();
+    }
+  })();
+  </script>
+</body>
+</html>

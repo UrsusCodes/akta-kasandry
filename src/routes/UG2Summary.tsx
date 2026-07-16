@@ -169,6 +169,22 @@ Tak **Urodzaj Grozy** — podobnie jak Sól w Ranach — wpina się w **Akta / K
 
 ---
 
+## Pytania i wątpliwości
+
+> Poniższe pytania zostają otwarte — część z nich może nigdy nie doczekać się oficjalnej odpowiedzi (MG zostawił je celowo niedopowiedziane). Każde pytanie stoi osobno: kliknij dokładnie to, które was nurtuje, i zostawcie przy nim swoją wiedzę albo teorię. Jeśli jesteście pewni, że coś takiego naprawdę wydarzyło się albo padło przy stole — oznaczcie to **[PEWNE]**; jeśli to wasza teoria — **[SPEKULACJA]**.
+
+Czy Brock naprawdę wrócił, czy to tylko wyrzut sumienia Josepha? W oknie stanęła postać z rozbitą, poznaczoną bliznami głową i rozdwojonym okiem — twierdząca, że przeżyła egzekucję dzięki darowi Matki. Ale Joseph był wtedy sam, wykończony i świeżo po stracie brata. Jeśli to naprawdę Brock — czego chce od Josepha, i czy wróci po resztę drużyny?
+
+Pastor-szeryf Dick Sprouston wyszedł z tej sprawy nietknięty, choć Elaine obiecała sobie, że go „kiedyś dopadnie". Wiedział o braciach Carmody więcej, niż powiedział — czy warto wracać do Blackwater Creek i dowiedzieć się, ile dokładnie? A jeśli wiedział też o sekcie sprzed dwóch wieków, dlaczego milczał?
+
+Mortimer przeżył zawalenie jaskini dzięki regeneracji z daru Matki, ale wyszedł stamtąd kompletnie niepoczytalny — a przez chwilę, po łyku skażonego trunku, sam był jej wyznawcą. Co z nim zrobi McBride, gdy siostrzeniec szefa organizacji nosi w sobie coś, czego nikt do końca nie rozumie?
+
+Spalone, zdeformowane kości sprzed dwóch stuleci to jedyny ślad po zaginionej sekcie Caydy — reszta zniknęła z historii razem ze strumieniem, który teraz jest zawalony na dobre. Czy ktoś jeszcze pamięta, dokąd uciekli ostatni wyznawcy, zanim pochłonęła ich Matka — i czy to, co spotkało Blackwater Creek, wydarzyło się już wcześniej gdzie indziej?
+
+Dr Elaine Howard przyjęła zaproszenie do „progresywnego klubu dżentelmenów z wieloma damami w składzie". Czy to ta sama sieć, która sięgnęła po bohaterki Sól w Ranach — i czego klub właściwie chce od Elaine? Czy powinna komuś o tym powiedzieć, zanim odpowie na zaproszenie?
+
+---
+
 > _Wersja robocza. Daj znać, co poprawić: imiona, kolejność, akcenty._
 `
 

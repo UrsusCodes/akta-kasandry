@@ -81,7 +81,7 @@ export const contentTree: ContentNode[] = [
             "slug": "00-hub",
             "path": "sprawy/02-urodzaj-grozy/00-hub",
             "kind": "page",
-            "body": "**Urodzaj Grozy** - gangsterski one-shot w Blackwater Creek (prohibicja, okolice Arkham). Każdy gra dwiema postaciami: gangsterem i akademikiem. Wszystko prowadzi do Klubu Kasandry.\n\n- [Streszczenie](/streszczenie-ug2) - skrót z deep-linkami do nagrania\n- [Pełna narracja](/streszczenie-ug2/narracja) - ciągiem, z cytatami\n- [▶ Prezentacja filmowa](/prezentacja/ug2) - slajdy z muzyką i efektami\n- [Transkrypt z sesji](/sesje/ug2) - pełny zapis rozmów z atrybucją mikrofonów\n"
+            "body": "**Urodzaj Grozy** - gangsterski one-shot w Blackwater Creek (prohibicja, okolice Arkham). Każdy gra dwiema postaciami: gangsterem i akademikiem. Wszystko prowadzi do Klubu Kasandry.\n\n- [Streszczenie](/streszczenie-ug2) - skrót z deep-linkami do nagrania\n- [Pełna narracja](/streszczenie-ug2/narracja) - ciągiem, z cytatami\n- [▶ Prezentacja filmowa](/prezentacja/ug2) - slajdy z muzyką i efektami\n- [Transkrypt z sesji](/sesje/ug2) - pełny zapis rozmów z atrybucją mikrofonów\n- [Galeria](/p/sprawy/02-urodzaj-grozy/05-galeria) - ilustracje, obsada i muzyka sesji\n"
           },
           {
             "name": "01 Streszczenie",
@@ -110,6 +110,13 @@ export const contentTree: ContentNode[] = [
             "path": "sprawy/02-urodzaj-grozy/04-transkrypt",
             "kind": "page",
             "body": "[Otwórz transkrypt](/sesje/ug2)\n"
+          },
+          {
+            "name": "05 Galeria",
+            "slug": "05-galeria",
+            "path": "sprawy/02-urodzaj-grozy/05-galeria",
+            "kind": "page",
+            "body": "[Otwórz galerię](/p/sprawy/02-urodzaj-grozy/05-galeria)\n"
           }
         ]
       },

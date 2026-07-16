@@ -6,6 +6,24 @@ dist/
 dist-ssr/
 *.tsbuildinfo
 
+# scripts/fetch-comments.ts output (grouped feedback JSON per page_key)
+scratch/
+
+# Generated session packages (scripts/build-package.ts) — audio + zip, never commit
+packages/
+
+# Rozdarte Sumienie — session data held back from the public site until the
+# players return their corrections and the GM approves publishing (2026-07-15).
+# The files stay on disk so the local builders (build-session-vault, kit) work;
+# they are NOT published. To publish: drop these lines, commit the files, and
+# add the session back to public/transcripts/data/variants.json.
+public/transcripts/data/rozdarte-sumienie-current-overlay.json
+public/transcripts/scene-index/rozdarte-sumienie.json
+public/gallery/rozdarte-sumienie.json
+public/img/rozdarte-sumienie/
+public/audio/rozdarte-sumienie/
+docs/superpowers/drafts/
+
 # Vault snapshot — refreshed by `npm run build-content`.
 # Both the generated content.ts AND public/vault-attachments/ ARE committed so
 # the repo is self-sufficient: a fresh clone (and the production build) has the
@@ -32,7 +50,8 @@ pnpm-debug.log*
 *~
 
 # Claude Code (local preview / launch config)
-.claude/
+.claude/*
+!.claude/skills/
 
 # Superpowers brainstorm companion (local mockups / scratch — keep out of repo)
 .superpowers/
@@ -43,6 +62,7 @@ Thumbs.db
 desktop.ini
 
 # Obsidian (personal workspace state)
+.obsidian/
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
 .obsidian/cache

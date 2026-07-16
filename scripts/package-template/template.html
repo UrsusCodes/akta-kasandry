@@ -1,0 +1,818 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- Suppress the automatic favicon.ico request browsers make under file:// —
+     keeps DevTools Network truly empty besides index.html + the audio file. -->
+<link rel="icon" href="data:," />
+<title>__PKG_TITLE__</title>
+<style>
+  /* ==========================================================
+     Akta Kasandry — session package viewer (standalone, vanilla).
+     Self-contained: no CDN, no webfonts, no external requests.
+     Palette per docs/AktaKasandry_obsidian/DESIGN_SYSTEM.md
+     (deep teal / parchment / gold), hand-ported here since this
+     file ships alone and cannot import Tailwind's build output.
+     ========================================================== */
+  :root {
+    --bg: #0d2828;
+    --panel: #0a1f1f;
+    --fg: #f5e6c8;
+    --fg-dim: rgba(245, 230, 200, 0.7);
+    --fg-faint: rgba(245, 230, 200, 0.4);
+    --gold: #c89b3c;
+    --gold-muted: rgba(200, 155, 60, 0.35);
+    --rule: rgba(245, 230, 200, 0.14);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    margin: 0;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 15px;
+  }
+
+  h1, h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: normal;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  button {
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  /* ---------- empty state (raw, unbuilt template) ---------- */
+  #emptyState {
+    display: none;
+    margin: auto;
+    max-width: 32em;
+    padding: 2em;
+    text-align: center;
+    color: var(--fg-dim);
+  }
+  #emptyState h1 {
+    color: var(--gold);
+    font-size: 1.1em;
+    margin-bottom: 0.6em;
+  }
+
+  /* ---------- top bar ---------- */
+  #topbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6em 1.2em;
+    background: var(--panel);
+    border-bottom: 1px solid var(--gold-muted);
+    padding: 0.7em 1em;
+  }
+  #topbar h1 {
+    font-size: 1.05em;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+  #meta {
+    color: var(--fg-faint);
+    font-size: 0.82em;
+    flex: 1 1 auto;
+    min-width: 12em;
+  }
+  #audioBar {
+    display: flex;
+    align-items: center;
+    gap: 0.7em;
+    flex: 1 1 100%;
+  }
+  audio {
+    flex: 1 1 auto;
+    min-width: 14em;
+    height: 2.2em;
+  }
+  #followWrap {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+    font-size: 0.82em;
+    color: var(--fg-dim);
+    white-space: nowrap;
+  }
+  #noAudioNote {
+    font-size: 0.82em;
+    color: var(--fg-faint);
+    font-style: italic;
+  }
+
+  /* ---------- search bar (T7) ---------- */
+  #searchBar {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    flex: 1 1 100%;
+  }
+  #searchInput {
+    flex: 1 1 auto;
+    min-width: 12em;
+    background: var(--bg);
+    border: 1px solid var(--gold-muted);
+    color: var(--fg);
+    border-radius: 3px;
+    padding: 0.35em 0.6em;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 0.85em;
+  }
+  #searchInput:focus {
+    outline: 1px solid var(--gold);
+  }
+  #searchInput::placeholder {
+    color: var(--fg-faint);
+  }
+  #searchCount {
+    font-size: 0.78em;
+    color: var(--fg-faint);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ---------- layout ---------- */
+  #layout {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 260px 1fr;
+  }
+
+  #scenesPanel {
+    min-height: 0;
+    overflow-y: auto;
+    background: var(--panel);
+    border-right: 1px solid var(--gold-muted);
+  }
+  #scenesPanel > summary {
+    display: none; /* only shown as a toggle on narrow screens, see media query */
+  }
+  #scenesPanel > summary::-webkit-details-marker { display: none; }
+
+  #sceneHeading {
+    padding: 0.8em 0.9em 0.4em;
+    font-size: 0.78em;
+    color: var(--fg-faint);
+    letter-spacing: 0.08em;
+  }
+
+  .scene-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5em;
+    padding: 0.5em 0.9em;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+  }
+  .scene-item:hover {
+    background: rgba(245, 230, 200, 0.05);
+  }
+  .scene-item.active {
+    border-left-color: var(--gold);
+    background: rgba(200, 155, 60, 0.12);
+  }
+  .scene-t {
+    flex-shrink: 0;
+    font-family: Consolas, monospace;
+    font-size: 0.72em;
+    color: var(--fg-faint);
+  }
+  .scene-title {
+    flex: 1 1 auto;
+    font-size: 0.85em;
+    line-height: 1.3;
+  }
+  .scene-play {
+    flex-shrink: 0;
+    background: transparent;
+    border: 1px solid var(--gold-muted);
+    color: var(--gold);
+    border-radius: 3px;
+    font-size: 0.7em;
+    line-height: 1;
+    padding: 0.25em 0.4em;
+  }
+  .scene-play:hover {
+    background: rgba(200, 155, 60, 0.18);
+  }
+
+  #transcript {
+    min-height: 0;
+    overflow-y: auto;
+  }
+  #transcriptHeading {
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    padding: 0.6em 1em;
+    font-size: 0.78em;
+    color: var(--fg-faint);
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* Each row opts into content-visibility so the browser skips layout/paint
+     for off-screen lines — the same trick src/index.css uses for the
+     site's /sesje viewer (.tv-row) — near-virtualized perf for 4-5k rows
+     without a JS windowing library, safe under file://. */
+  .row {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 2.4em;
+    display: flex;
+    align-items: baseline;
+    gap: 0.6em;
+    border-left: 3px solid transparent;
+    padding: 0.35em 1em;
+  }
+  .row:hover {
+    background: rgba(245, 230, 200, 0.05);
+  }
+  .row.active {
+    outline: 1px solid var(--gold);
+    outline-offset: -1px;
+  }
+  .row .t {
+    flex-shrink: 0;
+    font-family: Consolas, monospace;
+    font-size: 0.72em;
+    color: var(--fg-faint);
+    line-height: 1.5;
+  }
+  .row .chip {
+    flex-shrink: 0;
+    border-radius: 3px;
+    padding: 0.1em 0.45em;
+    font-size: 0.72em;
+    font-weight: bold;
+    line-height: 1.4;
+  }
+  .row .txt {
+    flex: 1 1 auto;
+    min-width: 0;
+    line-height: 1.4;
+  }
+  .row.seekable {
+    cursor: pointer;
+  }
+  /* Per-utterance play button — same visual family as .scene-play, but
+     dimmed by default (0.5 opacity) so 4-5k of them don't turn the
+     transcript into a wall of gold outlines; full-opacity on row hover. */
+  .row-play {
+    flex-shrink: 0;
+    background: transparent;
+    border: 1px solid var(--gold-muted);
+    color: var(--gold);
+    border-radius: 3px;
+    font-size: 0.65em;
+    line-height: 1;
+    padding: 0.15em 0.35em;
+    opacity: 0.5;
+  }
+  .row:hover .row-play {
+    opacity: 1;
+  }
+  .row-play:hover {
+    background: rgba(200, 155, 60, 0.18);
+  }
+  /* Filtered-out rows (T7 search): display:none overrides
+     content-visibility:auto and removes them from layout entirely —
+     same near-zero cost as the unfiltered content-visibility trick. */
+  .row.hidden-by-filter {
+    display: none;
+  }
+
+  /* thin gold scrollbars, matching the site's .tv-scroll */
+  #scenesPanel, #transcript {
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold-muted) transparent;
+  }
+  #scenesPanel::-webkit-scrollbar, #transcript::-webkit-scrollbar { width: 9px; }
+  #scenesPanel::-webkit-scrollbar-thumb, #transcript::-webkit-scrollbar-thumb {
+    background: var(--gold-muted);
+    border-radius: 5px;
+  }
+  #scenesPanel::-webkit-scrollbar-track, #transcript::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  #footer {
+    padding: 0.6em 1em;
+    font-size: 0.75em;
+    color: var(--fg-faint);
+    border-top: 1px solid var(--rule);
+    background: var(--panel);
+  }
+
+  /* ---------- narrow screens: sidebar collapses to a top strip ---------- */
+  @media (max-width: 900px) {
+    #layout {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 1fr;
+    }
+    #scenesPanel {
+      border-right: none;
+      border-bottom: 1px solid var(--gold-muted);
+      max-height: 40vh;
+    }
+    #scenesPanel > summary {
+      display: block;
+      padding: 0.6em 0.9em;
+      font-size: 0.85em;
+      color: var(--gold);
+      letter-spacing: 0.06em;
+      cursor: pointer;
+    }
+    #sceneHeading { display: none; }
+  }
+</style>
+</head>
+<body>
+
+  <div id="emptyState">
+    <h1>Brak danych pakietu</h1>
+    <p>
+      Ten plik to surowy szablon (<code>window.__PKG__</code> jest puste). Zbuduj pakiet
+      poleceniem <code>npm run build-package -- &lt;slug&gt;</code>, a wygenerowany
+      <code>index.html</code> będzie już zawierał transkrypt.
+    </p>
+  </div>
+
+  <div id="app" style="display:none; flex-direction:column; height:100%;">
+    <header id="topbar">
+      <h1 id="titleEl">__PKG_TITLE__</h1>
+      <div id="meta"></div>
+      <div id="audioBar">
+        <audio id="audioEl" controls preload="none" hidden></audio>
+        <div id="followWrap" hidden>
+          <label><input type="checkbox" id="followCheckbox" checked /> Podążaj za dźwiękiem</label>
+        </div>
+        <div id="noAudioNote" hidden>Pakiet bez audio — tylko transkrypt.</div>
+      </div>
+      <div id="searchBar">
+        <input type="text" id="searchInput" placeholder="Szukaj w transkrypcie…" autocomplete="off" />
+        <span id="searchCount"></span>
+      </div>
+    </header>
+
+    <div id="layout">
+      <details id="scenesPanel" open>
+        <summary>Sceny</summary>
+        <div id="sceneHeading">Sceny</div>
+        <nav id="sceneNav"></nav>
+      </details>
+
+      <section id="transcript">
+        <div id="transcriptHeading">Transkrypt sesji</div>
+        <div id="rows"></div>
+      </section>
+    </div>
+
+    <footer id="footer">
+      Pakiet offline — pełna wersja z pochodzeniem nagrania: akta na stronie kampanii.
+    </footer>
+  </div>
+
+  <script>window.__PKG__ = /*__PKG_JSON__*/null;</script>
+
+  <script>
+  (function () {
+    'use strict';
+
+    // ------------------------------------------------------------------
+    // Small presentation helpers, ported from src/lib/transcripts/format.ts
+    // (fmtTime, fmtDuration, tint, chipText) — duplicated here on purpose:
+    // this file ships alone with no build step, so importing the module
+    // isn't an option. Keep behavior identical if that file changes.
+    // ------------------------------------------------------------------
+
+    function fmtTime(sec) {
+      if (sec == null || isNaN(sec)) return '--:--';
+      var s0 = Math.max(0, Math.floor(sec));
+      var h = Math.floor(s0 / 3600);
+      var m = Math.floor((s0 % 3600) / 60);
+      var s = s0 % 60;
+      var mm = String(m).padStart(2, '0');
+      var ss = String(s).padStart(2, '0');
+      return h > 0 ? h + ':' + mm + ':' + ss : mm + ':' + ss;
+    }
+
+    function fmtDuration(sec) {
+      if (sec == null) return '—';
+      var h = Math.floor(sec / 3600);
+      var m = Math.floor((sec % 3600) / 60);
+      if (h > 0) return h + 'h ' + String(m).padStart(2, '0') + 'm';
+      return m + 'm';
+    }
+
+    function tint(hex, a) {
+      if (!hex || hex[0] !== '#' || hex.length < 7) return 'rgba(139,148,163,' + a + ')';
+      var r = parseInt(hex.slice(1, 3), 16);
+      var g = parseInt(hex.slice(3, 5), 16);
+      var b = parseInt(hex.slice(5, 7), 16);
+      return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
+    }
+
+    function chipText(hex) {
+      if (!hex || hex[0] !== '#' || hex.length < 7) return '#fff';
+      var r = parseInt(hex.slice(1, 3), 16);
+      var g = parseInt(hex.slice(3, 5), 16);
+      var b = parseInt(hex.slice(5, 7), 16);
+      var lum = 0.299 * r + 0.587 * g + 0.114 * b;
+      return lum > 150 ? '#0b0b0c' : '#ffffff';
+    }
+
+    function escHtml(s) {
+      return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // Case- and (best-effort) diacritic-insensitive normalization for the
+    // T7 search filter. NFD + combining-mark strip folds most Polish
+    // diacritics (ą/ć/ę/ń/ó/ś/ź/ż); 'ł' has no canonical decomposition in
+    // Unicode so it gets an explicit pass. Good enough per the plan
+    // ("skip full diacritic folding if it grows beyond ~15 lines").
+    function normalizeForSearch(s) {
+      return String(s == null ? '' : s)
+        .toLowerCase()
+        .replace(/ł/g, 'l') // 'ł' has no NFD decomposition
+        .normalize('NFD')
+        .replace(/[̀-ͯ]/g, ''); // strip combining diacritics
+    }
+
+    // ------------------------------------------------------------------
+    // Bootstrapping
+    // ------------------------------------------------------------------
+
+    var payload = window.__PKG__;
+
+    if (!payload) {
+      document.getElementById('emptyState').style.display = 'block';
+      return;
+    }
+
+    document.getElementById('app').style.display = 'flex';
+
+    var speakerById = {};
+    (payload.speakers || []).forEach(function (sp) { speakerById[sp.id] = sp; });
+
+    var rowsEl = document.getElementById('rows');
+    var sceneNavEl = document.getElementById('sceneNav');
+    var metaEl = document.getElementById('meta');
+    var audioEl = document.getElementById('audioEl');
+    var followWrapEl = document.getElementById('followWrap');
+    var followCheckbox = document.getElementById('followCheckbox');
+    var noAudioNoteEl = document.getElementById('noAudioNote');
+
+    var activeRowEl = null;
+    var activeSceneEl = null;
+    var filterActive = false;
+    // Wired up by initSearch() below; seekToScene() needs to be able to
+    // clear an active text filter before scrolling to a scene, otherwise
+    // clicking a scene while filtered can scroll to a row that's
+    // display:none (T7 filter) — a silent no-op the user can't explain.
+    var clearSearchFilter = function () {};
+
+    // Whether this build was packaged with audio — computed once, up
+    // front, because row rendering below needs it (T5 fix: rows must
+    // only carry .seekable/cursor:pointer when a click can actually do
+    // something; in a no-audio build the click handler is a no-op).
+    var hasAudio = !!payload.meta.audioSrc;
+
+    // ------------------------------------------------------------------
+    // Top bar meta line
+    // ------------------------------------------------------------------
+
+    (function renderMeta() {
+      var built = (payload.meta.builtAt || '').slice(0, 10);
+      var parts = [
+        payload.meta.sessionName,
+        'wariant ' + payload.meta.variantId,
+        fmtDuration(payload.meta.duration),
+        payload.utterances.length + ' wypowiedzi',
+      ];
+      if (built) parts.push('zbudowano ' + built);
+      metaEl.textContent = parts.join(' · ');
+    })();
+
+    // ------------------------------------------------------------------
+    // Transcript rows — one HTML-string pass (fast for 4-5k rows), each
+    // row relying on content-visibility:auto (see <style>) instead of a
+    // JS windowing library.
+    // ------------------------------------------------------------------
+
+    (function renderRows() {
+      var html = [];
+      for (var idx = 0; idx < payload.utterances.length; idx++) {
+        var u = payload.utterances[idx];
+        var sp = speakerById[u.spk];
+        var color = (sp && sp.color) || '#8b949e';
+        var name = (sp && sp.name) || u.spk || '?';
+        var neutral = u.neutral === 1;
+        var seekable = hasAudio && u.sec != null;
+
+        var rowStyle = neutral
+          ? 'border-left-color:rgba(245,230,200,0.28);'
+          : 'border-left-color:' + color + ';background:' + tint(color, 0.1) + ';';
+
+        var chipStyle = neutral
+          ? 'border:1px solid rgba(245,230,200,0.3);color:rgba(245,230,200,0.7);'
+          : 'background:' + color + ';color:' + chipText(color) + ';';
+
+        var playBtn = seekable
+          ? '<button type="button" class="row-play" data-row-play="' + idx + '" title="Odtwórz od tej kwestii">&#9654;</button>'
+          : '';
+
+        html.push(
+          '<div class="row' + (seekable ? ' seekable' : '') + '" data-idx="' + idx + '" style="' + rowStyle + '">' +
+            '<span class="t">' + fmtTime(u.sec) + '</span>' +
+            '<span class="chip" style="' + chipStyle + '">' + (neutral ? '? ' : '') + escHtml(name) + '</span>' +
+            '<span class="txt">' + escHtml(u.text) + '</span>' +
+            playBtn +
+          '</div>'
+        );
+      }
+      rowsEl.innerHTML = html.join('');
+    })();
+
+    // ------------------------------------------------------------------
+    // Scene sidebar
+    // ------------------------------------------------------------------
+
+    (function renderScenes() {
+      var html = [];
+      var scenes = payload.scenes || [];
+      for (var i = 0; i < scenes.length; i++) {
+        var sc = scenes[i];
+        var playBtn =
+          hasAudio && sc.seekSec != null
+            ? '<button type="button" class="scene-play" data-scene-play="' + i + '" title="Odtwórz od sceny">&#9654;</button>'
+            : '';
+        html.push(
+          '<div class="scene-item" data-scene="' + i + '" role="button" tabindex="0">' +
+            '<span class="scene-t">' + escHtml(sc.tApprox || '') + '</span>' +
+            '<span class="scene-title">' + escHtml(sc.title) + '</span>' +
+            playBtn +
+          '</div>'
+        );
+      }
+      sceneNavEl.innerHTML = html.join('');
+    })();
+
+    // ------------------------------------------------------------------
+    // Row lookups by index (array position === payload.utterances index)
+    // ------------------------------------------------------------------
+
+    function rowElAt(idx) {
+      return rowsEl.querySelector('.row[data-idx="' + idx + '"]');
+    }
+
+    function isInViewport(el, container) {
+      var r = el.getBoundingClientRect();
+      var c = container.getBoundingClientRect();
+      return r.top >= c.top && r.bottom <= c.bottom;
+    }
+
+    function setActiveRow(idx, scrollIfNeeded) {
+      var el = rowElAt(idx);
+      if (!el) return;
+      if (activeRowEl) activeRowEl.classList.remove('active');
+      el.classList.add('active');
+      activeRowEl = el;
+      // T7: while a search filter is active, most rows are display:none
+      // and the "active" row from follow-mode may itself be hidden —
+      // don't fight the user's filtered view with an auto-scroll.
+      if (scrollIfNeeded && !filterActive && !isInViewport(el, rowsEl.parentElement)) {
+        el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      }
+    }
+
+    function findSceneForIdx(idx) {
+      var scenes = payload.scenes || [];
+      for (var i = 0; i < scenes.length; i++) {
+        if (idx >= scenes[i].startIdx && idx <= scenes[i].endIdx) return i;
+      }
+      return null;
+    }
+
+    function setActiveScene(i) {
+      if (activeSceneEl) activeSceneEl.classList.remove('active');
+      if (i == null) { activeSceneEl = null; return; }
+      var el = sceneNavEl.querySelector('.scene-item[data-scene="' + i + '"]');
+      if (!el) return;
+      el.classList.add('active');
+      activeSceneEl = el;
+    }
+
+    // ------------------------------------------------------------------
+    // Scene click → scroll transcript + seek audio (no autoplay).
+    // Scene "▶" button → same, but also plays.
+    // ------------------------------------------------------------------
+
+    function seekToScene(i, autoplay) {
+      var sc = (payload.scenes || [])[i];
+      if (!sc) return;
+      // T7 fix: a scene's rows may currently be hidden by the text filter —
+      // clear it first so the scroll target is actually visible.
+      if (filterActive) clearSearchFilter();
+      var rowEl = rowElAt(sc.startIdx);
+      if (rowEl) rowEl.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      if (hasAudio && sc.seekSec != null) {
+        audioEl.currentTime = sc.seekSec;
+        if (autoplay) audioEl.play().catch(function () {});
+      }
+      setActiveScene(i);
+      setActiveRow(sc.startIdx, false);
+    }
+
+    sceneNavEl.addEventListener('click', function (e) {
+      var playBtn = e.target.closest('[data-scene-play]');
+      if (playBtn) {
+        e.stopPropagation();
+        seekToScene(parseInt(playBtn.dataset.scenePlay, 10), true);
+        return;
+      }
+      var item = e.target.closest('[data-scene]');
+      if (item) seekToScene(parseInt(item.dataset.scene, 10), false);
+    });
+
+    sceneNavEl.addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      var item = e.target.closest('[data-scene]');
+      if (!item) return;
+      e.preventDefault();
+      seekToScene(parseInt(item.dataset.scene, 10), false);
+    });
+
+    // ------------------------------------------------------------------
+    // Row click → seek audio only (no autoplay). Rows with sec == null
+    // (not marked .seekable) are inert for this purpose.
+    // Row "▶" button → same, but also plays (mirrors the scene-play
+    // pattern above). Single delegated listener on #rows, not one per
+    // row — with 4693 utterances that's the only viable approach.
+    // ------------------------------------------------------------------
+
+    rowsEl.addEventListener('click', function (e) {
+      var playBtn = e.target.closest('[data-row-play]');
+      if (playBtn) {
+        e.stopPropagation();
+        if (!hasAudio) return;
+        var pIdx = parseInt(playBtn.dataset.rowPlay, 10);
+        var pu = payload.utterances[pIdx];
+        if (!pu || pu.sec == null) return;
+        audioEl.currentTime = pu.sec;
+        audioEl.play().catch(function () {});
+        setActiveRow(pIdx, false);
+        setActiveScene(findSceneForIdx(pIdx));
+        return;
+      }
+      var el = e.target.closest('.row[data-idx]');
+      if (!el || !el.classList.contains('seekable') || !hasAudio) return;
+      var idx = parseInt(el.dataset.idx, 10);
+      var u = payload.utterances[idx];
+      if (!u || u.sec == null) return;
+      audioEl.currentTime = u.sec;
+      setActiveRow(idx, false);
+      setActiveScene(findSceneForIdx(idx));
+    });
+
+    // ------------------------------------------------------------------
+    // Audio wiring: hidden + explanatory note when the package has no
+    // audio (meta.audioSrc === null) — the transcript stays fully usable,
+    // only seeking is unavailable. Also degrades gracefully if the sibling
+    // audio file failed to load (e.g. the package wasn't fully unzipped).
+    // ------------------------------------------------------------------
+
+    if (hasAudio) {
+      audioEl.src = payload.meta.audioSrc;
+      audioEl.hidden = false;
+      followWrapEl.hidden = false;
+
+      audioEl.addEventListener('error', function () {
+        hasAudio = false;
+        audioEl.hidden = true;
+        followWrapEl.hidden = true;
+        noAudioNoteEl.hidden = false;
+        noAudioNoteEl.textContent =
+          'Nie udało się wczytać pliku audio — sprawdź, czy folder audio/ jest rozpakowany obok index.html. Transkrypt działa normalnie.';
+      });
+
+      // Follow mode: throttled to >=500ms so a 4693-row binary search
+      // doesn't run on every timeupdate tick.
+      var sortedBySec = [];
+      payload.utterances.forEach(function (u, idx) {
+        if (u.sec != null) sortedBySec.push({ sec: u.sec, idx: idx });
+      });
+      sortedBySec.sort(function (a, b) { return a.sec - b.sec; });
+
+      function findActiveIdxForTime(t) {
+        var lo = 0, hi = sortedBySec.length - 1, ans = -1;
+        while (lo <= hi) {
+          var mid = (lo + hi) >> 1;
+          if (sortedBySec[mid].sec <= t) { ans = mid; lo = mid + 1; } else hi = mid - 1;
+        }
+        return ans >= 0 ? sortedBySec[ans].idx : null;
+      }
+
+      var lastFollowTs = 0;
+      audioEl.addEventListener('timeupdate', function () {
+        var now = performance.now();
+        if (now - lastFollowTs < 500) return;
+        lastFollowTs = now;
+        var idx = findActiveIdxForTime(audioEl.currentTime);
+        if (idx == null) return;
+        setActiveRow(idx, followCheckbox.checked);
+        setActiveScene(findSceneForIdx(idx));
+      });
+    } else {
+      audioEl.hidden = true;
+      followWrapEl.hidden = true;
+      noAudioNoteEl.hidden = false;
+    }
+
+    // ------------------------------------------------------------------
+    // Transcript search filter (T7) — case/diacritic-insensitive substring
+    // match over utterance text + speaker name. The searchable string per
+    // row is precomputed once at load, so each keystroke is a cheap scan
+    // over 4-5k short strings rather than a live normalize() per row.
+    // Filtering toggles a class (display:none), which overrides
+    // content-visibility:auto and drops hidden rows from layout — the
+    // same near-zero-cost trick the initial render relies on.
+    // ------------------------------------------------------------------
+
+    (function initSearch() {
+      var searchInputEl = document.getElementById('searchInput');
+      var searchCountEl = document.getElementById('searchCount');
+      var rowEls = rowsEl.children; // live collection; position === utterance index
+
+      var searchIndex = payload.utterances.map(function (u) {
+        var sp = speakerById[u.spk];
+        var name = (sp && sp.name) || u.spk || '';
+        return normalizeForSearch(u.text + ' ' + name);
+      });
+
+      // Polish plural: 1 trafienie / 2-4 trafienia / 5+ trafień.
+      function trafienWord(n) {
+        if (n === 1) return 'trafienie';
+        var d = n % 10, h = n % 100;
+        if (d >= 2 && d <= 4 && (h < 12 || h > 14)) return 'trafienia';
+        return 'trafień';
+      }
+
+      function applyFilter(rawQuery) {
+        var q = normalizeForSearch(rawQuery);
+        if (!q) {
+          filterActive = false;
+          for (var i = 0; i < rowEls.length; i++) rowEls[i].classList.remove('hidden-by-filter');
+          searchCountEl.textContent = '';
+          return;
+        }
+        filterActive = true;
+        var count = 0;
+        for (var j = 0; j < rowEls.length; j++) {
+          var match = searchIndex[j].indexOf(q) !== -1;
+          rowEls[j].classList.toggle('hidden-by-filter', !match);
+          if (match) count++;
+        }
+        searchCountEl.textContent = count + ' ' + trafienWord(count);
+      }
+
+      var debounceTimer = null;
+      searchInputEl.addEventListener('input', function () {
+        var value = searchInputEl.value;
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(function () { applyFilter(value); }, 300);
+      });
+
+      clearSearchFilter = function () {
+        clearTimeout(debounceTimer);
+        searchInputEl.value = '';
+        applyFilter('');
+      };
+    })();
+  })();
+  </script>
+</body>
+</html>

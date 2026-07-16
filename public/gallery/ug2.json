@@ -1,0 +1,142 @@
+{
+  "caseKey": "ug2",
+  "title": "Urodzaj Grozy — galeria",
+  "caseName": "Urodzaj Grozy",
+  "scenes": [
+    {
+      "src": "/img/ug2/speakeasy.jpg",
+      "caption": "Rhymers Club w Old State House — speakeasy, gdzie McBride wzywa swoją ekipę za kotarą z napisem „private\".",
+      "alt": "Speakeasy Rhymers Club"
+    },
+    {
+      "src": "/img/ug2/mcbride.jpg",
+      "caption": "Declan McBride, szef organizacji, stawia na stole dwie butelki: pospolity bimber i „fenomenalny\" złoty trunek z Blackwater Creek.",
+      "alt": "Declan McBride"
+    },
+    {
+      "src": "/img/ug2/brock.jpg",
+      "caption": "Brock, przywiązany do krzesła w zapleczu speakeasy — po przesłuchaniu wydaje nazwisko Damiena Carmody'ego.",
+      "alt": "Przesłuchanie Brocka"
+    },
+    {
+      "src": "/img/ug2/town.jpg",
+      "caption": "Blackwater Creek — kościół i błotnisty rozjazd pośród pól, na zachód od Arkham.",
+      "alt": "Miasteczko Blackwater Creek"
+    },
+    {
+      "src": "/img/ug2/sprouston.jpg",
+      "caption": "Dick Sprouston, pastor i zarazem szeryf Blackwater Creek — ostrzega przed braćmi Carmody.",
+      "alt": "Dick Sprouston"
+    },
+    {
+      "src": "/img/ug2/carmody.jpg",
+      "caption": "Damien Carmody przy bimbrowni — zgadza się negocjować dystrybucję złotego trunku.",
+      "alt": "Damien Carmody"
+    },
+    {
+      "src": "/img/ug2/farm_carmody.jpg",
+      "caption": "Farma braci Carmody — pole kukurydzy ze strachem na wróble i bimbrownia, scena nocnego zwiadu i porannej strzelaniny.",
+      "alt": "Farma braci Carmody"
+    },
+    {
+      "src": "/img/ug2/boar.jpg",
+      "caption": "Skażone zwierzę z okolic farmy — ślad Daru Matki krążącego po Blackwater Creek.",
+      "alt": "Skażone zwierzę — Dar Macierzy"
+    },
+    {
+      "src": "/img/ug2/farm_jarvey.jpg",
+      "caption": "Farma Jarveyów — z bajorem, przy którym siedział Stary Pete.",
+      "alt": "Farma Jarveyów"
+    },
+    {
+      "src": "/img/ug2/pete.jpg",
+      "caption": "Stary Pete, alkoholiczny parobek Jarveyów — z ust cieknie mu cienka czarna maź.",
+      "alt": "Stary Pete"
+    },
+    {
+      "src": "/img/ug2/dig.jpg",
+      "caption": "Porzucone wykopalisko profesora Roadesa — rozkopane rowy nad wyschniętym strumieniem, pełne spalonych, zdeformowanych kości.",
+      "alt": "Wykopalisko profesora Roadesa"
+    },
+    {
+      "src": "/img/ug2/jar.jpg",
+      "caption": "Słój z rozpuszczonymi dżdżownicami, odkupiony przez Westa od dzieciaków — dowód, że woda trawi mięso, lecz nie kości.",
+      "alt": "Słój Westa z rozpuszczonymi dżdżownicami"
+    },
+    {
+      "src": "/img/ug2/brendan.jpg",
+      "caption": "Brendan Carmody — Dziecię Macierzy, przemieniony „strach na wróble\" z nocnej warty.",
+      "alt": "Brendan Carmody — istota z kukurydzy"
+    },
+    {
+      "src": "/img/ug2/james_death.jpg",
+      "caption": "James Kelly ginie na farmie — przebity na wylot i rozerwany na pół przez Brendana.",
+      "alt": "Śmierć Jamesa Kelly'ego"
+    },
+    {
+      "src": "/img/ug2/roades.jpg",
+      "caption": "Profesor Henry Roades, uwolniony z podziemi farmy — zniewolony przez Matkę, błaga o zaniesienie go do jaskini.",
+      "alt": "Henry Roades"
+    },
+    {
+      "src": "/img/ug2/camp_roades.jpg",
+      "caption": "Sprzęt archeologiczny i książki znalezione w ciężarówce — dobytek zaginionego profesora Roadesa.",
+      "alt": "Obóz i sprzęt profesora Roadesa"
+    },
+    {
+      "src": "/img/ug2/cave_entrance.jpg",
+      "caption": "Wejście do jaskini w górę rzeki — u źródła skażonej wody zasilającej pola.",
+      "alt": "Wejście do jaskini"
+    },
+    {
+      "src": "/img/ug2/cave_interior.jpg",
+      "caption": "Wnętrze jaskini — wypłukane koryto między skarpami, w głębi jezioro Matki.",
+      "alt": "Wnętrze jaskini"
+    },
+    {
+      "src": "/img/ug2/mother.jpg",
+      "caption": "Matka — Abigail Roades, awatar wynurzający się z jaskinnego jeziora.",
+      "alt": "Matka — Abigail Roades"
+    },
+    {
+      "src": "/img/ug2/explosion.jpg",
+      "caption": "Ładunek dynamitu wybucha w jaskini — eksplozja rozrywa Matkę na kawałki i zawala strop.",
+      "alt": "Eksplozja w jaskini"
+    },
+    {
+      "src": "/img/ug2/dam.jpg",
+      "caption": "Tama u źródła jaskini, zasilająca skażone pola kukurydzy.",
+      "alt": "Tama nad Blackwater Creek"
+    },
+    {
+      "src": "/img/ug2/brock_window.jpg",
+      "caption": "Brock w oknie mieszkania Josepha — informator, który „przeżył\" egzekucję dzięki darowi Matki. (Realny powrót czy wyrzut sumienia — MG zostawia niejednoznacznie.)",
+      "alt": "Brock w oknie"
+    }
+  ],
+  "cast": [
+    { "src": "/img/ug2/cast/mort.jpg", "character": "Mortimer „Mort\" Flannery", "player": "Jakub" },
+    { "src": "/img/ug2/cast/james.jpg", "character": "James Kelly", "player": "Nika" },
+    { "src": "/img/ug2/cast/joseph.jpg", "character": "Joseph Kelly", "player": "Rafał" },
+    { "src": "/img/ug2/cast/fritz.jpg", "character": "Friedrich „Fritz\" Mueller", "player": "Kamil" },
+    { "src": "/img/ug2/cast/mcmiller.jpg", "character": "Cormac McMiller", "player": "Piotr" },
+    { "src": "/img/ug2/cast/corwin.jpg", "character": "Dr Arthur Henry Corwin", "player": "Jakub" },
+    { "src": "/img/ug2/cast/eleine.jpg", "character": "Dr Elaine Howard", "player": "Nika" },
+    { "src": "/img/ug2/cast/west.jpg", "character": "Dr Herbert West", "player": "Rafał" },
+    { "src": "/img/ug2/cast/wallace.jpg", "character": "Wallace Harvey", "player": "Kamil" },
+    { "src": "/img/ug2/cast/cavendish.jpg", "character": "Dr Cecil Cavendish", "player": "Piotr" }
+  ],
+  "tracks": [
+    { "src": "/audio/ug2/crossfire.mp3", "title": "Krzyżowy ogień" },
+    { "src": "/audio/ug2/docks.mp3", "title": "Doki Bostonu" },
+    { "src": "/audio/ug2/moss.mp3", "title": "Mech i bagno" },
+    { "src": "/audio/ug2/orchard.mp3", "title": "Kukurydziane pole" },
+    { "src": "/audio/ug2/root.mp3", "title": "Korzenie Matki" }
+  ],
+  "links": [
+    { "label": "Streszczenie", "to": "/p/sprawy/02-urodzaj-grozy/01-streszczenie" },
+    { "label": "Pełna narracja", "to": "/p/sprawy/02-urodzaj-grozy/02-narracja" },
+    { "label": "Prezentacja filmowa", "to": "/p/sprawy/02-urodzaj-grozy/03-prezentacja" },
+    { "label": "Transkrypt", "to": "/sesje/ug2" }
+  ]
+}

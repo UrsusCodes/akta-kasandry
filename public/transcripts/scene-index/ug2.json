@@ -1,0 +1,82 @@
+{
+  "slug": "ug2",
+  "scenes": [
+    {
+      "id": "prolog-mcbride",
+      "title": "Prolog i wezwanie do McBride'a",
+      "uStart": "00d78428ad8e",
+      "uEnd": "5835c7a73370",
+      "tApprox": "00:59"
+    },
+    {
+      "id": "brock-trop",
+      "title": "Brock i trop na Blackwater Creek",
+      "uStart": "6a4de39928af",
+      "uEnd": "5ea12999e158",
+      "tApprox": "16:16"
+    },
+    {
+      "id": "zlecenie-degustacja",
+      "title": "Zlecenie i degustacja złotego trunku",
+      "uStart": "0b660dc80198",
+      "uEnd": "e3a66bc7b6c7",
+      "tApprox": "40:30"
+    },
+    {
+      "id": "pastor-sklep-farma",
+      "title": "Pastor, sklepikarz i farma Carmodych",
+      "uStart": "66f8c76d776b",
+      "uEnd": "759774161672",
+      "tApprox": "60:41"
+    },
+    {
+      "id": "noc-strzelanina",
+      "title": "Noc na farmie i pierwsza strzelanina",
+      "uStart": "fb03bacf313b",
+      "uEnd": "fb03bacf313b",
+      "tApprox": "75:18"
+    },
+    {
+      "id": "stary-pete-wykopalisko",
+      "title": "Stary Pete i porzucone wykopalisko",
+      "uStart": "3b313bfb1e3f",
+      "uEnd": "4d951c55723d",
+      "tApprox": "85:03"
+    },
+    {
+      "id": "sekta-kosci",
+      "title": "Purytańska sekta i spalone kości",
+      "uStart": "4d951c55723d",
+      "uEnd": "0c0cd7d741fe",
+      "tApprox": "89:42"
+    },
+    {
+      "id": "bitwa-farma",
+      "title": "Bitwa na farmie i śmierć Jamesa",
+      "uStart": "2a8b3928b40e",
+      "uEnd": "7f976a645714",
+      "tApprox": "109:48"
+    },
+    {
+      "id": "roades-matka",
+      "title": "Roades i „święte źródło Matki”",
+      "uStart": "3c8768eea70a",
+      "uEnd": "e18f5b6715b1",
+      "tApprox": "127:17"
+    },
+    {
+      "id": "zawalenie-jaskini",
+      "title": "Zawalenie jaskini",
+      "uStart": "c3a7c3ed39af",
+      "uEnd": "5f24b27c1793",
+      "tApprox": "141:38"
+    },
+    {
+      "id": "epilog-kasandra",
+      "title": "Epilog — powrót Brocka i Klub Kasandry",
+      "uStart": "a37238c0d8c5",
+      "uEnd": "8447a48aaedf",
+      "tApprox": "156:15"
+    }
+  ]
+}

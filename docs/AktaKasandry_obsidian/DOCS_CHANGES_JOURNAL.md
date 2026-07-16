@@ -11,6 +11,420 @@ Per-session changelog. Most recent on top. See `[[LOGGING_INSTRUCTIONS]]` for th
 
 ---
 
+## 2026-07-15 — Session vault + rozdarte-sumienie worked example + presentation-kit audio fix (V0–V7 complete)
+
+Implementation session for the **session vault** — a per-session, self-contained Obsidian
+folder that bundles the rewritten summary, a free-form notes file, the transcript tool, and
+the presentation kit, for one assigned player to correct offline before anything from that
+session is published. Executed from `docs/superpowers/plans/2026-07-15-session-vault.md`
+(tasks V0a/V0b/V1–V7); design: `docs/superpowers/specs/2026-07-15-session-vault-design.md`.
+Also: `rozdarte-sumienie` run through the **full pipeline end-to-end for the first time**
+(rpg-recorder → overlay → digest → package → presentation kit → vault), and a real bug fix
+to the presentation kit's exported-deck audio.
+
+**Files touched:**
+- `scripts/build-package.ts`, `scripts/build-presentation-kit.ts` — MODIFIED; behavior-preserving
+  extraction of `buildSessionPackage({ slug, audioPath, outDir, dataDir? })` and
+  `buildPresentationKit({ slug, outDir, galleryPath? })` out of each CLI's `main()`. Each
+  `main()` is now a thin wrapper (parse argv → compute `outDir` → call the exported fn → print
+  the same hints as before); both functions are import-safe (no side effects at import time),
+  which is what lets the vault builder invoke both tools without reimplementing either.
+- `scripts/lib/vault-summary.ts` (+ `vault-summary.test.ts`, 27 tests) — NEW; pure Obsidian-markdown
+  rewrite of a digest draft: `formatClock`, `sceneForIndex` (exact containment, else *preceding*
+  scene flagged `exact: false`, else scene 1), `rewriteDeepLinks` (`{sesja:<slug>#<id>}` →
+  `(scena N · ~H:MM:SS)<!--rs:id-->`, ranges get both clocks, unknown ids throw naming the id,
+  tokens inside code spans left literal), `rewriteImageEmbeds` (`<img src="/img/<slug>/...">` /
+  markdown images → `![[basename]]`), `rewriteSesjeLinks` (`/sesje/<slug>` cross-page links →
+  a pointer at the vault's own `Narzędzia/transkrypt/index.html`, foreign-slug links left
+  untouched), `collectMediaBasenames`, `questionsToCallouts` (wraps "Pytania i wątpliwości"
+  paragraphs as `[!question]` callouts; a trailing `{q-after:<heading>}` marker relocates the
+  callout next to a matching `### <heading>`, fail-soft if the heading doesn't exist), and the
+  composing `rewriteSummaryToObsidian` (replaces the draft's internal "WERSJA ROBOCZA" banner
+  with a player-facing note, prepends YAML frontmatter, runs all the above in order).
+- `scripts/lib/vault-manifest.ts` (+ `vault-manifest.test.ts`, 8 tests) — NEW; `planVaultFiles(slug)`,
+  a pure data function returning the exact vault-relative paths the builder writes for the
+  static/derived parts (excludes the two tool subtrees, owned by the reused builders).
+- `scripts/vault-template/**` — NEW; ASCII-named static template tree (`START TUTAJ.md`,
+  `Komentarz do AI.md`, `Narzedzia/Otworz narzedzia.md`, `Media/_Wrzuc tu media.md`,
+  `dot-obsidian/{app,appearance}.json`, empty `Media/{portrety,sceny,muzyka,zdjecia-z-gry,materialy}/`
+  via `.gitkeep`); the builder renames to the Polish-diacritic vault paths on write.
+- `scripts/build-session-vault.ts` — NEW; CLI (`npm run build-session-vault -- <slug> [--summary]
+  [--audio] [--out]`). Resolves the overlay + scene-index, discovers (or takes `--summary`) the
+  digest draft, runs `rewriteSummaryToObsidian`, writes `packages/<slug>-vault/` from
+  `planVaultFiles` + the templates (function-form token replacement + occurrence-count drift
+  guards, same style as the other two builders), builds the transcript tool via
+  `buildSessionPackage` at `Narzędzia/transkrypt/` (Sala audio from `--audio` or the
+  `packages/_audio-src/<slug>-sala.opus` default, else a no-audio tool), builds the presentation
+  kit via `buildPresentationKit` at `Narzędzia/prezentacja/`, and — a builder enhancement beyond
+  the original plan — **copies the session's gallery scene/cast images into vault `Media/`** so
+  the rewritten summary's `![[...]]` embeds resolve immediately for anything already in the
+  gallery manifest, without a separate media-drop step. Prints per-area sizes, the zip command,
+  and the Drive/assignment hint, same shape as the other two CLIs.
+- `package.json` — MODIFIED; `"build-session-vault": "tsx scripts/build-session-vault.ts"`.
+- `docs/RUNBOOKS/session-vault.md` — NEW; GM runbook mirroring `session-package.md`'s shape:
+  prerequisites → (optional) Sala mix → build → (optional) enrich media + re-run → zip → Drive +
+  assignment (with a ready-to-paste Polish player message) → round trip (feed the corrected
+  files to Akta's AI, which restores `<!--rs:ID-->` → `{sesja:…#ID}`, never auto-applied) →
+  caveats (unzip-before-open, `.opus`/Safari, clean-rebuild-on-rerun, media placeholders,
+  never-committed `packages/`).
+- `scripts/build-presentation-kit.ts`, `scripts/kit-template/edytor.html`,
+  `scripts/kit-template/kit-core.js` (+ `kit-core.test.ts`, now 32 tests) — MODIFIED; **audio
+  self-containment fix**. A player who downloaded or moved an exported `prezentacja.html` (or
+  the edited `edytor.html`) away from its build-time `assets/audio/` folder found the deck's
+  music silent — tracks were referenced by relative path, not embedded. Fixed by base64-encoding
+  every *used* track into a sibling `assets/tracks-data.js` (`window.__KIT_TRACKS__`, basename →
+  data URI), loaded by both the editor's live preview and the exported deck's own inline script
+  (`KitCore.serializeSlidesJs` now accepts the track-data map as a second argument); added a
+  "Posłuchaj" preview button next to each act's track picker in the editor so authors can audit
+  the choice without building a full preview. `docs/RUNBOOKS/presentation-kit.md`'s old
+  "edit the `AUDIO_BASE` line before publishing" step is gone — the export is already fully
+  self-contained, so publishing a reviewed deck is now a straight file copy.
+- `public/transcripts/data/rozdarte-sumienie-current-overlay.json` — NEW (gitignored data,
+  tracked in-repo like the other overlays); concat timeline, 27023.4 s (~7 h 30 m), 4449
+  utterances, 7 speakers (Nika G, Jakub M, Rafał G., Paweł MG, Piotr S., Kamil K., and a
+  dedicated "Sala" room-mic channel) — rebuilt from **4 separate rpg-recorder runs** after
+  working around a stitch bug in that pipeline (their software; tracked as a backlog note for
+  rpg-recorder, not fixed here).
+- `public/transcripts/data/variants.json` — MODIFIED; registers `rozdarte-sumienie`'s
+  `default_variant: "current"`.
+- `public/transcripts/scene-index/rozdarte-sumienie.json` — NEW; 16 scenes.
+- `public/gallery/rozdarte-sumienie.json` — NEW; 20 scenes/handouts, 10 cast, 8 tracks,
+  `caseName: "Rozdarte Sumienie"`.
+- `docs/superpowers/drafts/2026-07-15-rozdarte-sumienie-summary.md` — NEW; the `session-digest`
+  skill's draft output, WERSJA ROBOCZA, with 60 `{sesja:...}` deep-link tokens, several
+  characters flagged *(imię niepewne)*, and a "Pytania i wątpliwości" section — this is the
+  file `build-session-vault` rewrites.
+- `public/img/rozdarte-sumienie/`, `public/audio/rozdarte-sumienie/` — NEW; real media
+  compressed from a ~180 MB source down to ~32 MB (31 images/6.7 MB — 10 scene photos, 10 cast
+  portraits incl. Fisk, Kent, Gundberg, Tommy Malone, and 11 tome-handout `.webp` pages; 8 music
+  tracks/26 MB).
+- `docs/AktaKasandry_obsidian/{TASK_LIST.md, DOCS_CHANGES_JOURNAL.md, work/2026-07-15-session-vault.md, work/Index.md, memories/project.md}` — this entry (V7).
+- `.claude/skills/session-digest/references/outputs.md` — MODIFIED; documents that the same
+  digest draft also feeds `build-session-vault`, and the optional `{q-after:<heading>}` marker.
+
+**rozdarte-sumienie — first session through the full pipeline, end to end:** the pilot plan
+recorded in the 2026-07-14 journal entry ("run the full pipeline end-to-end for the first
+time") is now real. `rpg-recorder` → overlay lands in this repo → `session-digest` drafts the
+summary → `build-package` / `build-presentation-kit` / `build-session-vault` all run against
+real data → a 153 MB vault (zip ~103 MB) built at `packages/rozdarte-sumienie-vault/`. The one
+irregularity worth recording: the session's audio arrived as **4 separate recorder runs**
+instead of one continuous capture, which triggered a stitch bug in rpg-recorder's overlay
+assembly; the overlay used here was rebuilt working around that bug by hand — a proper fix
+belongs in rpg-recorder, not this repo, and is noted as a backlog item there.
+
+**Decisions:**
+- **The vault reuses, never reimplements, the session package and presentation kit.** Both
+  gained an exported, `outDir`-parameterized function (V0a/V0b) specifically so
+  `build-session-vault.ts` could call them in place — no duplicated viewer/editor logic, no
+  divergence risk between the standalone tools and their vault-embedded copies.
+- **The deep-link restore contract is the design's load-bearing rule, same shape as the
+  presentation kit's `szkic.json` boundary.** `{sesja:<slug>#<id>}` becomes a visible
+  `(scena N · ~H:MM:SS)` label plus an invisible `<!--rs:id-->` HTML comment — invisible in
+  Obsidian's reading view, but exactly the string Akta's AI needs to reconstruct the original
+  site token later, with zero manual re-linking. If a comment is ever lost (a player edits it
+  away), the un-rewritten draft in `docs/superpowers/drafts/` remains the source of truth to
+  re-derive it from.
+- **Out-of-range deep-link ids resolve to the *preceding* scene, not the nearest.** The scene
+  index is a sparse subset of the full utterance range (verified during planning: 20 of 55
+  distinct anchors in the rozdarte-sumienie draft fall outside every scene's index range), so
+  containment alone isn't sufficient; `sceneForIndex` falls back to "the last scene that had
+  already started" and flags the result `~N` (not exact) rather than silently picking either
+  neighbor.
+- **The round trip is never auto-applied** — same posture as `session-feedback`: Akta's AI
+  restores tokens and folds `Komentarz do AI.md` + inline corrections into a draft/diff; a
+  human reviews and merges it by hand before it becomes the live summary.
+- **Copying gallery images into vault `Media/` at build time is a deliberate builder
+  enhancement beyond the original plan** — it removes the need for a manual media-drop step for
+  any image the session's gallery manifest already knows about; `Media/` still exists as a
+  drop-zone for anything the gallery doesn't have yet (portraits/scenes the GM hasn't gotten to,
+  player-contributed photos), and re-running the builder after adding to either source picks
+  up both.
+- **Presentation-kit audio self-containment was a real fix, not a caveat.** A deck that isn't
+  self-contained defeats the entire point of a downloadable, `file://`-openable artifact — the
+  `assets/tracks-data.js` approach mirrors the same base64-inlining rationale already used for
+  images (blocked `fetch()`, canvas tainting under `file://`), extended to audio because the
+  earlier "copy as sibling file" choice for audio assumed the file would never be separated
+  from its folder, which turned out false once decks get downloaded/moved/emailed around.
+
+**Verification.** Full suite **134/134** Vitest tests green (new: 27 in `vault-summary.test.ts`,
+8 in `vault-manifest.test.ts`; `kit-core.test.ts` grew from 26 to 32 for the audio fix); `npx
+tsc -b` clean; `git status` clean of `packages/**`; no site source file modified beyond
+`scripts/`, `docs/`, `package.json`, and the digest skill's `outputs.md`. **No commit made this
+session** — working tree handed to the GM per the plan's hard constraint.
+
+**Open questions / next steps (GM manual actions, tracked in [[TASK_LIST]]):**
+- Open `packages/rozdarte-sumienie-vault/` in Obsidian ("Open folder as vault") to visually
+  confirm reading view, deep-link labels, image embeds, and `[!question]` callouts — the one
+  verification step the sandbox couldn't perform.
+- Resolve the remaining uncertain character/NPC identities flagged inline in the
+  rozdarte-sumienie draft's "Pytania i wątpliwości" section.
+- Eventual site-publish of the corrected rozdarte-sumienie summary once the assigned player's
+  round trip comes back, feeding the existing Stage K/L pipeline (case hub, comments, gallery,
+  package, presentation).
+- Flag the 4-run stitch bug to rpg-recorder's own backlog (their pipeline, not this repo's).
+
+---
+
+## 2026-07-15 — Presentation kit: player self-service slide editor (K1–K6 complete)
+
+Implementation session for the **presentation kit** — a downloadable, self-contained slide editor
+(`edytor.html` + audio) that lets players assemble their own cinematic recap deck using the
+`cinematic-slideshow` engine and a session's gallery art, without ever giving them a way to
+publish HTML to the live site. Executed from `docs/superpowers/plans/2026-07-15-presentation-kit.md`
+(tasks K1–K6); design: `docs/superpowers/specs/2026-07-15-presentation-kit-design.md`.
+
+**Files touched:**
+- `scripts/kit-template/kit-core.js` (+ `kit-core.test.ts`, 26 tests) — NEW; dependency-free IIFE
+  (`globalThis.KitCore`), loadable both as a classic inline `<script>` and via Vitest import:
+  `newDraft`/`validateDraft`, `escapeHtml`, `draftToEngineData` (HTML-escapes every player-typed
+  text field), `serializeSlidesJs` (escapes literal `<` in its output), `collectImageRefs`,
+  `draftByteSize`. Includes a regression test for the HTML-embedding bug found in K5 (below).
+- `scripts/kit-template/edytor.html` — NEW; the 3-panel Cthulhu-skinned editor (slide list / fields
+  / live `<iframe srcdoc>` preview), autosave to `localStorage` (debounced, 4 MB warning), szkic
+  file export/import, `prezentacja.html` export — all zero-network, Polish UI.
+- `scripts/build-presentation-kit.ts` — NEW; CLI generator (`npm run build-presentation-kit --
+  <slug> [--out <dir>]`), reads `public/gallery/<slug>.json` + the engine sources under
+  `public/prezentacja/ug2/`, embeds every scene/cast image as a base64 data-URL at **build time**
+  (images must be inlined — `fetch()` is blocked and `file://` images taint canvas), copies audio
+  tracks as plain sibling files, injects tokens into `edytor.html` with occurrence-count drift
+  guards — including a **new `</script`-in-source guard** added after the K5 blocker (below) that
+  asserts none of the injected payloads contain a literal `</script` before writing the file.
+- `package.json` — MODIFIED; `"build-presentation-kit": "tsx scripts/build-presentation-kit.ts"`.
+- `docs/RUNBOOKS/presentation-kit.md` — NEW; GM runbook (build → zip → Drive → player instructions
+  → **receive & publish**, with the trust-boundary callout as a `[!warning]` box). Corrected this
+  session: Step 5.5 originally described a commented-out `AUDIO_BASE` alternative line to
+  uncomment; the actual generated deck has only one line
+  (`const AUDIO_BASE = "assets/audio/";`, no commented alternative) — reworded to "edit that one
+  line to `../../audio/<slug>/`".
+- `public/gallery/ug2.json` (and the manifest schema) — gained an optional `caseName` field
+  (`"Urodzaj Grozy"` for `ug2`) used by the kit's editor title / player-facing labels.
+- `docs/AktaKasandry_obsidian/{TASK_LIST.md, DOCS_CHANGES_JOURNAL.md, work/2026-07-15-presentation-kit.md, work/2026-07-14-session-companion.md, work/Index.md, memories/project.md}` — this entry (K6).
+
+**K5 dry run — one real blocker found and fixed:**
+Building the UG2 kit and opening `edytor.html` initially produced a dead editor (page loaded, no
+JS ran). Root cause: `kit-core.js` had a **source comment** containing the literal string
+`</script>` (documenting the JSON output format); when the builder inlined `kit-core.js`'s source
+into `edytor.html`'s `<script>` block, the browser's HTML tokenizer — which doesn't parse
+JavaScript, only scans for the literal closing tag — truncated the script right there, silently.
+Fixed by rewording the comment and adding the build-time drift guard described above. After the
+fix, re-ran the full checklist — **ALL PASS**: 6-slide deck built via real UI events (all 5
+templates, 2 acts on different tracks, both Ken Burns variants, one custom-uploaded PNG, Polish
+diacritics, a literal `<b>xss</b>` title escaped end-to-end in preview and export); autosave
+survives reload; szkic export→reset→import round-trips to a deep-equal draft; exported
+`prezentacja.html` (552 KB) opens and plays fully (audio serves HTTP 206 from `assets/audio/`);
+zip 23.5 MB, unzip-and-reopen OK; local publish simulation (deck copied under a test route,
+`AUDIO_BASE` flipped to the site's audio path, played against real site audio, then the test
+folder deleted, nothing committed) PASS. Full suite 93/93, `tsc -b` clean. Caveat: verification
+ran over local HTTP because the sandbox rejects `file://` navigation (template performs zero
+fetches either way, so considered equivalent) — the GM still owes a true `file://` open from disk.
+
+**Decisions:**
+- **The round-trip artifact between player and GM is `szkic.json`, never `prezentacja.html`.**
+  The `cinematic-slideshow` engine interpolates slide text without HTML-escaping it, and a
+  published deck runs same-origin with the live site — so a player-exported HTML file is
+  arbitrary, untrusted markup. **Never publish a player-sent `prezentacja.html` verbatim.** The
+  GM instead imports the player's `szkic.json` into their own kit copy, reviews every slide's
+  text, and re-exports — `KitCore`'s `escapeHtml`/`serializeSlidesJs` guarantee the GM's own
+  re-export can never contain unescaped player-authored markup, no matter what the player sent.
+- **Images inlined as data-URLs at build time** (forced by the `file://` constraint: blocked
+  `fetch()`, canvas-tainting); **audio copied as plain sibling files, not inlined** (same
+  don't-triple-multi-MB-media-into-HTML precedent as the Iteration-2 session package).
+- **`</script`-in-source is now a build-time drift guard**, not only an escaping rule — the K5 bug
+  originated in the pipeline's own source code, not player input, so text-escaping alone wouldn't
+  have caught it; the builder now asserts-before-write on every injected payload.
+- **No new dependency, no schema change, no site source changes** — the kit only reads existing
+  gallery manifests and engine files; publishing a reviewed deck remains a manual GM step,
+  identical in shape to how the original `cinematic-slideshow` decks are published.
+
+**Open questions / next steps (GM manual actions, tracked in [[TASK_LIST]]):**
+- Upload `packages/ug2-prezentacja.zip` to Google Drive (anyone with the link, viewer) and send
+  the Step 4 player snippet.
+- A true `file://` open of `packages/ug2-prezentacja/edytor.html` from disk.
+- First real player round-trip: a player builds a deck, sends back `szkic-ug2.json`, GM reviews
+  and publishes per runbook Step 5.
+
+**Verification.** Full suite 93/93 Vitest tests green (new: 26 in `kit-core.test.ts`); `npx tsc -b`
+clean; `git status` clean of `packages/**` and of `public/prezentacja/_kit-test`; no site source
+changes. **No commit made this session** — working tree handed to the user per the plan's hard
+constraint.
+
+---
+
+## 2026-07-14 — GM feedback: two question types in "Pytania i wątpliwości" ([PEWNE]/[SPEKULACJA])
+
+GM review of the UG2 "Pytania i wątpliwości" section surfaced a scope mismatch: the section was
+designed to surface the **AI's comprehension gaps** (things the transcript leaves unclear — lost
+recordings, off-mic action, ambiguous outcomes — where a player's answer is a factual correction),
+but the 5 UG2 questions that shipped in Iteration 1 turned out to be **open plot mysteries**
+instead (in-fiction unknowns with no answer at the table; the GM won't reveal them). GM decision:
+allow both, but keep them distinct in the conventions.
+
+**Files touched:**
+- `.claude/skills/session-digest/SKILL.md` — workflow step 3 now distinguishes **luki w
+  rozumieniu** (comprehension gaps, primary purpose, player answers are real corrections) from
+  **otwarte zagadki** (open mysteries, secondary, permanently "unanswered", player comments are
+  theories only); requires the section's intro blockquote to invite `[PEWNE]`/`[SPEKULACJA]`
+  prefixes (plain-text convention in the comment body, no DB change); acceptance check updated.
+- `.claude/skills/session-digest/references/house-style.md` — item 13 (the "Pytania i
+  wątpliwości" section) now points to the gap/mystery distinction and the marker convention.
+- `.claude/skills/session-feedback/SKILL.md` — classification step (3) teaches the marker
+  convention: `[PEWNE]` comments are higher-confidence candidate corrections, `[SPEKULACJA]`
+  comments are theories that are never folded into summary facts (may be quoted in a "Teorie
+  graczy" subsection if proposed), unmarked comments classify by content as before. New hard
+  rule: mystery-question threads never produce a summary-fact diff hunk, regardless of marker.
+- `src/routes/UG2Summary.tsx` — rewrote only the "Pytania i wątpliwości" intro blockquote to
+  explain that these are open questions, some may never get an official answer, and to prefix
+  answers/theories with `[PEWNE]`/`[SPEKULACJA]`. The 5 question paragraphs themselves are
+  untouched (their block-ids stay stable); the intro blockquote's own block-id changes, which is
+  fine — no player comments exist on it yet.
+
+**Decisions:**
+- UG2's 5 existing questions stay classified as **open mysteries**, including the Sól w Ranach
+  teaser folded into Q5 (the "progresywny klub dżentelmenów" invitation to Dr Elaine Howard) —
+  the GM explicitly accepted that cross-case teaser rather than asking for it to be reworked.
+- `[PEWNE]`/`[SPEKULACJA]` is a plain-text, in-comment convention only — no schema/DB change, no
+  new comment field. Read-back tooling (`session-feedback`) treats the markers as a strong
+  classification signal, not a substitute for reading the comment body.
+- **Pilot plan, next session:** run the **full pipeline** end-to-end for the first time —
+  rpg-recorder transcription → overlay lands in this repo → `session-digest` drafts the summary
+  (using the new two-type "Pytania i wątpliwości" convention from the start) → `npm run
+  build-package` packages it with the central-mic audio track (per the Iteration 2 runbook,
+  `docs/RUNBOOKS/session-package.md`).
+
+**Verification.** `npx tsc -b` clean; `npx vitest run` green (66 tests). No commit made this
+session per instructions.
+
+---
+
+## 2026-07-15 — Session companion Iteration 2: downloadable session package (Stage M — Iteration 2 complete)
+
+Implementation session for **Iteration 2** of the session companion — the downloadable per-session package (self-contained `index.html` + concat-mix Opus audio, zipped, GM-hosted on Google Drive). Executed from `docs/superpowers/plans/2026-07-15-session-companion-iter2.md` (tasks T1–T7 incl. the T7 stretch); `/sesje` untouched, stays the always-on no-audio deep-link fallback.
+
+**Files touched:**
+- `scripts/lib/package-data.ts` (+ `package-data.test.ts`, 12 tests) — NEW; pure payload builder: **winner-only trimmed projection** (~0.5 MB inlined vs 4.3 MB raw overlay), pinned seek rule `play.start ?? (timeline === 'concat' ? start : null)`, `inlineJson()` escaping `</script>` for safe inline-`<script>` embedding.
+- `scripts/package-template/template.html` — NEW; standalone vanilla HTML/CSS/JS viewer (no React/Tailwind build): scene sidebar, `content-visibility: auto` rows (the site viewer's perf trick, framework-free), sticky audio bar, follow-mode with throttled binary-search highlight, graceful no-audio fallback, zero network under `file://`, Polish UI strings, Cthulhu palette inline.
+- `scripts/build-package.ts` — NEW; CLI generator (`<slug>` + optional `--audio <mix path>`), output to gitignored `packages/<slug>/`; prints the `Compress-Archive` zip command, the Drive-upload reminder, and the ready-to-paste Polish hub bullet.
+- `package.json` — MODIFIED; `"build-package": "tsx scripts/build-package.ts"`.
+- `.gitignore` — MODIFIED; `packages/` (generated packages — audio + zip never committed).
+- `docs/RUNBOOKS/session-package.md` — NEW; GM runbook mix → build → zip → Drive → hub link: ffmpeg one-liner (`amix` → `dynaudnorm` → libopus 32k mono), `Compress-Archive`, **dual-edit hub warning** (vault `00 HUB.md` + `src/generated/content.ts` mirror), macOS-Safari `.opus` caveat.
+- `docs/AktaKasandry_obsidian/{TASK_LIST.md, DOCS_CHANGES_JOURNAL.md, work/2026-07-14-session-companion.md, memories/project.md}` — this entry (T6).
+
+**Dry run (T5) — PASS, measured:**
+- Mix produced in rpg-recorder's tree (producer boundary respected): `C:\Users\Pawel\rpg-recorder\outputs\transcript-viz\audio\ug2\ug2-mix.opus` — **36.8 MB, 9514.4065 s**, matches `overlay.duration` to the millisecond.
+- `packages/ug2/` built; seek verified programmatically at 3 scenes (early / middle / late — `audio.currentTime == seekSec` exactly, incl. near-EOF); zip **36.9 MB**; unzip-to-a-different-dir-and-reopen verified (the exact player flow).
+- Caveat: the browser sandbox rejects `file://`, so verification ran over a local static HTTP server — equivalent, since the template performs zero fetches; the true `file://` open from disk is on the GM's checklist.
+
+**Decisions:**
+- Inline a **trimmed winner-only projection** (`window.__PKG__`), never the raw overlay — provenance/chunks stay a `/sesje` feature (design spec §4 amended 2026-07-15).
+- Viewer is a **hand-written vanilla template** (`scripts/package-template/template.html`), not a second Vite build target — the read-only row UI is trivial and the `content-visibility` trick is plain CSS.
+- Zip via **PowerShell `Compress-Archive`**, printed not executed — no Node zip dependency; gives the GM an inspect-before-shipping checkpoint.
+- **Producer boundary:** the ffmpeg concat-mix step belongs to rpg-recorder — documented in the runbook here, flagged for **their backlog** as a future export script; this repo only consumes the resulting file via `--audio`.
+- Stretch T7 shipped: diacritic-insensitive text filter (text + speaker) with debounce and Polish-pluralized match counter; follow-mode auto-scroll guarded while a filter is active; no-audio `.seekable` cursor nit fixed.
+
+**Open questions / next steps (GM manual actions, tracked in [[TASK_LIST]]):**
+- Acoustic spot-check listen of the mix + final `file://` open of `packages/ug2/index.html` from disk.
+- Upload `packages/ug2.zip` to Google Drive (anyone with the link, viewer).
+- Paste the hub bullet into vault `PUBLIC/SPRAWY/02 URODZAJ GROZY/00 HUB.md` **and** `src/generated/content.ts` — both places.
+
+**Verification.** Full suite: 21 test files / 65 tests green (new: `package-data.test.ts`); `npx tsc -b` clean; `git status` clean of `packages/**`; no audio/zip committed; no site source touched. **No commit made this session** — working tree handed to the user per the plan's hard constraint.
+
+---
+
+## 2026-07-14 — Session companion: authoring skills, session gallery, UG2 pilot (Stage M — Iteration 1 complete)
+
+Design + implementation session for the **session companion** feature set (spec: three iterations; this session ships iteration 1 in full via a 10-task subagent-driven plan, M1–M10).
+
+**Design.** Spec `docs/superpowers/specs/2026-07-14-session-companion-design.md` + plan `docs/superpowers/plans/2026-07-14-session-companion-iter1.md`. Guiding principle: **no new app** — generation stays in Claude Code skills outside the app; the site only ever renders results (summaries, galleries, manifests), never calls an LLM at runtime. Reopens two prior exclusions from `memories/project.md`: in-browser whiteboard (via **tldraw**, not Excalidraw, Iteration 3 only) and audio/video embeds (narrowly — only inside a downloadable local package, Iteration 2; the site itself still hosts no audio).
+
+**Files touched (Iteration 1, all shipped this session):**
+- `.claude/skills/session-digest/SKILL.md` + `references/{house-style,outputs}.md` — NEW project skill; turns a session's overlay JSON + GM off-mic notes into a house-style summary draft, a "Pytania i wątpliwości" section, a scene-index JSON, and a gallery manifest.
+- `.claude/skills/session-feedback/SKILL.md` — NEW project skill; folds player comments (via `fetch-comments.ts`) back into a summary as a reviewable unified diff — no auto-apply, GM commits.
+- `scripts/fetch-comments.ts` + `scripts/lib/group-comments.ts` (+ `group-comments.test.ts`) — NEW; read-only, anon-key Supabase read of `wiki.comments` for a `page_key`, grouped by `blockId`/thread; `package.json` gained `"fetch-comments"` script entry.
+- `src/lib/gallery/manifest.ts` (+ `manifest.test.ts`) — NEW; zod schema (`GalleryManifestSchema`) + `parseGalleryManifest` + `loadGalleryManifest` (uses `withBase`).
+- `src/components/gallery/{SessionGallery,Lightbox}.tsx` (+ `SessionGallery.test.tsx`) — NEW; data-driven gallery component + in-house click-to-zoom lightbox (no new dependency — built on existing React state + fixed-overlay + keyboard handlers).
+- `public/gallery/ug2.json` — NEW; first manifest: 22 scenes, 10 cast portraits, 5 music tracks, 4 links (Streszczenie/Narracja/Prezentacja/Transkrypt). All `src` paths verified to exist under `public/`.
+- `src/routes/NodeView.tsx` (+ `src/generated/content.ts`) — MODIFIED; registered `sprawy/02-urodzaj-grozy/05-galeria` in `INLINE_PAGES`, added the matching content node; vault stub `G:\My Drive\OBSIDIAN\RPG\Zew Cthulhu\PUBLIC\SPRAWY\02 URODZAJ GROZY\05 Galeria.md` added (GM/vault-side, so a future `npm run build-content` regenerates the same node instead of dropping the hand-added one). Live at `/p/sprawy/02-urodzaj-grozy/05-galeria`.
+- `src/routes/UG2Summary.tsx` — MODIFIED; appended a "Pytania i wątpliwości" section — 5 questions, each its own paragraph (blank-line-separated, not a list) so `remarkBlockIds` assigns each a distinct, individually-commentable `data-block-id`.
+- `public/transcripts/scene-index/ug2.json` — NEW; 11 scenes with real utterance-id boundaries pulled from `ug2-current-overlay.json`, chronological order, Polish titles. Consumed by Iteration 2 (package generator); no app wiring in Iteration 1.
+- `docs/AktaKasandry_obsidian/{TASK_LIST.md, DOCS_CHANGES_JOURNAL.md, work/Index.md, memories/project.md}` — this entry (M10).
+
+**Decisions.**
+- **No new runtime dependency in Iteration 1.** `zod` and `@supabase/supabase-js` (already deps) cover the manifest schema and the read-only comment fetch; the lightbox is hand-built.
+- **Skills-outside-app boundary restated, not reversed.** `session-digest`/`session-feedback` are authoring guidance + templates, not app code — they produce `.tsx`/`.json` content a human commits.
+- **Append-only block-id contract** for "Pytania i wątpliwości": editing a published question's text changes its `remarkBlockIds` hash and orphans any comments already anchored to it. The skill and this doc both flag it as a hard rule.
+- **Package model (Iteration 2, spec-only) replaces hosted transcript audio.** Instead of ever hosting per-channel audio on the site or on GitHub Releases/R2, the plan is a downloadable per-session package (self-contained `index.html` + a concat-mix Opus audio sibling file, zipped, hosted on the GM's Google Drive). `/sesje` stays the always-on, no-audio deep-link fallback — unchanged.
+- **tldraw approved-but-deferred** for Iteration 3 (shared whiteboard) — the one sanctioned future addition beyond the locked stack; still requires explicit go-ahead when scheduled. Backed by a new `wiki.boards` table (last-write-wins, no history), subject to the coc-creator shared-Supabase coordination guardrail.
+
+**Open items flagged for follow-up.**
+- `.gitignore` line 35 ignores all of `.claude/` — needs an exception (e.g. `!.claude/skills/`) before the two new skills can be committed.
+- UG2 "Pytania i wątpliwości" is **GM-review-pending**: the GM approves the 5 questions' wording before the next deploy. Question 5 references the currently-hidden "Sól w Ranach" session — GM must decide teaser phrasing vs. rewrite.
+- Iterations 2 and 3 are designed at spec level only (`docs/superpowers/specs/2026-07-14-session-companion-design.md` §4–5) — each gets its own implementation plan when scheduled.
+
+**Verification.** Full suite: 20 test files / 53 tests green (new: `manifest.test.ts`, `group-comments.test.ts`, `SessionGallery.test.tsx`; all prior 43 unaffected). `npx tsc -b` clean. **No commit made this session** — working tree handed to the user per the plan's hard constraint.
+
+---
+
+## 2026-06-27 — Player margin-comments: interaction layer, production deploy, player accounts (Stage L — live)
+
+Finishing session for Stage L. All interaction paths are now wired and tested end-to-end in production; six player accounts provisioned; migrations 009–013 verified live.
+
+**Shipped & deployed to GitHub Pages (all builds green).**
+
+**Migrations 009–013 confirmed live.** Authored in the previous session, run 2026-06-26 in Supabase dashboard (one transaction). Post-migration audit passed. Key schema fix: `wiki.comments.speaker_character_id` and `wiki.investigation_cast.character_id` reference `wiki.imported_characters.source_id` (uuid natural key), NOT the bigserial `id` — the plan originally said `(id)`, which would have failed.
+
+**Comment card positioning.** Cards in the right rail are absolutely positioned at their anchored fragment's vertical offset. Collision push-down implemented as a pure, TDD-tested utility (`src/lib/comments/stack.ts`). Offsets recompute on resize and image-load. Header floor applied. Desktop-only; mobile falls back to a plain list. Desktop detection in `src/components/comments/useIsDesktop.ts`.
+
+**Guided comment composer.** New `src/components/comments/CommentComposer.tsx` replaces the implicit "select text → bubble" flow with three explicit states: idle "Dodaj komentarz" button → "Oznacz fragment" selection bar → compose box. Login-gated. Desktop = sticky in rail; mobile = fixed bottom bar. `ComposeBubble` hides the speaker picker when the player has no cast characters (clean OOC). Spec: `docs/superpowers/specs/2026-06-26-comment-composer-flow-design.md`; plan: `docs/superpowers/plans/2026-06-26-comment-composer-flow.md` (both committed).
+
+**Login by name.** `src/routes/Login.tsx` shows a "Login" name field. `src/stores/auth.ts` exports `loginToEmail()` which maps `username → username@kasandra.local` before calling `signInWithPassword` (synthetic-email pattern). Akta has its OWN Supabase Auth — no SSO with coc-creator, no reading `public.players`. Polish invalid-credentials error message.
+
+**Author edit/delete.** `CommentCard` now shows Edytuj/Usuń when the viewer is the comment's author OR MG (was previously MG-only and unwired). Inline edit + delete-confirm wired to the comments store. RLS already permitted author-level edit/delete.
+
+**UG2 full narration — comments.** `src/routes/UG2Narracja.tsx` now renders via `AnnotatableArticle` with its own page_key `streszczenie/ug2/narracja` (separate comment set) but the shared UG2 cast key `streszczenie/ug2`. Verified live: composer + shared cast (James Kelly · Eleine Howard · Ja) all work.
+
+**Content fix.** Jakub's academic corrected from "Dr Edwin Thorne" → "Arthur Henry Corwin" in both `UG2Summary` and `UG2Narracja` (the cinematic presentation already had the correct name).
+
+**Test infra.** 43 Vitest tests green; `tsc -b` clean.
+
+**Player accounts (MG actions, done in Supabase dashboard / SQL).**
+- 6 player accounts created with synthetic emails `<login>@kasandra.local` (Auto-Confirmed, separate Supabase Auth): nika, rafalg, piotrs, pawel, kamilk, jakubm.
+- MG account stays `storage.station2023@gmail.com` (logs in via full-email pass-through in the Login screen).
+- Credentials stored LOCAL-ONLY in gitignored `secrets/player-credentials.md` (repo is PUBLIC).
+- `wiki.profiles.display_name` + `color` set per player via SQL (initials for four: "Rafał G", "Piotr S", "Kamil K", "Jakub M"; full names for Paweł and Nika).
+- Character owner + investigation cast assigned for all 10 UG2 characters (cast key `streszczenie/ug2`).
+
+**Files (source).** `src/components/comments/{CommentComposer,CommentCard,CommentRail,useIsDesktop}.tsx`, `src/lib/comments/stack.ts`, `src/stores/auth.ts` (`loginToEmail`), `src/routes/{Login,UG2Narracja,UG2Summary}.tsx`.
+
+**Open / backlog.**
+- ⚠️ Cast-store load burst: ~25 redundant Supabase calls on mount of either UG2 page (profiles / imported_characters / investigation_cast) — settles, not an infinite loop, but wastes free-tier egress. Suspected cause: `useEffect(..., [user, loadCast])` re-fires when `user` object reference changes during auth-session settling. Likely fix: depend on `user?.id` instead. Diagnose + fix.
+- Import name mismatch: Nika's academic is imported as "Eleine Howard" but content canon says "Elaine" — unify (rename in import) when convenient.
+- Comments currently only on the two UG2 pages; enabling on other pages (Znak Życia, vault pages) requires a stable `page_key` per page and NodeView opting into `AnnotatableArticle`.
+- Accepted v1 trade-offs (already documented): MG can reassign comment authorship via RLS (MG is trusted); per-author fragment highlight uses 16 fixed palette `::highlight` rules; some anchor/transitive-dep notes.
+
+---
+
+## 2026-06-26 — UG 2 off-mic fills + illustrations + cinematic presentation (reusable skill) + case hubs
+
+Long session. Finished Stage K for UG 2 and built a reusable cinematic-presentation system on top of it.
+
+**UG 2 content (Stage K).** Filled the three off-mic gaps from GM memory and folded them into `/streszczenie-ug2` and `/streszczenie-ug2/narracja`: (A) gangster night recon + dawn shootout, (B) academics' town intro → Jarvey farm, (C) most of the cave fight. Per GM, dropped the "⚠ poza nagraniem" flags and wrote it as seamless narrative. **Naming canon** normalized (from the GM vault `STRAŻNIK/SESJE/URODZAJ GROZY/NPC.md`): Blackwater Creek, Damien/Brendan Carmody, Henry/Abigail Roades, Ernest McTavish, Jarveyowie, Stary Pete, Dick Sprouston, **Dr Arthur Henry Corwin** (was the wrong "Edwin Thorne"), **Elaine** (not Eleine), **Klub Kasandry** (K). Lore fixes: farm creature = transformed **Brendan** (not the Mother); the Mother = **Abigail Roades** (Shub-Niggurath avatar); Joseph shoots Roades; **Mortimer survives insane** (Dar regeneration); epilogue window figure = **Brock** (the executed informant, back via the Dar). Added a **"Śmieszne i epickie momenty"** section (deep-linked quotes) + folded narrative details into the short summary.
+
+**Illustrations.** 21 GM-generated images optimized into `public/img/ug2/`, plus 10 player cast portraits pulled from the shared Supabase `portraits` bucket into `public/img/ug2/cast/`; woven into both pages (scenes full-width, characters framed). New GM beats surfaced: Brutus (the farm hog) fight, the gangster/academic meeting + negotiation.
+
+**Cinematic presentation (NEW).** Self-contained, music-driven slideshow under `public/prezentacja/ug2/` — theme-agnostic `engine.js` + `base.css` + per-theme `themes/*.css` + data `slides.js`. 40 slides / 6 acts, 4 music cues with crossfade, framed captioned portraits + cast intros, Ken Burns, fx (flash/pulse/night), a "?" frame, and a **gunfight SFX mixed with ffmpeg** from 6 GM clips. Start gesture, no-autoplay-on-start, pause/scrub/fullscreen, idle-hide. Embedded on the site via React route **`/prezentacja/ug2`** (`UG2Presentation`: iframe 16:9 + fullscreen + back-to-case). Relative asset paths + `BASE_URL` iframe src → works under the prod `/akta-kasandry/` base (verified with `vite preview`). **Decision: audio committed** (`public/audio/`, ~21 MB, un-ignored) so the live deck has sound — GM confirmed rights.
+
+**Reusable skill.** Packaged as a global skill `~/.claude/skills/cinematic-slideshow/` (SKILL.md + `template/` engine/base/4 themes/example + `references/` art-prompt & music-cue guides). Reusable for other sessions/aesthetics (cthulhu, strahd, fantasy, neon). Spec: `docs/superpowers/specs/2026-06-26-ug2-presentation-design.md`.
+
+**Case hubs + tree.** Vault hubs `SPRAWY/02 URODZAJ GROZY/00 HUB` (Streszczenie · Narracja · Prezentacja · Transkrypt) and `SPRAWY/04 SÓL W RANACH/00 HUB` (Streszczenie · Cytaty · Transkrypt). Thin stub sub-pages per case so the sidebar lists all sub-pages; **NodeView special-cases their paths to render the rich React views inline** (URL stays in the case), transcript sub-page redirects to the full-bleed `/sesje`. TreeNav: leaf pages get extra indent vs session folders.
+
+**Sól w Ranach hidden** (GM will release later): vault folder `_04 SÓL W RANACH` (generator skips `_`-prefixed dirs) → off the tree; `sol-w-ranach` filtered from `/sesje`. Reversible.
+
+**Files:** `src/routes/{UG2Summary,UG2Narracja,UG2Presentation,NodeView,Sessions}.tsx`, `src/components/TreeNav.tsx`, `src/router.tsx`, `src/generated/content.ts`, `public/prezentacja/ug2/**`, `public/img/ug2/**`(+`cast/`), `public/audio/ug2/**`, `.gitignore`, vault `PUBLIC/SPRAWY/{02 URODZAJ GROZY,_04 SÓL W RANACH}/*.md`, global skill dir. Pushed across several commits to `main`.
+
+**Open:** swap two presentation placeholders when generated (rats "Coś tu gnije", 3 m giant "Trzymetrowa postać"); un-hide Sól when ready; demo routes still exist alongside the in-case `/p/...` paths (minor dup).
+
+---
+
 ## 2026-06-26 — Player margin-comments: full implementation (Stage L, Task 24 / 24 — COMPLETE)
 
 Full implementation of the player margin-comments feature for session-summary pages, executed as 24 TDD tasks across 7 phases from plan `docs/superpowers/plans/2026-06-26-player-comments.md`. All source code shipped, 28 unit tests green, `tsc -b` clean, migrations 009–013 run.

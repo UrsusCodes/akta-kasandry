@@ -11,7 +11,13 @@ import { UG2Narracja } from './UG2Narracja'
 import { UG2Presentation } from './UG2Presentation'
 import { SummaryDemo } from './SummaryDemo'
 import { QuotesDemo } from './QuotesDemo'
+import { SessionGallery } from '@/components/gallery/SessionGallery'
 import type { ContentNode } from '@/types'
+
+/** Zero-prop wrapper so the UG2 gallery fits the `INLINE_PAGES` component-map shape. */
+function UG2Gallery() {
+  return <SessionGallery caseKey="ug2" />
+}
 
 /**
  * Case sub-pages that are thin vault stubs (so they appear in the tree) but
@@ -21,6 +27,7 @@ const INLINE_PAGES: Record<string, ComponentType> = {
   'sprawy/02-urodzaj-grozy/01-streszczenie': UG2Summary,
   'sprawy/02-urodzaj-grozy/02-narracja': UG2Narracja,
   'sprawy/02-urodzaj-grozy/03-prezentacja': UG2Presentation,
+  'sprawy/02-urodzaj-grozy/05-galeria': UG2Gallery,
   'sprawy/04-sol-w-ranach/01-streszczenie': SummaryDemo,
   'sprawy/04-sol-w-ranach/02-cytaty': QuotesDemo,
 }

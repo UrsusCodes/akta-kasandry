@@ -12,7 +12,11 @@
     "push-vault": "tsx scripts/push-vault.ts",
     "pull-vault": "tsx scripts/pull-vault.ts",
     "build-content": "tsx scripts/build-content.ts",
-    "watch-content": "tsx scripts/watch-content.ts"
+    "watch-content": "tsx scripts/watch-content.ts",
+    "fetch-comments": "tsx scripts/fetch-comments.ts",
+    "build-package": "tsx scripts/build-package.ts",
+    "build-presentation-kit": "tsx scripts/build-presentation-kit.ts",
+    "build-session-vault": "tsx scripts/build-session-vault.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.4",
