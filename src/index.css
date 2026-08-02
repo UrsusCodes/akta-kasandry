@@ -136,8 +136,17 @@ body {
   background: var(--color-parchment-warm);
   margin: 1em 0;
   width: 100%;
-  display: block;
-  overflow-x: auto;
+}
+.prose-cthulhu .table-wrap > table {
+  margin: 0;
+}
+/* Cells wrap at word boundaries only — the page-level `overflow-wrap: anywhere`
+   (long-URL protection) would otherwise shrink columns below the longest word
+   and break mid-word ("Kategor|ia"). Wide tables scroll inside .table-wrap. */
+.prose-cthulhu table th,
+.prose-cthulhu table td {
+  overflow-wrap: normal;
+  word-break: normal;
 }
 .prose-cthulhu table th {
   background: var(--color-ink);

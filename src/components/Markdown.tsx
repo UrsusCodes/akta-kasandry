@@ -48,6 +48,15 @@ export function Markdown({ children }: Props) {
           img({ src, ...rest }) {
             return <img src={withBase(src)} {...rest} />
           },
+          // Tables render at natural column widths; wide ones scroll inside
+          // .table-wrap instead of squeezing columns below the longest word.
+          table(props) {
+            return (
+              <div className="table-wrap">
+                <table {...props} />
+              </div>
+            )
+          },
         }}
       >
         {children}
