@@ -20,9 +20,27 @@ packages/
 public/transcripts/data/rozdarte-sumienie-current-overlay.json
 public/transcripts/scene-index/rozdarte-sumienie.json
 public/gallery/rozdarte-sumienie.json
-public/img/rozdarte-sumienie/
 public/audio/rozdarte-sumienie/
 docs/superpowers/drafts/
+
+# Rozdarte Sumienie images — only the 8 files used by the corrected summary
+# (RSSummary.tsx) are published; the rest (unused scene photos, tome-handout
+# pages, unused cast portraits) stay held back with the rest of the session
+# pending further GM review. A directory-level ignore (`dir/`) blocks git
+# from ever traversing into it, so negation can't re-include files inside —
+# ignore contents via `dir/*` instead and re-include the specific files
+# (the `cast/` subdirectory needs its own re-include + `dir/*` pair).
+public/img/rozdarte-sumienie/*
+!public/img/rozdarte-sumienie/cornhill-ksiegarnie.jpg
+!public/img/rozdarte-sumienie/rhymers-club.jpg
+!public/img/rozdarte-sumienie/kryjowka-nowy-jork.jpg
+!public/img/rozdarte-sumienie/kostnica.jpg
+!public/img/rozdarte-sumienie/greyholme.jpg
+!public/img/rozdarte-sumienie/tom-04-wizja-krola-dusza.webp
+!public/img/rozdarte-sumienie/cast/
+public/img/rozdarte-sumienie/cast/*
+!public/img/rozdarte-sumienie/cast/fisk.jpg
+!public/img/rozdarte-sumienie/cast/jackson-elias.jpg
 
 # Vault snapshot — refreshed by `npm run build-content`.
 # Both the generated content.ts AND public/vault-attachments/ ARE committed so

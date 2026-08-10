@@ -125,7 +125,15 @@ export const contentTree: ContentNode[] = [
         "slug": "03-rozdarte-sumienie",
         "path": "sprawy/03-rozdarte-sumienie",
         "kind": "folder",
-        "children": []
+        "children": [
+          {
+            "name": "01 Streszczenie",
+            "slug": "01-streszczenie",
+            "path": "sprawy/03-rozdarte-sumienie/01-streszczenie",
+            "kind": "page",
+            "body": "[Otwórz streszczenie](/p/sprawy/03-rozdarte-sumienie/01-streszczenie)\n"
+          }
+        ]
       }
     ]
   },

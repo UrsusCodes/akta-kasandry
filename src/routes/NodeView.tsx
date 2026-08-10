@@ -9,6 +9,7 @@ import { MAP_PAGE_PATH, stripLegacyMapEmbed } from '@/lib/specialPages'
 import { UG2Summary } from './UG2Summary'
 import { UG2Narracja } from './UG2Narracja'
 import { UG2Presentation } from './UG2Presentation'
+import { RSSummary } from './RSSummary'
 import { SummaryDemo } from './SummaryDemo'
 import { QuotesDemo } from './QuotesDemo'
 import { SessionGallery } from '@/components/gallery/SessionGallery'
@@ -28,6 +29,7 @@ const INLINE_PAGES: Record<string, ComponentType> = {
   'sprawy/02-urodzaj-grozy/02-narracja': UG2Narracja,
   'sprawy/02-urodzaj-grozy/03-prezentacja': UG2Presentation,
   'sprawy/02-urodzaj-grozy/05-galeria': UG2Gallery,
+  'sprawy/03-rozdarte-sumienie/01-streszczenie': RSSummary,
   'sprawy/04-sol-w-ranach/01-streszczenie': SummaryDemo,
   'sprawy/04-sol-w-ranach/02-cytaty': QuotesDemo,
 }
