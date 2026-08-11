@@ -26,10 +26,10 @@ const SUMMARY = `# Rozdarte Sumienie (RS) — streszczenie
 | Gracz | Postać |
 | ----- | ----- |
 | Nika  | **Lilian Whiteley** — aktorka teatralna, przyjaciółka Mastersa (dostała od niego rapier) |
-| Piotr | **dr Steven Price** — majętny lekarz, specjalista od chorób zakaźnych, lekarz Mastersa; |
+| Piotr | **dr Steven Price** — majętny lekarz, specjalista od chorób zakaźnych, lekarz Mastersa |
 | Kamil | **Jake Wallis** — antykwariusz z własnym sklepem, znajomy Mastersa |
-| Jakub | James "jimmy" Hardy — prywatny detektyw, były policjant, dawniej współpracował z inspektorem Fiskiem, wyleciał ze służby |
-| Rafał | Quentin Stanford — okultysta, wycofany społecznie; zafacynowany zakazanymi sztukami |
+| Jakub | **James „Jimmy” Hardy** — prywatny detektyw, były policjant, dawniej współpracował z inspektorem Fiskiem, wyleciał ze służby |
+| Rafał | **Quentin Stanford** — okultysta, wycofany społecznie; zafascynowany zakazanymi sztukami |
 
 **BN-i:**
 Zamordowany pisarz grozy **Martin Masters** (pod pseudonimem **„Johnson"**);
