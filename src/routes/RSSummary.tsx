@@ -31,18 +31,19 @@ const SUMMARY = `# Rozdarte Sumienie (RS) — streszczenie
 | Jakub | **James „Jimmy” Hardy** — prywatny detektyw, były policjant, dawniej współpracował z inspektorem Fiskiem, wyleciał ze służby |
 | Rafał | **Quentin Stanford** — okultysta, wycofany społecznie; zafascynowany zakazanymi sztukami |
 
-**BN-i:**
-Zamordowany pisarz grozy **Martin Masters** (pod pseudonimem **„Johnson"**);
-Inspektor **Peter Fisk** - weteran wielkiej wojny
-Odludek-kolekcjoner **Aleksander Kent** z posiadłości **Greyholme** i jego kamerdyner **Silas Stark**;
-Martwy poeta **Vincent (Wiktor) Hale**, autor przeklętego tomu;
-Sławny podróżnik-pisarz **Jackson Elias**;
-Nieprzyjemny handlarz **Gundberg**
-Antykwariusz **Hermes**;
-Wydawnictwo **Ginlows & Sons**;
-Gangsterzy **Mortimer** i **James** oraz powiązani z nimi złodzieje **Gruby Tom** i **Chudy Tom** Ze speakeasy **Rhymers Club**;
-Twórca pieczęci **Otto Brandt**;
-Kolejne ofiary z listy — **Woodworth**, **Smith**, **Jacobson**.
+**NPC:**
+
+- **Martin Masters** — zamordowany pisarz grozy, publikujący pod pseudonimem **„Johnson"**
+- Inspektor **Peter Fisk** — weteran wielkiej wojny
+- **Aleksander Kent** — odludek-kolekcjoner z posiadłości **Greyholme**, i jego kamerdyner **Silas Stark**
+- **Vincent (Wiktor) Hale** — martwy poeta, autor przeklętego tomu
+- **Jackson Elias** — sławny podróżnik-pisarz
+- **Gundberg** — nieprzyjemny handlarz
+- **Hermes** — antykwariusz
+- **Ginlows & Sons** — wydawnictwo
+- **Mortimer** i **James** — gangsterzy ze speakeasy **Rhymers Club**, a przy nich złodzieje **Gruby Tom** i **Chudy Tom**
+- **Otto Brandt** — twórca pieczęci
+- **Woodworth**, **Smith**, **Jacobson** — kolejne ofiary z listy
 
 ---
 
